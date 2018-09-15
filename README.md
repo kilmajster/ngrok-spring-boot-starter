@@ -1,6 +1,8 @@
 # ngrok spring boot starter
 
-This starter allows you to publish your locally running spring boot application to the Web! 💻🔛🌐️ So every time you want to
+### 👨‍🔛🌐️
+
+This starter allows you to publish your locally running spring boot application to the Web! 👨‍🔛🌐️ So every time you want to
  share your application with your colleague, you'll be able to do it by sending him a link from the application logs!  
  
  Just like it was done in below screenshot:
@@ -12,7 +14,7 @@ This starter allows you to publish your locally running spring boot application 
 ### Configuration
 
 ##### ngrok configuration
-If you haven't got ngrok already installed please visit their [site](https://ngrok.com/). How to create account, download, install and configure ngrok is described in their short [guide](https://dashboard.ngrok.com/get-started). Remember where you extracting binary file because this will be important in next step 👌
+If you haven't heard about ngrok yet, you can check out their site [here](https://ngrok.com/). How to create account, download, install & configure ngrok is described in their short [guide](https://dashboard.ngrok.com/get-started). Remember where you extracting binary file because this will be important in next step 👌
 
 ##### spring boot (auto)configuration
 
