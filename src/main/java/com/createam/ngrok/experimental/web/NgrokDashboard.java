@@ -37,7 +37,7 @@ public class NgrokDashboard {
 
     @GetMapping
     public String dashboard(final Map<String, Object> model, final HttpServletRequest request) {
-        model.put("message", "Welcome to ngrok web panel!");
+        model.put("message", " Welcome to ngrok web panel!");
         model.put("time", new Date());
 
         String tunnelsAsJson = ngrokApiClient.resourceAsString(NGROK_URL_API_TUNNELS);
