@@ -66,4 +66,4 @@ So now, the starter will run ngrok http tunneling on specified `server.port`, wh
 
 
 
-🆒 Be happy because of your spring boot application served in the web without difficult server configuration and completely free! 😎 🤙
+🆒 Be happy because of your spring boot application served in the web without difficult server configuration and completely for free! 😎 🤙
