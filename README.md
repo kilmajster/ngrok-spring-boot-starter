@@ -1,5 +1,8 @@
 # ngrok spring boot starter
 [![Build Status](https://travis-ci.org/createam-labs/ngrok-spring-boot-starter.svg?branch=master)](https://travis-ci.org/createam-labs/ngrok-spring-boot-starter)
+![GitHub last commit](https://img.shields.io/github/last-commit/createam-labs/spring-boot-starter-heroku.svg)
+[![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/createam-labs/ngrok-spring-boot-starter)
+
 
 
 👨🏼‍💻 🔛🌐This starter allows you to publish your locally running spring boot application to the Web! So every time you want to
