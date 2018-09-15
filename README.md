@@ -49,9 +49,10 @@ user@ngrok-spring-boot-starter (master) $ mvn install -Dmaven.test.skip=true
 [INFO] Building ngrok-spring-boot-starter 0.1a
 [INFO] --------------------------------[ jar ]---------------------------------
 ```
+After this `ngrok-spring-boot-starter` will be installed in your local `.m2` repository, and you should be able to use it, like it's described in the following step 👇
 
 ### spring boot (auto)configuration
-In your `application.properties` file add following (_this works on Windows 10_):
+Go to your project, and in the `application.properties` file add following (_this works on Windows 10_):
 ```properties
 
 # absolute path to the binary file from previous step 👌
