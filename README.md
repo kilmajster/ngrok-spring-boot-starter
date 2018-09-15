@@ -48,7 +48,6 @@ Unpacking objects: 100% (84/84), done.
 $ cd ngrok-spring-boot-starter
 
 user@ngrok-spring-boot-starter (master) $ mvn install -Dmaven.test.skip=true
-
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ---------< io.github.createam-labs:ngrok-spring-boot-starter >----------
