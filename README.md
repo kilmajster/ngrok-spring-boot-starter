@@ -31,7 +31,7 @@ If you haven't heard what is ngrok yet, you can check out their [site](https://n
 compile('io.github.createam-labs:ngrok-spring-boot-starter:0.1a')
 
 ````
-- alternative solution (works before release to maven central repository). Open terminal and do the following:
+- alternative solution - will do the trick before releasing this starter to the maven central repository). Open terminal and do the following:
 ```bash
 $ git clone https://github.com/createam-labs/ngrok-spring-boot-starter.git
 
@@ -43,8 +43,13 @@ Unpacking objects: 100% (84/84), done.
 
 $ cd ngrok-spring-boot-starter
 
-$ mvn clean install
+user@ngrok-spring-boot-starter (master) $ mvn install -Dmaven.test.skip=true
 
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ---------< io.github.createam-labs:ngrok-spring-boot-starter >----------
+[INFO] Building ngrok-spring-boot-starter 0.1a
+[INFO] --------------------------------[ jar ]---------------------------------
 ```
 
 ### spring boot (auto)configuration
