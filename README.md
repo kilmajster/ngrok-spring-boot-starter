@@ -1,6 +1,5 @@
 # ngrok spring boot starter
-
-This starter allows you to publish your locally running spring boot application to the Web! 👨🏼‍💻 🔛🌐️. So every time you want to
+👨🏼‍💻 🔛🌐This starter allows you to publish your locally running spring boot application to the Web! So every time you want to
  share your application with your colleague, you'll be able to do it by sending him a link from the application logs!  
  
  Just like it was done in below screenshot taken from [sample application](https://github.com/createam-labs/createam-labs-sample-app):  
@@ -61,6 +60,10 @@ ngrok.path=C:\\dev\\ngrok\\ngrok.exe
 ```
 So now, the starter will run ngrok http tunneling on specified `server.port`, which in spring boot, by default will be `8080`.  
 
-✅ That's all!  
+
+
+✅ That's all 👏 🏆 🎉
+
+
 
 🆒 Be happy because of your spring boot application served in the web without difficult server configuration and completely free! 😎 🤙
