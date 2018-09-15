@@ -1,5 +1,7 @@
 # ngrok spring boot starter
 [![Build Status](https://travis-ci.org/createam-labs/ngrok-spring-boot-starter.svg?branch=master)](https://travis-ci.org/createam-labs/ngrok-spring-boot-starter)
+
+
 👨🏼‍💻 🔛🌐This starter allows you to publish your locally running spring boot application to the Web! So every time you want to
  share your application with your colleague, you'll be able to do it by sending him a link from the application logs!  
  
