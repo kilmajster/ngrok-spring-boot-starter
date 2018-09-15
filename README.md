@@ -26,7 +26,9 @@ If you haven't heard what is ngrok yet, you can check out their [site](https://n
 ```
 - or gradle:
 ```groovy
+
 compile('io.github.createam-labs:ngrok-spring-boot-starter:0.1a')
+
 ````
 ### spring boot (auto)configuration
 In your `application.properties` file add following (_this works on Windows 10_):
@@ -34,7 +36,6 @@ In your `application.properties` file add following (_this works on Windows 10_)
 
 # absolute path to the binary file from previous step 👌
 ngrok.path=C:\\dev\\ngrok\\ngrok.exe
-
 
 ```
 So now, the starter will run ngrok http tunneling on specified `server.port`, which in spring boot, by default will be `8080`.
