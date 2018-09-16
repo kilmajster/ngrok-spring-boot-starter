@@ -5,7 +5,7 @@
 
 
 
-👨🏼‍💻 🔛🌐This starter allows you to publish your locally running spring boot application to the Web! So every time you want to
+👨🏼‍💻 🔛🌐This starter allows you to publish your locally running spring boot application on the Web! So every time you want to
  share your application with your colleague, you'll be able to do it by sending him a link from the application logs!  
  
  Just like it was done in below screenshot taken from [sample application](https://github.com/createam-labs/createam-labs-sample-app):  
@@ -16,8 +16,8 @@
 
 ## Configuration
 ### ngrok configuration
-If you haven't heard what is ngrok yet, you can check out their [site](https://ngrok.com/) (tldr; _ngrok can proxy traffic from web to your local machine on the specified port, in our case will be tomcats_ `http://localhost:8080`). How to create account, download, install & configure ngrok is described in their short [guide](https://dashboard.ngrok.com/get-started) 📄.
-  Remember where you extracting binary file because this will be important in next step 🔜
+If you haven't heard what ngrok is yet, you can check out their [site](https://ngrok.com/) (tldr; _ngrok can proxy traffic from web to your local machine on the specified port, in our case it will be tomcats_ `http://localhost:8080`). How to create account, download, install & configure ngrok is described in their short [guide](https://dashboard.ngrok.com/get-started) 📄.
+  Remember where you extracting binary file because this will be important in the next step 🔜
 
 ### add dependency (not working yet)
 - maven:
