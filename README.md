@@ -20,7 +20,7 @@
 If you haven't heard what ngrok is yet, you can check out their [site](https://ngrok.com/) (tldr; _ngrok can proxy traffic from web to your local machine on the specified port, in our case it will be tomcats_ `http://localhost:8080`). How to create account, download, install & configure ngrok is described in their short [guide](https://dashboard.ngrok.com/get-started) 📄.
   Remember where you extracting binary file because this will be important in the next step 🔜
 
-### add dependency (snapshot tested under windows 10 only)
+### add dependency (alpha version was tested only under windows 10!)
 - maven:
 ```xml
 
