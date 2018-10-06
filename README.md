@@ -1,5 +1,6 @@
 # ngrok spring boot starter
 [![Build Status](https://img.shields.io/travis/createam-labs/ngrok-spring-boot-starter/master.svg?logo=travis)](https://travis-ci.org/createam-labs/springrok-ng-boot-starter)
+[![maven-central](https://img.shields.io/maven-metadata/v/http/central.maven.org/maven2/io/github/createam-labs/ngrok-spring-boot-starter/maven-metadata.xml.svg)](http://search.maven.org/#artifactdetails%7Cio.github.createam-labs%7Cngrok-spring-boot-starter%7C0.1a%7Cjar)
 ![GitHub last commit](https://img.shields.io/github/last-commit/createam-labs/spring-boot-starter-heroku.svg)
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/createam-labs/ngrok-spring-boot-starter)
 
