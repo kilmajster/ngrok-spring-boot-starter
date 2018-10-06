@@ -5,11 +5,46 @@
 
     <groupId>io.github.createam-labs</groupId>
     <artifactId>ngrok-spring-boot-starter</artifactId>
-    <version>0.1a</version>
+    <version>0.1a-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>ngrok-spring-boot-starter</name>
-    <description>Ngrok tunneling of spring-boot application </description>
+    <description>Ngrok tunneling of spring-boot application</description>
+    <url>https://github.com/createam-labs/ngrok-spring-boot-starter</url>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>https://github.com/createam-labs/ngrok-spring-boot-starter/blob/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Łukasz Włódarczyk</name>
+            <email>lukasz.createam@gmail.com</email>
+            <organization>createam</organization>
+        </developer>
+    </developers>
+
+    <ciManagement>
+        <system>travis-ci</system>
+        <url>https://travis-ci.org/createam-labs/ngrok-spring-boot-starter</url>
+    </ciManagement>
+
+    <scm>
+        <connection>scm:git:git://github.com/createam-labs/ngrok-spring-boot-starter.git</connection>
+        <developerConnection>scm:git:ssh://github.com:createam-labs/ngrok-spring-boot-starter.git</developerConnection>
+        <url>http://github.com/createam-labs/ngrok-spring-boot-starter/tree/master</url>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -35,6 +70,17 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.4.1.Final</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

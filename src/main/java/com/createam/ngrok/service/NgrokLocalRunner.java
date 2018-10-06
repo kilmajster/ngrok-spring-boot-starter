@@ -11,18 +11,18 @@ import org.springframework.context.event.EventListener;
 import java.io.IOException;
 import java.util.List;
 
-public class NgrokRunner {
-    private static final Logger log = LoggerFactory.getLogger(NgrokRunner.class);
+public class NgrokLocalRunner {
+    private static final Logger log = LoggerFactory.getLogger(NgrokLocalRunner.class);
 
     @Value("${server.port:8080}")
-    public String port;
+    private String port;
 
     @Autowired
     private NgrokApiClient ngrokApiClient;
 
     private String ngrokPath;
 
-    public NgrokRunner(String ngrokPath) {
+    public NgrokLocalRunner(String ngrokPath) {
         this.ngrokPath = ngrokPath;
     }
 
