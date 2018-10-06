@@ -27,14 +27,14 @@ If you haven't heard what ngrok is yet, you can check out their [site](https://n
 <dependency>
   <groupId>io.github.createam-labs</groupId>
   <artifactId>ngrok-spring-boot-starter</artifactId>
-  <version>0.1a-SNAPSHOT</version>
+  <version>0.1a</version>
 </dependency>
 
 ```
 - or gradle:
 ```groovy
 
-compile('io.github.createam-labs:ngrok-spring-boot-starter:0.1a-SNAPSHOT')
+compile('io.github.createam-labs:ngrok-spring-boot-starter:0.1a')
 
 ````
 - **(old)** alternative solution - will do the trick before releasing this starter to the maven central repository 🤠. Open terminal and do the following:
