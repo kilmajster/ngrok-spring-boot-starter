@@ -19,24 +19,24 @@
 If you haven't heard what ngrok is yet, you can check out their [site](https://ngrok.com/) (tldr; _ngrok can proxy traffic from web to your local machine on the specified port, in our case it will be tomcats_ `http://localhost:8080`). How to create account, download, install & configure ngrok is described in their short [guide](https://dashboard.ngrok.com/get-started) 📄.
   Remember where you extracting binary file because this will be important in the next step 🔜
 
-### add dependency (not working yet)
+### add dependency (snapshot tested under windows 10 only)
 - maven:
 ```xml
 
 <dependency>
   <groupId>io.github.createam-labs</groupId>
-  <artifactIdngrok->ngrok-spring-boot-starter</artifactId>
-  <version>0.1a</version>
+  <artifactId>ngrok-spring-boot-starter</artifactId>
+  <version>0.1a-SNAPSHOT</version>
 </dependency>
 
 ```
 - or gradle:
 ```groovy
 
-compile('io.github.createam-labs:ngrok-spring-boot-starter:0.1a')
+compile('io.github.createam-labs:ngrok-spring-boot-starter:0.1a-SNAPSHOT')
 
 ````
-- **alternative solution** - will do the trick before releasing this starter to the maven central repository 🤠. Open terminal and do the following:
+- **(old)** alternative solution - will do the trick before releasing this starter to the maven central repository 🤠. Open terminal and do the following:
 ```bash
 $ git clone https://github.com/createam-labs/ngrok-spring-boot-starter.git
 Cloning into 'ngrok-spring-boot-starter'...
