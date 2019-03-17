@@ -133,14 +133,6 @@
                     <check />
                 </configuration>
             </plugin>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <classpathDependencyExcludes>
-                        <classpathDependencyExcludes>ch.qos.logback:logback-classic</classpathDependencyExcludes>
-                    </classpathDependencyExcludes>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 </project>
