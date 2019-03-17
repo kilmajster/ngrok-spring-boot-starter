@@ -5,11 +5,11 @@
 
     <groupId>io.github.createam-labs</groupId>
     <artifactId>ngrok-spring-boot-starter</artifactId>
-    <version>0.1a</version>
+    <version>0.1</version>
     <packaging>jar</packaging>
 
     <name>ngrok-spring-boot-starter</name>
-    <description>Ngrok tunneling of spring-boot application</description>
+    <description>Easy tunneling spring boot application with ngrok</description>
     <url>https://github.com/createam-labs/ngrok-spring-boot-starter</url>
 
     <licenses>
@@ -71,6 +71,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+
+        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.6</version>
@@ -87,6 +93,21 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-contract-wiremock</artifactId>
+            <version>2.0.3.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jmockit</groupId>
+            <artifactId>jmockit</artifactId>
+            <version>1.45</version>
+            <scope>test</scope>
+        </dependency>
+
+
+
     </dependencies>
 
     <build>
@@ -98,6 +119,26 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <formats>
+                        <format>html</format>
+                        <format>xml</format>
+                    </formats>
+                    <check />
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <classpathDependencyExcludes>
+                        <classpathDependencyExcludes>ch.qos.logback:logback-classic</classpathDependencyExcludes>
+                    </classpathDependencyExcludes>
                 </configuration>
             </plugin>
         </plugins>

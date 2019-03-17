@@ -1,2 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.createam.ngrok.autoconfiguration.NgrokAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.github.createam.ngrok.config.NgrokAutoConfiguration
