@@ -129,8 +129,6 @@
                     <formats>
                         <format>html</format>
                         <format>xml</format>
-                        <maxmem>256m</maxmem>
-                        <aggregate>true</aggregate>
                     </formats>
                     <check />
                 </configuration>
@@ -142,6 +140,19 @@
                 <configuration>
                     <repoToken>alSRFxxX8HtKJoSb2x5hRO5ziiMlRl0DL</repoToken>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.3</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
