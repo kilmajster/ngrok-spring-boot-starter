@@ -1,4 +1,4 @@
-package com.createam.ngrok.data;
+package io.github.createam.ngrok.data;
 
 import java.util.ArrayList;
 import java.util.Collections;

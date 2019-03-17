@@ -1,6 +1,7 @@
 # ngrok spring boot starter
 [![Build Status](https://img.shields.io/travis/createam-labs/ngrok-spring-boot-starter/master.svg?logo=travis)](https://travis-ci.org/createam-labs/springrok-ng-boot-starter)
 [![maven-central](https://img.shields.io/maven-metadata/v/http/central.maven.org/maven2/io/github/createam-labs/ngrok-spring-boot-starter/maven-metadata.xml.svg)](http://search.maven.org/#artifactdetails%7Cio.github.createam-labs%7Cngrok-spring-boot-starter%7C0.1a%7Cjar)
+[![codecov](https://codecov.io/gh/createam-labs/ngrok-spring-boot-starter/branch/master/graph/badge.svg)](https://codecov.io/gh/createam-labs/ngrok-spring-boot-starter)
 ![GitHub last commit](https://img.shields.io/github/last-commit/createam-labs/spring-boot-starter-heroku.svg)
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/createam-labs/ngrok-spring-boot-starter)
 
@@ -70,6 +71,26 @@ So now, the starter will run ngrok http tunneling on specified `server.port`, wh
 
 
 ✅ That's all 👏 🏆 🎉
+
+
+
+
+```properties
+#ngrok.api.url=http://localhost:4040
+
+#ngrok.binary.windows=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-386.zip
+#ngrok.binary.osx=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-386.zip
+#ngrok.binary.linux=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip
+
+#ngrok.waitForStartup.millis=3000
+
+#ngrok.directory=C:\\Users\\user\\Desktop\\ngr
+```
+ngrok.enabled=false
+
+
+ok
+
 
 
 
