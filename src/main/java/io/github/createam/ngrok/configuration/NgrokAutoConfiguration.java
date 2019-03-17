@@ -1,4 +1,4 @@
-package io.github.createam.ngrok.config;
+package io.github.createam.ngrok.configuration;
 
 import io.github.createam.ngrok.NgrokRunner;
 import org.slf4j.Logger;
