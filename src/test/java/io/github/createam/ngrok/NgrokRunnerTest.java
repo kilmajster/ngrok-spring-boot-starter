@@ -1,6 +1,7 @@
 package io.github.createam.ngrok;
 
 import mockit.MockUp;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -40,6 +41,7 @@ public class NgrokRunnerTest {
         verify(ngrokApiClient).fetchTunnels();
     }
 
+    @Ignore
     @Test
     public void run_whenCachedNgrokNotRunningThenShouldRunIt() throws IOException {
         // given
