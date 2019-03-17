@@ -1,6 +1,7 @@
-package io.github.createam.ngrok;
+package io.github.createam.ngrok.integration;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
+import io.github.createam.ngrok.NgrokDownloader;
 import io.github.createam.ngrok.exception.NgrokDownloadException;
 import org.junit.Test;
 import org.junit.runner.RunWith;

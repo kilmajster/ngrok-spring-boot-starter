@@ -1,6 +1,8 @@
-package io.github.createam.ngrok;
+package io.github.createam.ngrok.integration;
 
-import com.github.tomakehurst.wiremock.client.WireMock;
+import io.github.createam.ngrok.NgrokApiClient;
+import io.github.createam.ngrok.data.Tunnel;
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.ResourceUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.List;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -26,11 +35,11 @@ public class NgrokApiClientIntegrationTest {
     private NgrokApiClient ngrokApiClient;
 
     @Test
-    public void isResponding_shouldReturnTrueWhenNgrokIsUp() {
+    public void isResponding_shouldReturnTrueWhenNgrokIsRunning() {
         // given
-        WireMock.stubFor(WireMock.get(WireMock.urlPathMatching("/status"))
-                .willReturn(WireMock.aResponse()
-                .withStatus(HttpStatus.OK.value())));
+        stubFor(get(urlPathMatching("/status"))
+                .willReturn(aResponse()
+                        .withStatus(HttpStatus.OK.value())));
 
         // when
         boolean responding = ngrokApiClient.isResponding();
@@ -42,14 +51,30 @@ public class NgrokApiClientIntegrationTest {
     @Test
     public void isResponding_shouldReturnFalseWhenNgrokIsNotWorking() {
         // given
-        WireMock.stubFor(WireMock.get(WireMock.urlPathMatching("/status"))
-                .willReturn(WireMock.aResponse()
-                .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
+        stubFor(get(urlPathMatching("/status"))
+                .willReturn(aResponse()
+                        .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
 
         // when
         boolean responding = ngrokApiClient.isResponding();
 
         // then
         assertThat(responding).isFalse();
+    }
+
+    @Test
+    public void fetchTunnels_shouldReturnTunnelsWhenNgrokIsRunning() throws IOException {
+        // given
+        File file = ResourceUtils.getFile(this.getClass().getResource("/tunnels.json"));
+        String tunnelsAsJson = FileUtils.readFileToString(file, Charset.defaultCharset());
+
+        stubFor(get(urlPathMatching("/api/tunnels"))
+                .willReturn(
+                        okJson(tunnelsAsJson)));
+        // when
+        List<Tunnel> tunnels = ngrokApiClient.fetchTunnels();
+
+        // then
+        assertThat(tunnels).hasSize(2);
     }
 }
