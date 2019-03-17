@@ -129,8 +129,18 @@
                     <formats>
                         <format>html</format>
                         <format>xml</format>
+                        <maxmem>256m</maxmem>
+                        <aggregate>true</aggregate>
                     </formats>
                     <check />
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>4.3.0</version>
+                <configuration>
+                    <repoToken>alSRFxxX8HtKJoSb2x5hRO5ziiMlRl0DL</repoToken>
                 </configuration>
             </plugin>
         </plugins>
