@@ -1,6 +1,6 @@
 package io.github.createam.ngrok.integration;
 
-import io.github.createam.ngrok.NgrokApiClient;
+import io.github.createam.ngrok.NgrokHealthChecker;
 import io.github.createam.ngrok.data.Tunnel;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -24,15 +24,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
-        classes = NgrokApiClient.class,
+        classes = NgrokHealthChecker.class,
         webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @TestPropertySource(locations = "classpath:/application-integration-test.properties")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @AutoConfigureWireMock(port = 4040)
-public class NgrokApiClientIntegrationTest {
+public class NgrokHealthCheckerIntegrationTest {
 
     @Autowired
-    private NgrokApiClient ngrokApiClient;
+    private NgrokHealthChecker ngrokHealthChecker;
 
     @Test
     public void isResponding_shouldReturnTrueWhenNgrokIsRunning() {
@@ -42,7 +42,7 @@ public class NgrokApiClientIntegrationTest {
                         .withStatus(HttpStatus.OK.value())));
 
         // when
-        boolean responding = ngrokApiClient.isResponding();
+        boolean responding = ngrokHealthChecker.isResponding();
 
         // then
         assertThat(responding).isTrue();
@@ -56,7 +56,7 @@ public class NgrokApiClientIntegrationTest {
                         .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
 
         // when
-        boolean responding = ngrokApiClient.isResponding();
+        boolean responding = ngrokHealthChecker.isResponding();
 
         // then
         assertThat(responding).isFalse();
@@ -72,9 +72,11 @@ public class NgrokApiClientIntegrationTest {
                 .willReturn(
                         okJson(tunnelsAsJson)));
         // when
-        List<Tunnel> tunnels = ngrokApiClient.fetchTunnels();
+        List<Tunnel> tunnels = ngrokHealthChecker.fetchTunnels();
 
         // then
         assertThat(tunnels).hasSize(2);
+        assertThat(tunnels).extracting(Tunnel::getProto).contains("http", "https");
+        assertThat(tunnels).extracting(Tunnel::getPublicUrl).contains("https://12345678-not-existing.ngrok.io", "http://12345678-not-existing.ngrok.io");
     }
 }
