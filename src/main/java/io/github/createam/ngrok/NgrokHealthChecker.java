@@ -16,12 +16,12 @@ import java.util.List;
 
 @ConditionalOnProperty(name = "ngrok.enabled", havingValue = "true")
 @Component
-public class NgrokApiClient {
+public class NgrokHealthChecker {
 
     public static String NGROK_URL_API_TUNNELS = "/api/tunnels";
     public static String NGROK_URL_HTML_STATUS = "/status";
 
-    private static final Logger log = LoggerFactory.getLogger(NgrokApiClient.class);
+    private static final Logger log = LoggerFactory.getLogger(NgrokHealthChecker.class);
 
     private RestTemplate restTemplate = new RestTemplate();
 

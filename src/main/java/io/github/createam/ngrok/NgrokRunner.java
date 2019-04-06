@@ -4,14 +4,17 @@ import io.github.createam.ngrok.data.Tunnel;
 import io.github.createam.ngrok.exception.NgrokDownloadException;
 import io.github.createam.ngrok.exception.NgrokStartupException;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.task.TaskExecutor;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,32 +36,44 @@ public class NgrokRunner {
     private long waitForStartupMillis;
 
     @Autowired
-    private NgrokApiClient ngrokApiClient;
+    @Qualifier("ngrokAsyncExecutor")
+    private TaskExecutor ngrokAsyncExecutor;
+
+    @Autowired
+    private NgrokHealthChecker ngrokHealthChecker;
 
     @Autowired
     private NgrokDownloader ngrokDownloader;
 
     @EventListener(ApplicationReadyEvent.class)
-    public void run() throws NgrokDownloadException, NgrokStartupException, IOException {
-        if (ngrokIsNotRunning()) {
+    public void run() throws NgrokDownloadException, NgrokStartupException {
 
-            if (needToDownloadNgrok()) {
+        ngrokAsyncExecutor.execute(() -> {
 
-                String downloadedFilePath = ngrokDownloader.downloadNgrokTo(getNgrokDirectoryOrDefault());
+            if (ngrokIsNotRunning()) {
 
-                FileExtractUtils.extractArchive(downloadedFilePath, getNgrokDirectoryOrDefault());
+                if (needToDownloadNgrok()) {
 
-                deleteArchive(downloadedFilePath);
+                    String downloadedFilePath = ngrokDownloader.downloadNgrokTo(getNgrokDirectoryOrDefault());
+
+                    FileExtractUtils.extractArchive(downloadedFilePath, getNgrokDirectoryOrDefault());
+
+                    deleteArchive(downloadedFilePath);
+                }
+
+                startupNgrok();
             }
 
-            startupNgrok();
-        }
-
-        logTunnelsDetails();
+            logTunnelsDetails();
+        });
     }
 
-    private void deleteArchive(String downloadedFilePath) throws IOException {
-        Files.delete(Paths.get(downloadedFilePath));
+    private void deleteArchive(String downloadedFilePath) {
+        try {
+            Files.delete(Paths.get(downloadedFilePath));
+        } catch (IOException e) {
+            log.warn("Error while deleting {}", downloadedFilePath, e);
+        }
     }
 
     private boolean needToDownloadNgrok() {
@@ -66,11 +81,11 @@ public class NgrokRunner {
     }
 
     private boolean ngrokIsNotRunning() {
-        return !ngrokApiClient.isResponding();
+        return !ngrokHealthChecker.isResponding();
     }
 
     private void logTunnelsDetails() {
-        List<Tunnel> tunnels = ngrokApiClient.fetchTunnels();
+        List<Tunnel> tunnels = ngrokHealthChecker.fetchTunnels();
 
         tunnels.forEach(t -> log.info("Remote url ({}) -> {}", t.getProto(), t.getPublicUrl()));
     }
@@ -86,7 +101,6 @@ public class NgrokRunner {
 
         try {
             Runtime.getRuntime().exec(getNgrokExecutablePath() + " http " + port);
-
             Thread.sleep(waitForStartupMillis);
         } catch (IOException | InterruptedException e) {
             log.error("Failed to run ngrok!", e);
@@ -96,11 +110,12 @@ public class NgrokRunner {
     }
 
     private String getNgrokDirectoryOrDefault() {
-
         return StringUtils.isNotBlank(ngrokDirectory) ? ngrokDirectory : getDefaultNgrokDirectory();
     }
 
     private String getDefaultNgrokDirectory() {
+        String s = FilenameUtils.concat(FileUtils.getUserDirectory().getPath(), ".ngrok2");
+
         return FileUtils.getUserDirectory().getPath()
                 .concat(File.separator)
                 .concat(".ngrok2")

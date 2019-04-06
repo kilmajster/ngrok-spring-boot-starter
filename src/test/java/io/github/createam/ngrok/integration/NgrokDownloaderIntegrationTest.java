@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @AutoConfigureWireMock(
         port = 1234,
-        files = "src/test/resources/")
+        files = "src/test/resources")
 public class NgrokDownloaderIntegrationTest {
 
     @Autowired

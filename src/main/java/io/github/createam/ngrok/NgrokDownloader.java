@@ -39,7 +39,7 @@ public class NgrokDownloader {
                 ? destinationPath.concat(zipFileName)
                 : destinationPath.concat(File.separator).concat(zipFileName);
 
-        log.info("Downloading ngrok from {} to {}", getBinaryUrl(), destinationFile);
+        log.info("Downloading ngrok for {} from {} to {}",  getBinaryUrl(), destinationFile);
 
         File targetFile = new File(destinationFile);
         long downloadStartTime = System.currentTimeMillis();
@@ -56,7 +56,7 @@ public class NgrokDownloader {
 
             return destinationFile;
         } catch (IOException e) {
-            log.warn("Failed to download ngrok from default mirror. You can configure it by overriding property TODO", getBinaryUrl(), destinationFile);
+            log.warn("Failed to download ngrok from default mirror. You can configure correct  ", getBinaryUrl(), destinationFile);
             throw new NgrokDownloadException(e);
         }
     }
