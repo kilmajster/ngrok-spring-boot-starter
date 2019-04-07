@@ -1,6 +1,6 @@
 package io.github.createam.ngrok.configuration;
 
-import io.github.createam.ngrok.NgrokHealthChecker;
+import io.github.createam.ngrok.NgrokApiClient;
 import io.github.createam.ngrok.NgrokDownloader;
 import io.github.createam.ngrok.NgrokRunner;
 import org.junit.Test;
@@ -24,10 +24,10 @@ public class NgrokAutoConfigurationTest {
             .withConfiguration(AutoConfigurations.of(NgrokAutoConfiguration.class));
 
     @Test
-    public void shouldNotCreateNgrokRunnerWhenPropertyIsDisabled() {
+    public void ngrokAsyncConfigurationShouldBeNotVisibleWhenPropertyIsDisabled() {
         this.contextRunner.withPropertyValues("ngrok.enabled=false");
 
-        this.contextRunner.run((context) -> assertThat(context).doesNotHaveBean(NgrokRunner.class));
+        this.contextRunner.run((context) -> assertThat(context).doesNotHaveBean(NgrokAsyncConfiguration.class));
     }
 
     @Test
@@ -48,6 +48,6 @@ public class NgrokAutoConfigurationTest {
     public void ngrokApiClientShouldBeNotVisibleWhenPropertyIsDisabled() {
         this.contextRunner.withPropertyValues("ngrok.enabled=false");
 
-        this.contextRunner.run((context) -> assertThat(context).doesNotHaveBean(NgrokHealthChecker.class));
+        this.contextRunner.run((context) -> assertThat(context).doesNotHaveBean(NgrokApiClient.class));
     }
 }
