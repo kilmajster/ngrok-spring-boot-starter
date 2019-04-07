@@ -1,19 +1,30 @@
 package io.github.createam.ngrok;
 
-import mockit.MockUp;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import io.github.createam.ngrok.data.Tunnel;
+import org.apache.logging.log4j.message.Message;
+import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.test.rule.OutputCapture;
+import org.springframework.core.task.SyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.Collections;
+import java.util.List;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -28,17 +39,40 @@ public class NgrokRunnerTest {
     @InjectMocks
     private NgrokRunner ngrokRunner;
 
+    @Rule
+    public final OutputCapture outputCapture = new OutputCapture();
 
-    @Ignore
+    private TaskExecutor testTaskExecutor = new SyncTaskExecutor();
+
+    @Before
+    public void clearLoggingStatements() {
+        TestLogsAppender.clearEvents();
+    }
+
     @Test
-    public void run_shouldLogTunnelsDetailsWhenNgrokIsRunning() throws IOException {
+    public void run_shouldLogTunnelsDetailsWhenNgrokIsRunning() {
         // given
         when(ngrokHealthChecker.isResponding()).thenReturn(true);
+
+        Tunnel tunnel = new Tunnel();
+        tunnel.setProto("http");
+        tunnel.setPublicUrl("http://for-sure-not-exist.local");
+
+        when(ngrokHealthChecker.fetchTunnels()).thenReturn(Collections.singletonList(tunnel));
+
+        ReflectionTestUtils.setField(ngrokRunner, "ngrokAsyncExecutor", testTaskExecutor);
 
         // when
         ngrokRunner.run();
 
         // then
+
+
+        assertThat(TestLogsAppender.getEvents())
+                .extracting("formattedMessage")
+                .contains("Remote url (http) -> http://for-sure-not-exist.local");
+
+        verify(ngrokHealthChecker).isResponding();
         verify(ngrokHealthChecker).fetchTunnels();
     }
 
@@ -48,13 +82,16 @@ public class NgrokRunnerTest {
         // given
         when(ngrokHealthChecker.isResponding()).thenReturn(false);
 
-        new MockUp<Files>() {
 
-            @mockit.Mock
-            public boolean isExecutable(Path path) {
-                return true;
-            }
-        };
+
+
+//        new MockUp<Files>() {
+//
+//            @mockit.Mock
+//            public boolean isExecutable(Path path) {
+//                return true;
+//            }
+//        };
 
         // when
         ngrokRunner.run();
@@ -62,8 +99,6 @@ public class NgrokRunnerTest {
         // then
         verify(ngrokHealthChecker).fetchTunnels();
     }
-
-
 
 
 }

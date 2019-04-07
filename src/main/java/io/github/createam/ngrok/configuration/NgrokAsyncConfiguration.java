@@ -16,7 +16,7 @@ public class NgrokAsyncConfiguration {
 
         executor.setCorePoolSize(1);
         executor.setMaxPoolSize(1);
-        executor.setThreadNamePrefix("ngrok-thread");
+        executor.setThreadNamePrefix("ngrok-thread-");
         executor.initialize();
 
         return executor;
