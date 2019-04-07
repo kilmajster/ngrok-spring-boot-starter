@@ -2,6 +2,7 @@ package io.github.createam.ngrok;
 
 import io.github.createam.ngrok.exception.NgrokDownloadException;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +35,8 @@ public class NgrokDownloader {
      * @throws NgrokDownloadException
      */
     public String downloadNgrokTo(String destinationPath) throws NgrokDownloadException {
-        String zipFileName = getBinaryUrl().substring(getBinaryUrl().lastIndexOf("/") + 1);
-        String destinationFile = destinationPath.endsWith(File.separator)
-                ? destinationPath.concat(zipFileName)
-                : destinationPath.concat(File.separator).concat(zipFileName);
+        String zipFileName = getFileNameFromUrl(getBinaryUrl());
+        String destinationFile = FilenameUtils.concat(destinationPath, zipFileName);
 
         log.info("Downloading ngrok for {} from {} to {}",  getBinaryUrl(), destinationFile);
 
@@ -59,6 +58,10 @@ public class NgrokDownloader {
             log.warn("Failed to download ngrok from default mirror. You can configure correct  ", getBinaryUrl(), destinationFile);
             throw new NgrokDownloadException(e);
         }
+    }
+
+    private String getFileNameFromUrl(String url) {
+        return url.substring(getBinaryUrl().lastIndexOf("/") + 1);
     }
 
     private String getBinaryUrl() {

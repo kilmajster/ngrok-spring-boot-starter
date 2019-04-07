@@ -72,11 +72,25 @@ public class NgrokHealthCheckerIntegrationTest {
                 .willReturn(
                         okJson(tunnelsAsJson)));
         // when
+
         List<Tunnel> tunnels = ngrokHealthChecker.fetchTunnels();
 
         // then
         assertThat(tunnels).hasSize(2);
         assertThat(tunnels).extracting(Tunnel::getProto).contains("http", "https");
         assertThat(tunnels).extracting(Tunnel::getPublicUrl).contains("https://12345678-not-existing.ngrok.io", "http://12345678-not-existing.ngrok.io");
+    }
+
+    @Test
+    public void fetchTunnels_shouldReturnEmptyCollectionWhenNgrokApiRespondWithError() {
+        // given
+
+        stubFor(get(urlPathMatching("/api/tunnels")).willReturn(serverError()));
+        // when
+
+        List<Tunnel> tunnels = ngrokHealthChecker.fetchTunnels();
+
+        // then
+        assertThat(tunnels).isEmpty();
     }
 }

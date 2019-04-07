@@ -5,11 +5,10 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/createam-labs/ngrok-spring-boot-starter.svg)
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/createam-labs/ngrok-spring-boot-starter)
 
-##### What is ngrok?
-If you haven't heard what ngrok is yet, you can check out their [site](https://ngrok.com/) (tldr; Ngrok can give you public URLs for exposing your local web server, in our case it will be tomcats `http://localhost:8080`. For simply usage account is not needed.
+###### What is ngrok?
+tldr; Ngrok can give you public URLs for exposing your local web server, in our case it will be tomcats `http://localhost:8080`. For simply usage account is not needed. For more details you can check out their [site](https://ngrok.com/)
 
-
-#### What is this?
+###### What is this?
 👨🏼‍💻 🔛🌐This starter allows you to exposing your local web server on the web by public URLs! So every time you want to share your application with your colleague, you'll be able to do it by sending him a link from the application logs!  
  
  Just like it was done in below screenshot taken from [sample application](https://github.com/createam-labs/createam-labs-sample-app):  

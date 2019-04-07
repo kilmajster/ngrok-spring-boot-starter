@@ -36,20 +36,18 @@ public class NgrokRunner {
     private long waitForStartupMillis;
 
     @Autowired
-    @Qualifier("ngrokAsyncExecutor")
-    private TaskExecutor ngrokAsyncExecutor;
-
-    @Autowired
     private NgrokHealthChecker ngrokHealthChecker;
 
     @Autowired
     private NgrokDownloader ngrokDownloader;
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void run() throws NgrokDownloadException, NgrokStartupException {
+    @Autowired
+    @Qualifier("ngrokAsyncExecutor")
+    TaskExecutor ngrokAsyncExecutor;
 
-        ngrokAsyncExecutor.execute(() -> {
-
+    private final Runnable ngrokTask = new Runnable() {
+        @Override
+        public void run() {
             if (ngrokIsNotRunning()) {
 
                 if (needToDownloadNgrok()) {
@@ -65,7 +63,12 @@ public class NgrokRunner {
             }
 
             logTunnelsDetails();
-        });
+        }
+    };
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void run() throws NgrokDownloadException, NgrokStartupException {
+        ngrokAsyncExecutor.execute(ngrokTask);
     }
 
     private void deleteArchive(String downloadedFilePath) {
@@ -114,11 +117,6 @@ public class NgrokRunner {
     }
 
     private String getDefaultNgrokDirectory() {
-        String s = FilenameUtils.concat(FileUtils.getUserDirectory().getPath(), ".ngrok2");
-
-        return FileUtils.getUserDirectory().getPath()
-                .concat(File.separator)
-                .concat(".ngrok2")
-                .concat(File.separator);
+        return FilenameUtils.concat(FileUtils.getUserDirectory().getPath(), ".ngrok2");
     }
 }
