@@ -36,7 +36,7 @@ public class NgrokRunner {
     private long waitForStartupMillis;
 
     @Autowired
-    private NgrokHealthChecker ngrokHealthChecker;
+    private NgrokApiClient ngrokApiClient;
 
     @Autowired
     private NgrokDownloader ngrokDownloader;
@@ -84,11 +84,11 @@ public class NgrokRunner {
     }
 
     private boolean ngrokIsNotRunning() {
-        return !ngrokHealthChecker.isResponding();
+        return !ngrokApiClient.isResponding();
     }
 
     private void logTunnelsDetails() {
-        List<Tunnel> tunnels = ngrokHealthChecker.fetchTunnels();
+        List<Tunnel> tunnels = ngrokApiClient.fetchTunnels();
 
         tunnels.forEach(t -> log.info("Remote url ({}) -> {}", t.getProto(), t.getPublicUrl()));
     }

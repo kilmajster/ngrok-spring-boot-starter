@@ -1,6 +1,6 @@
 package io.github.createam.ngrok.integration;
 
-import io.github.createam.ngrok.NgrokHealthChecker;
+import io.github.createam.ngrok.NgrokApiClient;
 import io.github.createam.ngrok.data.Tunnel;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -24,15 +24,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
-        classes = NgrokHealthChecker.class,
+        classes = NgrokApiClient.class,
         webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @TestPropertySource(locations = "classpath:/application-integration-test.properties")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @AutoConfigureWireMock(port = 4040)
-public class NgrokHealthCheckerIntegrationTest {
+public class NgrokApiClientIntegrationTest {
 
     @Autowired
-    private NgrokHealthChecker ngrokHealthChecker;
+    private NgrokApiClient ngrokApiClient;
 
     @Test
     public void isResponding_shouldReturnTrueWhenNgrokIsRunning() {
@@ -42,7 +42,7 @@ public class NgrokHealthCheckerIntegrationTest {
                         .withStatus(HttpStatus.OK.value())));
 
         // when
-        boolean responding = ngrokHealthChecker.isResponding();
+        boolean responding = ngrokApiClient.isResponding();
 
         // then
         assertThat(responding).isTrue();
@@ -56,7 +56,7 @@ public class NgrokHealthCheckerIntegrationTest {
                         .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
 
         // when
-        boolean responding = ngrokHealthChecker.isResponding();
+        boolean responding = ngrokApiClient.isResponding();
 
         // then
         assertThat(responding).isFalse();
@@ -73,7 +73,7 @@ public class NgrokHealthCheckerIntegrationTest {
                         okJson(tunnelsAsJson)));
         // when
 
-        List<Tunnel> tunnels = ngrokHealthChecker.fetchTunnels();
+        List<Tunnel> tunnels = ngrokApiClient.fetchTunnels();
 
         // then
         assertThat(tunnels).hasSize(2);
@@ -88,7 +88,7 @@ public class NgrokHealthCheckerIntegrationTest {
         stubFor(get(urlPathMatching("/api/tunnels")).willReturn(serverError()));
         // when
 
-        List<Tunnel> tunnels = ngrokHealthChecker.fetchTunnels();
+        List<Tunnel> tunnels = ngrokApiClient.fetchTunnels();
 
         // then
         assertThat(tunnels).isEmpty();
