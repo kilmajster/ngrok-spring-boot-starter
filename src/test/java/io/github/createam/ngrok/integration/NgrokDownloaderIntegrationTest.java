@@ -38,7 +38,6 @@ public class NgrokDownloaderIntegrationTest {
 
     @Test
     public void downloadNgrokTo_givenWorkingHostThenFileIsDownloaded() {
-
         WireMock.stubFor(WireMock.get(WireMock.urlPathMatching("/not-existing-download-url/ngrok-test-archive.zip"))
                 .willReturn(WireMock.aResponse()
                         .withStatus(HttpStatus.OK.value())

@@ -2,7 +2,7 @@ package io.github.createam.ngrok;
 
 import io.github.createam.ngrok.data.Tunnel;
 import io.github.createam.ngrok.exception.NgrokDownloadException;
-import io.github.createam.ngrok.exception.NgrokStartupException;
+import io.github.createam.ngrok.exception.CommandExecuteException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +17,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.task.TaskExecutor;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -32,9 +31,6 @@ public class NgrokRunner {
     @Value("${ngrok.directory:}")
     private String ngrokDirectory;
 
-    @Value("${ngrok.waitForStartup.millis:3000}")
-    private long waitForStartupMillis;
-
     @Autowired
     private NgrokApiClient ngrokApiClient;
 
@@ -42,49 +38,43 @@ public class NgrokRunner {
     private NgrokDownloader ngrokDownloader;
 
     @Autowired
-    @Qualifier("ngrokAsyncExecutor")
-    TaskExecutor ngrokAsyncExecutor;
+    private SystemCommandExecutor systemCommandExecutor;
 
-    private final Runnable ngrokTask = new Runnable() {
-        @Override
-        public void run() {
+    @Qualifier("ngrokExecutor")
+    @Autowired
+    private TaskExecutor ngrokExecutor;
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void run() throws NgrokDownloadException, CommandExecuteException {
+        ngrokExecutor.execute(() -> {
             if (ngrokIsNotRunning()) {
-
                 if (needToDownloadNgrok()) {
-
-                    String downloadedFilePath = ngrokDownloader.downloadNgrokTo(getNgrokDirectoryOrDefault());
-
-                    FileExtractUtils.extractArchive(downloadedFilePath, getNgrokDirectoryOrDefault());
-
-                    deleteArchive(downloadedFilePath);
+                    ngrokDownloader.downloadAndExtractNgrokTo(getNgrokDirectoryOrDefault());
                 }
 
                 startupNgrok();
             }
 
             logTunnelsDetails();
-        }
-    };
-
-    @EventListener(ApplicationReadyEvent.class)
-    public void run() throws NgrokDownloadException, NgrokStartupException {
-        ngrokAsyncExecutor.execute(ngrokTask);
+        });
     }
 
-    private void deleteArchive(String downloadedFilePath) {
-        try {
-            Files.delete(Paths.get(downloadedFilePath));
-        } catch (IOException e) {
-            log.warn("Error while deleting {}", downloadedFilePath, e);
-        }
+    private boolean ngrokIsNotRunning() {
+        return !ngrokApiClient.isResponding();
     }
 
     private boolean needToDownloadNgrok() {
         return !Files.isExecutable(Paths.get(getNgrokExecutablePath()));
     }
 
-    private boolean ngrokIsNotRunning() {
-        return !ngrokApiClient.isResponding();
+    private void startupNgrok() {
+        log.info("Starting ngrok...");
+
+        String command = getNgrokExecutablePath() + " http " + port;
+
+        systemCommandExecutor.execute(command);
+
+        log.info("Ngrok is running.");
     }
 
     private void logTunnelsDetails() {
@@ -97,19 +87,6 @@ public class NgrokRunner {
         String executable = SystemUtils.IS_OS_WINDOWS ? "ngrok.exe" : "ngrok";
 
         return getNgrokDirectoryOrDefault() + File.separator + executable;
-    }
-
-    private void startupNgrok() {
-        log.info("Starting ngrok...");
-
-        try {
-            Runtime.getRuntime().exec(getNgrokExecutablePath() + " http " + port);
-            Thread.sleep(waitForStartupMillis);
-        } catch (IOException | InterruptedException e) {
-            log.error("Failed to run ngrok!", e);
-
-            throw new NgrokStartupException("Failed to startup ngrok!", e);
-        }
     }
 
     private String getNgrokDirectoryOrDefault() {

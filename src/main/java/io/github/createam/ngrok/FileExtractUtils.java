@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -31,6 +33,15 @@ public class FileExtractUtils {
 
         if (SystemUtils.IS_OS_WINDOWS || SystemUtils.IS_OS_MAC) {
             extractZip(archive, outdir);
+            deleteArchive(archiveFile);
+        }
+    }
+
+    private static void deleteArchive(String downloadedFilePath) {
+        try {
+            Files.delete(Paths.get(downloadedFilePath));
+        } catch (IOException e) {
+            log.warn("Error while deleting {}", downloadedFilePath, e);
         }
     }
 

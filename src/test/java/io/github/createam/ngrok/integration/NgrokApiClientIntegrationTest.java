@@ -76,6 +76,7 @@ public class NgrokApiClientIntegrationTest {
         List<Tunnel> tunnels = ngrokApiClient.fetchTunnels();
 
         // then
+
         assertThat(tunnels).hasSize(2);
         assertThat(tunnels).extracting(Tunnel::getProto).contains("http", "https");
         assertThat(tunnels).extracting(Tunnel::getPublicUrl).contains("https://12345678-not-existing.ngrok.io", "http://12345678-not-existing.ngrok.io");
