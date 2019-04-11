@@ -29,16 +29,16 @@ public class NgrokDownloader {
     @Value("${ngrok.binary.linux:https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip}")
     private String linuxBinaryUrl;
 
-    /**
-     * @param destinationPath - destination path as String
-     * @return downloaded file path as String
-     * @throws NgrokDownloadException
-     */
+    public void downloadAndExtractNgrokTo(String destinationPath) throws NgrokDownloadException {
+        String downloadedFilePath = downloadNgrokTo(destinationPath);
+        FileExtractUtils.extractArchive(downloadedFilePath, destinationPath);
+    }
+
     public String downloadNgrokTo(String destinationPath) throws NgrokDownloadException {
         String zipFileName = getFileNameFromUrl(getBinaryUrl());
         String destinationFile = FilenameUtils.concat(destinationPath, zipFileName);
 
-        log.info("Downloading ngrok for {} from {} to {}",  getBinaryUrl(), destinationFile);
+        log.info("Downloading ngrok from {} to {}",  getBinaryUrl(), destinationFile);
 
         File targetFile = new File(destinationFile);
         long downloadStartTime = System.currentTimeMillis();
@@ -55,7 +55,7 @@ public class NgrokDownloader {
 
             return destinationFile;
         } catch (IOException e) {
-            log.warn("Failed to download ngrok from default mirror. You can configure correct  ", getBinaryUrl(), destinationFile);
+            log.warn("Failed to download ngrok from {}.", getBinaryUrl());
             throw new NgrokDownloadException(e);
         }
     }

@@ -10,7 +10,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Configuration
 public class NgrokAsyncConfiguration {
 
-    @Bean("ngrokAsyncExecutor")
+    @Bean("ngrokExecutor")
     public TaskExecutor ngrokAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 
