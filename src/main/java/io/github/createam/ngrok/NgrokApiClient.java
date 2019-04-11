@@ -18,15 +18,15 @@ import java.util.List;
 @Component
 public class NgrokApiClient {
 
+    private static final Logger log = LoggerFactory.getLogger(NgrokApiClient.class);
+
     public static String NGROK_URL_API_TUNNELS = "/api/tunnels";
     public static String NGROK_URL_HTML_STATUS = "/status";
 
-    private static final Logger log = LoggerFactory.getLogger(NgrokApiClient.class);
-
-    private RestTemplate restTemplate = new RestTemplate();
-
     @Value("${ngrok.api.url:http://localhost:4040}")
     private String ngrokApiUrl;
+
+    private RestTemplate restTemplate = new RestTemplate();
 
     public List<Tunnel> fetchTunnels() {
         try {

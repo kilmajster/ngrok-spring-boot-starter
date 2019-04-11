@@ -2,6 +2,7 @@ package io.github.createam.ngrok;
 
 import io.github.createam.ngrok.exception.NgrokDownloadException;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,18 +29,16 @@ public class NgrokDownloader {
     @Value("${ngrok.binary.linux:https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip}")
     private String linuxBinaryUrl;
 
-    /**
-     * @param destinationPath - destination path as String
-     * @return downloaded file path as String
-     * @throws NgrokDownloadException
-     */
-    public String downloadNgrokTo(String destinationPath) throws NgrokDownloadException {
-        String zipFileName = getBinaryUrl().substring(getBinaryUrl().lastIndexOf("/") + 1);
-        String destinationFile = destinationPath.endsWith(File.separator)
-                ? destinationPath.concat(zipFileName)
-                : destinationPath.concat(File.separator).concat(zipFileName);
+    public void downloadAndExtractNgrokTo(String destinationPath) throws NgrokDownloadException {
+        String downloadedFilePath = downloadNgrokTo(destinationPath);
+        FileExtractUtils.extractArchive(downloadedFilePath, destinationPath);
+    }
 
-        log.info("Downloading ngrok from {} to {}", getBinaryUrl(), destinationFile);
+    public String downloadNgrokTo(String destinationPath) throws NgrokDownloadException {
+        String zipFileName = getFileNameFromUrl(getBinaryUrl());
+        String destinationFile = FilenameUtils.concat(destinationPath, zipFileName);
+
+        log.info("Downloading ngrok from {} to {}",  getBinaryUrl(), destinationFile);
 
         File targetFile = new File(destinationFile);
         long downloadStartTime = System.currentTimeMillis();
@@ -56,9 +55,13 @@ public class NgrokDownloader {
 
             return destinationFile;
         } catch (IOException e) {
-            log.warn("Failed to download ngrok from default mirror. You can configure it by overriding property TODO", getBinaryUrl(), destinationFile);
+            log.warn("Failed to download ngrok from {}.", getBinaryUrl());
             throw new NgrokDownloadException(e);
         }
+    }
+
+    private String getFileNameFromUrl(String url) {
+        return url.substring(getBinaryUrl().lastIndexOf("/") + 1);
     }
 
     private String getBinaryUrl() {

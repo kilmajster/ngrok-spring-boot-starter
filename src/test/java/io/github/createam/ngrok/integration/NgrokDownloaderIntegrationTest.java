@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @AutoConfigureWireMock(
         port = 1234,
-        files = "src/test/resources/")
+        files = "src/test/resources")
 public class NgrokDownloaderIntegrationTest {
 
     @Autowired
@@ -38,7 +38,6 @@ public class NgrokDownloaderIntegrationTest {
 
     @Test
     public void downloadNgrokTo_givenWorkingHostThenFileIsDownloaded() {
-
         WireMock.stubFor(WireMock.get(WireMock.urlPathMatching("/not-existing-download-url/ngrok-test-archive.zip"))
                 .willReturn(WireMock.aResponse()
                         .withStatus(HttpStatus.OK.value())

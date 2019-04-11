@@ -24,10 +24,10 @@ public class NgrokAutoConfigurationTest {
             .withConfiguration(AutoConfigurations.of(NgrokAutoConfiguration.class));
 
     @Test
-    public void shouldNotCreateNgrokRunnerWhenPropertyIsDisabled() {
+    public void ngrokAsyncConfigurationShouldBeNotVisibleWhenPropertyIsDisabled() {
         this.contextRunner.withPropertyValues("ngrok.enabled=false");
 
-        this.contextRunner.run((context) -> assertThat(context).doesNotHaveBean(NgrokRunner.class));
+        this.contextRunner.run((context) -> assertThat(context).doesNotHaveBean(NgrokAsyncConfiguration.class));
     }
 
     @Test
