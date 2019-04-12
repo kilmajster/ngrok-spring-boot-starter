@@ -66,7 +66,7 @@ ngrok.enabled=true
 
 ###### optional properties
 
-```properties
+```
 
 # if you've got already running ngrok instance on non default port
 ngrok.api.url=http://localhost:4040
@@ -74,6 +74,7 @@ ngrok.api.url=http://localhost:4040
 # if you want to use ngrok directory location different than default, which are:
 #  - for Windows C:\Users\user\.ngrok2
 #  - for unix systems ~/.ngrok2
+ngrok.directory=C:\\Users\\user\\Desktop\\ngrok
 
 # if for some reason ngrok starting takes longer than really quick you can override time 
 # for waiting for ngrok startup what should speed up printing public URLs in logs
@@ -83,66 +84,8 @@ ngrok.waitForStartup.millis=3000
 ngrok.binary.windows=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-386.zip
 ngrok.binary.osx=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-386.zip
 ngrok.binary.linux=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip
-
-
 ```
 
 So now, the starter will run ngrok http tunneling on specified `server.port`, which in spring boot, by default will be `8080`.  
 
-
-
-✅ That's all 👏 🏆 🎉
-
-
-
-
-
-<properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-
-        <!--dependencies-->
-        <commons-lang3.version>3.8.1</commons-lang3.version>
-        <commons-io.version>2.6</commons-io.version>
-        <hibernate-validator.version>5.4.1.Final</hibernate-validator.version>
-        <spring-cloud-contract-wiremock.version>2.0.3.RELEASE</spring-cloud-contract-wiremock.version>
-        <jmockit.version>1.45</jmockit.version>
-
-        <!--plugins-->
-        <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
-        <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
-        <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
-    </properties>
-
-
-
-
-
-
-
-
-```properties
-
-
-
-ngrok.api.url=http://localhost:4040
-
-ngrok.binary.windows=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-386.zip
-ngrok.binary.osx=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-386.zip
-ngrok.binary.linux=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip
-
-ngrok.waitForStartup.millis=3000
-
-ngrok.directory=C:\\Users\\user\\Desktop\\ngrok
-```
-ngrok.enabled=false
-
-
-ok
-
-
-
-
-🆒 Be happy because of your spring boot application served in the web without difficult server configuration and completely for free! 😎 🤙
+✅ That's all
