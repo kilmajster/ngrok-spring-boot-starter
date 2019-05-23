@@ -70,7 +70,7 @@ public class NgrokRunnerTest {
         verify(ngrokApiClient).fetchTunnels();
     }
 
-    @Test()
+    @Test
     public void run_whenCachedNgrokNotRunningThenShouldRunIt() {
         // given
         when(ngrokApiClient.isResponding()).thenReturn(false);
