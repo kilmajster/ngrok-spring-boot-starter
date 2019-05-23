@@ -39,7 +39,7 @@ public class NgrokApiClientIntegrationTest {
         // given
         stubFor(get(urlPathMatching("/status"))
                 .willReturn(aResponse()
-                        .withStatus(HttpStatus.OK.value())));
+                .withStatus(HttpStatus.OK.value())));
 
         // when
         boolean responding = ngrokApiClient.isResponding();
@@ -53,7 +53,7 @@ public class NgrokApiClientIntegrationTest {
         // given
         stubFor(get(urlPathMatching("/status"))
                 .willReturn(aResponse()
-                        .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
+                .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
 
         // when
         boolean responding = ngrokApiClient.isResponding();

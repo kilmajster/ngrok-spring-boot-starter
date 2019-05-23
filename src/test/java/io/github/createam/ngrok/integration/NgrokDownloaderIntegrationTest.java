@@ -33,7 +33,7 @@ public class NgrokDownloaderIntegrationTest {
                 .willReturn(WireMock.aResponse()
                         .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
 
-        ngrokDownloader.downloadNgrokTo("/not-exists/-path");
+        ngrokDownloader.downloadNgrokTo("/not-exists-path");
     }
 
     @Test
