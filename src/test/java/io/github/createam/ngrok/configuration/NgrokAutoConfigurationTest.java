@@ -1,8 +1,9 @@
 package io.github.createam.ngrok.configuration;
 
-import io.github.createam.ngrok.NgrokApiClient;
-import io.github.createam.ngrok.NgrokDownloader;
-import io.github.createam.ngrok.NgrokRunner;
+import io.github.createam.ngrok.control.NgrokApiClient;
+import io.github.createam.ngrok.control.NgrokDownloader;
+import io.github.createam.ngrok.control.NgrokRunner;
+import io.github.createam.ngrok.control.SystemCommandExecutor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -49,5 +50,12 @@ public class NgrokAutoConfigurationTest {
         this.contextRunner.withPropertyValues("ngrok.enabled=false");
 
         this.contextRunner.run((context) -> assertThat(context).doesNotHaveBean(NgrokApiClient.class));
+    }
+
+    @Test
+    public void systemCommandExecutorShouldBeNotVisibleWhenPropertyIsDisabled() {
+        this.contextRunner.withPropertyValues("ngrok.enabled=false");
+
+        this.contextRunner.run((context) -> assertThat(context).doesNotHaveBean(SystemCommandExecutor.class));
     }
 }

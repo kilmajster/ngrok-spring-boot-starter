@@ -3,19 +3,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.createam-labs</groupId>
+    <groupId>io.github.createam</groupId>
     <artifactId>ngrok-spring-boot-starter</artifactId>
-    <version>0.1-win-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>ngrok-spring-boot-starter</name>
     <description>Easy tunneling spring boot application with ngrok</description>
-    <url>https://github.com/createam-labs/ngrok-spring-boot-starter</url>
+    <url>https://github.com/kilmajster/ngrok-spring-boot-starter</url>
 
     <licenses>
         <license>
             <name>Apache License 2.0</name>
-            <url>https://github.com/createam-labs/ngrok-spring-boot-starter/blob/master/LICENSE</url>
+            <url>https://github.com/kilmajster/ngrok-spring-boot-starter/blob/master/LICENSE</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -30,13 +30,13 @@
 
     <ciManagement>
         <system>travis-ci</system>
-        <url>https://travis-ci.org/createam-labs/ngrok-spring-boot-starter</url>
+        <url>https://travis-ci.org/kilmajster/ngrok-spring-boot-starter</url>
     </ciManagement>
 
     <scm>
-        <connection>scm:git:git://github.com/createam-labs/ngrok-spring-boot-starter.git</connection>
-        <developerConnection>scm:git:ssh://github.com:createam-labs/ngrok-spring-boot-starter.git</developerConnection>
-        <url>http://github.com/createam-labs/ngrok-spring-boot-starter/tree/master</url>
+        <connection>scm:git:git://github.com/kilmajster/ngrok-spring-boot-starter.git</connection>
+        <developerConnection>scm:git:ssh://github.com:kilmajster/ngrok-spring-boot-starter.git</developerConnection>
+        <url>http://github.com/kilmajster/ngrok-spring-boot-starter/tree/master</url>
     </scm>
 
     <distributionManagement>

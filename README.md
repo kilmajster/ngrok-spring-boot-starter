@@ -5,16 +5,8 @@
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/createam-labs/ngrok-spring-boot-starter)
 
 ###### What is ngrok?
-tldr; Ngrok can give you public URLs for exposing your local web server, in our case it will be tomcats `http://localhost:8080`. For simply usage account is not needed. For more details you can check out their [site](https://ngrok.com/)
-
-###### What is this?
-👨🏼‍💻 🔛🌐This starter allows you to exposing your local web server on the web by public URLs! So every time you want to share your application with your colleague, you'll be able to do it by sending him a link from the application logs!  
- 
- Just like it was done in below screenshot taken from [sample application](https://github.com/createam-labs/createam-labs-sample-app):  
- 
-![](https://raw.githubusercontent.com/createam-labs/ngrok-spring-boot-starter/development/ngrok-sample-screenshot.png
-)[]()
-
+tldr; Ngrok can give you public URLs for exposing your local web server, in our case it will be tomcats `http://localhost:8080`. 
+For simply usage account is not needed. For more details you can check out their [site](https://ngrok.com/).
 
 ### dependency & build
 To add dependency firstly you have to build artifact from sources. To to that you have to do following:
@@ -36,7 +28,8 @@ user@ngrok-spring-boot-starter $ mvn install -Dmaven.test.skip=true
 [INFO] Building ngrok-spring-boot-starter 0.1a
 [INFO] --------------------------------[ jar ]---------------------------------
 ```
-After this `ngrok-spring-boot-starter` will be installed in your local `.m2` repository, and you should be able to use it, like it's described in the following step 👇
+After this `ngrok-spring-boot-starter` will be installed in your local `.m2` repository, and you should be able to 
+use it, like it's described in the following step 👇
 
 - maven:
 ```xml
@@ -44,7 +37,7 @@ After this `ngrok-spring-boot-starter` will be installed in your local `.m2` rep
 <dependency>
   <groupId>io.github.createam-labs</groupId>
   <artifactId>ngrok-spring-boot-starter</artifactId>
-  <version>0.1</version>
+  <version>0.1-SNAPSHOT</version>
 </dependency>
 
 ```
@@ -64,7 +57,7 @@ ngrok.enabled=true
 
 ```
 
-###### optional properties
+###### optional properties & descriptions
 
 ```
 
@@ -76,8 +69,8 @@ ngrok.api.url=http://localhost:4040
 #  - for unix systems ~/.ngrok2
 ngrok.directory=C:\\Users\\user\\Desktop\\ngrok
 
-# if for some reason ngrok starting takes longer than really quick you can override time 
-# for waiting for ngrok startup what should speed up printing public URLs in logs
+# if for some reason ngrok starting takes longer than really quick, you can override time 
+# of waiting for ngrok startup
 ngrok.waitForStartup.millis=3000
 
 # if for some reason ngrok binary file address has changed you can override it by property corresponding to your OS
