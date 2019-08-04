@@ -1,6 +1,6 @@
 # ngrok spring boot starter
-[![Build Status](https://img.shields.io/travis/createam-labs/ngrok-spring-boot-starter/master.svg?logo=travis)](https://travis-ci.org/createam-labs/ngrok-spring-boot-starter)
-[![Coverage Status](https://coveralls.io/repos/github/createam-labs/ngrok-spring-boot-starter/badge.svg?branch=master)](https://coveralls.io/github/createam-labs/ngrok-spring-boot-starter?branch=master)
+[![Build Status](https://img.shields.io/travis/kilmajster/ngrok-spring-boot-starter/master.svg?logo=travis)](https://travis-ci.org/createam-labs/ngrok-spring-boot-starter)
+[![Coverage Status](https://coveralls.io/repos/github/kilmajster/ngrok-spring-boot-starter/badge.svg?branch=master)](https://coveralls.io/github/createam-labs/ngrok-spring-boot-starter?branch=master)
 ![GitHub last commit](https://img.shields.io/github/last-commit/createam-labs/ngrok-spring-boot-starter.svg)
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/createam-labs/ngrok-spring-boot-starter)
 
