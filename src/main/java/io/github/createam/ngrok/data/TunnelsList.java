@@ -1,9 +1,10 @@
 package io.github.createam.ngrok.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TunnelsList {
+public class TunnelsList implements Serializable {
 
     private List<Tunnel> tunnels;
 

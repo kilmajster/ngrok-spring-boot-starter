@@ -6,10 +6,10 @@ stages:
 
 build:
   stage: build
-  script: ./mvnw package
+  script: mvn package
   artifacts:
     paths:
-      - target/demo-0.0.1-SNAPSHOT.jar
+      - target/ngrok-spring-boot-starter-0.1-SNAPSHOT.jar
 
 production:
   stage: deploy
