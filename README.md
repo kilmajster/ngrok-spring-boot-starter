@@ -1,18 +1,18 @@
 # ngrok spring boot starter
-[![Build Status](https://img.shields.io/travis/kilmajster/ngrok-spring-boot-starter/master.svg?logo=travis)](https://travis-ci.org/createam-labs/ngrok-spring-boot-starter)
-[![Coverage Status](https://coveralls.io/repos/github/kilmajster/ngrok-spring-boot-starter/badge.svg?branch=master)](https://coveralls.io/github/createam-labs/ngrok-spring-boot-starter?branch=master)
-![GitHub last commit](https://img.shields.io/github/last-commit/createam-labs/ngrok-spring-boot-starter.svg)
+[![Build Status](https://img.shields.io/travis/kilmajster/ngrok-spring-boot-starter/master.svg?logo=travis)](https://travis-ci.org/kilmajster/ngrok-spring-boot-starter)
+[![Coverage Status](https://coveralls.io/repos/github/kilmajster/ngrok-spring-boot-starter/badge.svg?branch=master)](https://coveralls.io/github/kilmajster/ngrok-spring-boot-starter?branch=master)
+![GitHub last commit](https://img.shields.io/github/last-commit/kilmajster/ngrok-spring-boot-starter.svg)
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/createam-labs/ngrok-spring-boot-starter)
 
 ###### What is ngrok?
-tldr; Ngrok can give you public URLs for exposing your local web server, in our case it will be tomcats `http://localhost:8080`. 
+tldr; Ngrok can give you public URLs for exposing your local web server, in our case it will be spring  `http://localhost:8080`. 
 For simply usage account is not needed. For more details you can check out their [site](https://ngrok.com/).
 
 ### dependency & build
 To add dependency firstly you have to build artifact from sources. To to that you have to do following:
 
 ```bash
-$ git clone https://github.com/createam-labs/ngrok-spring-boot-starter.git
+$ git clone https://github.com/kilmajster/ngrok-spring-boot-starter.git
 Cloning into 'ngrok-spring-boot-starter'...
 remote: Counting objects: 84, done.
 remote: Compressing objects: 100% (54/54), done.
@@ -24,8 +24,8 @@ $ cd ngrok-spring-boot-starter
 user@ngrok-spring-boot-starter $ mvn install -Dmaven.test.skip=true
 [INFO] Scanning for projects...
 [INFO]
-[INFO] ---------< io.github.createam-labs:ngrok-spring-boot-starter >----------
-[INFO] Building ngrok-spring-boot-starter 0.1a
+[INFO] ---------< io.github.kilmasjter:ngrok-spring-boot-starter >----------
+[INFO] Building ngrok-spring-boot-starter 0.1
 [INFO] --------------------------------[ jar ]---------------------------------
 ```
 After this `ngrok-spring-boot-starter` will be installed in your local `.m2` repository, and you should be able to 
@@ -35,16 +35,16 @@ use it, like it's described in the following step 👇
 ```xml
 
 <dependency>
-  <groupId>io.github.createam-labs</groupId>
+  <groupId>io.github.kilmajster</groupId>
   <artifactId>ngrok-spring-boot-starter</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
 </dependency>
 
 ```
 - or gradle:
 ```groovy
 
-compile('io.github.createam-labs:ngrok-spring-boot-starter:0.1')
+compile('io.github.kilmajster:ngrok-spring-boot-starter:0.1')
 
 ````
 
@@ -60,7 +60,6 @@ ngrok.enabled=true
 ###### optional properties & descriptions
 
 ```
-
 # if you've got already running ngrok instance on non default port
 ngrok.api.url=http://localhost:4040
 
