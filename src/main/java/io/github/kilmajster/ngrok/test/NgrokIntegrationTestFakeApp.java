@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Profile;
 
 @Profile("ngrok-starter-integration-test")
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "io.github.kilmajster.ngrok")
 public class NgrokIntegrationTestFakeApp {
     public static void main(String[] args) {
         SpringApplication.run(NgrokIntegrationTestFakeApp.class, args);

@@ -1,8 +1,8 @@
 package io.github.kilmajster.ngrok.control;
 
 import io.github.kilmajster.ngrok.data.NgrokTunnel;
-import io.github.kilmajster.ngrok.exception.NgrokDownloadException;
 import io.github.kilmajster.ngrok.exception.NgrokCommandExecuteException;
+import io.github.kilmajster.ngrok.exception.NgrokDownloadException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -50,9 +50,13 @@ public class NgrokRunner {
     @EventListener(ApplicationReadyEvent.class)
     public void run() throws NgrokDownloadException, NgrokCommandExecuteException {
         ngrokExecutor.execute(() -> {
+
             if (ngrokIsNotRunning()) {
+
                 if (needToDownloadNgrok()) {
                     ngrokDownloader.downloadAndExtractNgrokTo(getNgrokDirectoryOrDefault());
+
+                    addPermissionsIfNeeded();
                 }
 
                 startupNgrok();
@@ -60,6 +64,16 @@ public class NgrokRunner {
 
             logTunnelsDetails();
         });
+    }
+
+    private void addPermissionsIfNeeded() {
+        if (SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC) {
+            String chmod = "chmod +x ".concat(getNgrokExecutablePath());
+
+            log.info("Running: " + chmod);
+
+            systemCommandExecutor.execute(chmod);
+        }
     }
 
     private boolean ngrokIsNotRunning() {
