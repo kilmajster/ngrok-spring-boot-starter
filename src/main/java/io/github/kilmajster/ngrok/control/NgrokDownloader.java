@@ -1,7 +1,7 @@
 package io.github.kilmajster.ngrok.control;
 
-import io.github.kilmajster.ngrok.util.NgrokFileExtractUtils;
 import io.github.kilmajster.ngrok.exception.NgrokDownloadException;
+import io.github.kilmajster.ngrok.util.NgrokFileExtractUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.SystemUtils;
@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @ConditionalOnProperty(name = "ngrok.enabled", havingValue = "true")
 @Component
@@ -43,7 +45,13 @@ public class NgrokDownloader {
         String zipFileName = getFileNameFromUrl(getBinaryUrl());
         String destinationFile = FilenameUtils.concat(destinationPath, zipFileName);
 
-        log.info("Downloading ngrok from {} to {}",  getBinaryUrl(), destinationFile);
+        if (Files.exists(Paths.get(destinationFile))) {
+            log.info("Skipping downloading, cached archive available at {}", destinationFile);
+
+            return destinationFile;
+        }
+
+        log.info("Downloading ngrok from {} to {}", getBinaryUrl(), destinationFile);
 
         File targetFile = new File(destinationFile);
         long downloadStartTime = System.currentTimeMillis();
@@ -69,16 +77,16 @@ public class NgrokDownloader {
         return url.substring(getBinaryUrl().lastIndexOf("/") + 1);
     }
 
-    private String getBinaryUrl() {
-        if(SystemUtils.IS_OS_WINDOWS) {
+    public String getBinaryUrl() {
+        if (SystemUtils.IS_OS_WINDOWS) {
             return windowsBinaryUrl;
         }
 
-        if(SystemUtils.IS_OS_MAC) {
+        if (SystemUtils.IS_OS_MAC) {
             return osxBinaryUrl;
         }
 
-        if(SystemUtils.IS_OS_LINUX) {
+        if (SystemUtils.IS_OS_LINUX) {
             return linuxBinaryUrl;
         }
 

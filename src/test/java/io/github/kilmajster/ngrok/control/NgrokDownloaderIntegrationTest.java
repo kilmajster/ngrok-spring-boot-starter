@@ -1,6 +1,8 @@
 package io.github.kilmajster.ngrok.control;
 
+import io.github.kilmajster.ngrok.configuration.NgrokAutoConfiguration;
 import io.github.kilmajster.ngrok.exception.NgrokDownloadException;
+import io.github.kilmajster.ngrok.test.NgrokIntegrationTestFakeApp;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -18,18 +20,13 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.io.File;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(
-        classes = NgrokDownloader.class,
-        webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@SpringBootTest(classes = {NgrokIntegrationTestFakeApp.class, NgrokDownloader.class, NgrokAutoConfiguration.class},
+        webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestPropertySource(locations = "classpath:/application-integration-test.properties")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@AutoConfigureWireMock(
-        port = 1234,
-        files = "src/test/resources")
+@AutoConfigureWireMock(files = "src/test/resources", port = 8083)
 public class NgrokDownloaderIntegrationTest {
 
     @Autowired
@@ -37,16 +34,16 @@ public class NgrokDownloaderIntegrationTest {
 
     @Before
     public void setUp() {
-        ReflectionTestUtils.setField(ngrokDownloader, "windowsBinaryUrl", "http://localhost:1234");
-        ReflectionTestUtils.setField(ngrokDownloader, "osxBinaryUrl", "http://localhost:1234");
-        ReflectionTestUtils.setField(ngrokDownloader, "linuxBinaryUrl", "http://localhost:1234");
+        ReflectionTestUtils.setField(ngrokDownloader, "windowsBinaryUrl", "http://localhost:8083");
+        ReflectionTestUtils.setField(ngrokDownloader, "osxBinaryUrl", "http://localhost:8083");
+        ReflectionTestUtils.setField(ngrokDownloader, "linuxBinaryUrl", "http://localhost:8083");
     }
 
     @AfterClass
     public static void cleanup() {
         File file = new File("/not-exists-path");
 
-        if(file.exists()) {
+        if (file.exists()) {
             file.delete();
         }
     }
@@ -55,9 +52,9 @@ public class NgrokDownloaderIntegrationTest {
     public void downloadNgrokTo_unreachableResourceThenHintIsLogged() {
         stubFor(
                 get(urlPathMatching("/__files/ngrok-test-archive.zip"))
-                .willReturn(
-                        aResponse()
-                        .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
+                        .willReturn(
+                                aResponse()
+                                        .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
 
         ngrokDownloader.downloadNgrokTo("/not-exists-path");
     }
@@ -67,10 +64,10 @@ public class NgrokDownloaderIntegrationTest {
     public void downloadNgrokTo_givenWorkingHostThenFileIsDownloaded() {
         stubFor(
                 get(urlPathMatching("/not-existing-download-url/ngrok-test-archive.zip"))
-                .willReturn(
-                        aResponse()
-                        .withStatus(HttpStatus.OK.value())
-                        .withBodyFile("ngrok-test-archive.zip")));
+                        .willReturn(
+                                aResponse()
+                                        .withStatus(HttpStatus.OK.value())
+                                        .withBodyFile("ngrok-test-archive.zip")));
 
         ngrokDownloader.downloadNgrokTo("not-exists-path");
     }

@@ -44,12 +44,14 @@ public class NgrokApiClient {
     }
 
     public boolean isResponding() {
+        String ngrokStatusUrl = ngrokApiUrl + NGROK_URL_HTML_STATUS;
+
         try {
-            ResponseEntity<Void> response = restTemplate.getForEntity(ngrokApiUrl + NGROK_URL_HTML_STATUS, Void.class);
+            ResponseEntity<Void> response = restTemplate.getForEntity(ngrokStatusUrl, Void.class);
 
             return response.getStatusCode().is2xxSuccessful();
         } catch (RestClientException ex) {
-            log.info("Ngrok API not responding.");
+//            log.info("Ngrok API not responding at {}, ", ngrokStatusUrl);
         }
 
         return false;

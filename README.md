@@ -5,8 +5,16 @@
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/createam-labs/ngrok-spring-boot-starter)
 
 ###### What is ngrok?
-tldr; Ngrok can give you public URLs for exposing your local web server, in our case it will be spring  `http://localhost:8080`. 
+tldr; Ngrok can give you public URLs for exposing your local web server, in our case it will be springs `http://localhost:8080` or whatever you set as `server.port`. 
 For simply usage account is not needed. For more details you can check out their [site](https://ngrok.com/).
+
+#### What this starter gives to you?
+This starter will automatically download ngrok binary coressponding to your OS and cached it in your home directory/.ngrok2. 
+Then every time you will run your spring boot application, ngrok will be automatically build http tunnel pointing to your springs web server
+and you will get pretty logs with the link, just like it's done below 👇
+
+![](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/ngrok-sample-screenshot.png
+)[]()
 
 ### dependency & build
 To add dependency firstly you have to build artifact from sources. To to that you have to do following:

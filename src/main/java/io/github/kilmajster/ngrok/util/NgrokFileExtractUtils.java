@@ -32,7 +32,7 @@ public class NgrokFileExtractUtils {
         File archive = new File(archiveFile);
         File outdir = new File(outdirPath);
 
-        if(StringUtils.endsWithIgnoreCase(outdir.getName(), "zip")) {
+        if(StringUtils.endsWithIgnoreCase(archive.getName(), "zip")) {
             extractZip(archive, outdir);
             deleteArchive(archiveFile);
         }
