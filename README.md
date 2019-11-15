@@ -80,7 +80,8 @@ ngrok.directory=C:\\Users\\user\\Desktop\\ngrok
 # of waiting for ngrok startup
 ngrok.waitForStartup.millis=3000
 
-# if for some reason ngrok binary file address has changed you can override it by property corresponding to your OS
+# if for some reason ngrok binary file address has changed you can override it 
+# by property corresponding to your OS
 ngrok.binary.windows=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-386.zip
 ngrok.binary.osx=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-386.zip
 ngrok.binary.linux=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip
