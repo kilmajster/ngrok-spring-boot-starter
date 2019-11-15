@@ -1,9 +1,14 @@
 package io.github.kilmajster.ngrok.control;
 
-import io.github.kilmajster.ngrok.exception.NgrokDownloadException;
-import io.github.kilmajster.ngrok.util.NgrokFileExtractUtils;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,11 +16,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import io.github.kilmajster.ngrok.exception.NgrokDownloadException;
+import io.github.kilmajster.ngrok.util.NgrokFileExtractUtils;
 
 @ConditionalOnProperty(name = "ngrok.enabled", havingValue = "true")
 @Component
@@ -23,18 +25,26 @@ public class NgrokDownloader {
 
     private static final Logger log = LoggerFactory.getLogger(NgrokDownloader.class);
 
-    private final String windowsBinaryUrl;
-    private final String osxBinaryUrl;
-    private final String linuxBinaryUrl;
+    @Value("${ngrok.binary.windows32:https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-386.zip}")
+    private String windowsBinaryUrl;
 
-    public NgrokDownloader(
-            @Value("${ngrok.binary.windows:https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-386.zip}") String windowsBinaryUrl,
-            @Value("${ngrok.binary.osx:https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-386.zip}") String osxBinaryUrl,
-            @Value("${ngrok.binary.linux:https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip}") String linuxBinaryUrl) {
-        this.windowsBinaryUrl = windowsBinaryUrl;
-        this.osxBinaryUrl = osxBinaryUrl;
-        this.linuxBinaryUrl = linuxBinaryUrl;
-    }
+    @Value("${ngrok.binary.linux32:https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip}")
+    private String linuxBinaryUrl;
+
+    @Value("${ngrok.binary.osx32:https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-386.zip}")
+    private String osxBinaryUrl;
+
+    @Value("${ngrok.binary.windows:https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip}")
+    private String windows64BinaryUrl;
+
+    @Value("${ngrok.binary.windows:https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip}")
+    private String linux64BinaryUrl;
+
+    @Value("${ngrok.binary.osx:https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.zip}")
+    private String osx64BinaryUrl;
+
+    @Value("${ngrok.binary.custom:}")
+    private String ngrokBinaryCustom;
 
     public void downloadAndExtractNgrokTo(String destinationPath) throws NgrokDownloadException {
         String downloadedFilePath = downloadNgrokTo(destinationPath);
@@ -78,18 +88,26 @@ public class NgrokDownloader {
     }
 
     public String getBinaryUrl() {
+        if(StringUtils.isNotBlank(ngrokBinaryCustom)) {
+            return ngrokBinaryCustom;
+        }
+
         if (SystemUtils.IS_OS_WINDOWS) {
-            return windowsBinaryUrl;
+            return is64bitOS() ? windows64BinaryUrl : windowsBinaryUrl;
         }
 
         if (SystemUtils.IS_OS_MAC) {
-            return osxBinaryUrl;
+            return is64bitOS() ? osx64BinaryUrl : osxBinaryUrl;
         }
 
         if (SystemUtils.IS_OS_LINUX) {
-            return linuxBinaryUrl;
+            return is64bitOS() ? linux64BinaryUrl : linuxBinaryUrl;
         }
 
-        throw new RuntimeException("Unsupported OS.");
+        throw new NgrokDownloadException("Unsupported OS.");
+    }
+
+    private boolean is64bitOS() {
+        return SystemUtils.OS_ARCH.contains("64");
     }
 }
