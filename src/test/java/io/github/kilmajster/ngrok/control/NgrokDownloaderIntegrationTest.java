@@ -51,10 +51,10 @@ public class NgrokDownloaderIntegrationTest {
     @Test(expected = NgrokDownloadException.class)
     public void downloadNgrokTo_unreachableResourceThenHintIsLogged() {
         stubFor(
-                get(urlPathMatching("/__files/ngrok-test-archive.zip"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
+         get(urlPathMatching("/__files/ngrok-test-archive.zip"))
+         .willReturn(
+         aResponse()
+         .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
 
         ngrokDownloader.downloadNgrokTo("/not-exists-path");
     }
@@ -63,11 +63,11 @@ public class NgrokDownloaderIntegrationTest {
     @Test
     public void downloadNgrokTo_givenWorkingHostThenFileIsDownloaded() {
         stubFor(
-                get(urlPathMatching("/not-existing-download-url/ngrok-test-archive.zip"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(HttpStatus.OK.value())
-                                        .withBodyFile("ngrok-test-archive.zip")));
+        get(urlPathMatching("/not-existing-download-url/ngrok-test-archive.zip"))
+        .willReturn(
+        aResponse()
+        .withStatus(HttpStatus.OK.value())
+        .withBodyFile("ngrok-test-archive.zip")));
 
         ngrokDownloader.downloadNgrokTo("not-exists-path");
     }
