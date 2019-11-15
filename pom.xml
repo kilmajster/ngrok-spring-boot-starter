@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>ngrok-spring-boot-starter</name>
-    <description>Easy tunneling spring boot application with ngrok.</description>
+    <description>Easy tunneling Spring Boot application with Ngrok.</description>
     <url>https://github.com/kilmajster/ngrok-spring-boot-starter</url>
 
     <licenses>
