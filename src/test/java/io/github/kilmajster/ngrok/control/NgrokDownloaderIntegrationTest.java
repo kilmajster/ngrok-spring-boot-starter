@@ -21,6 +21,7 @@ import java.io.File;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
+@Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {NgrokIntegrationTestFakeApp.class, NgrokDownloader.class, NgrokAutoConfiguration.class},
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -51,10 +52,10 @@ public class NgrokDownloaderIntegrationTest {
     @Test(expected = NgrokDownloadException.class)
     public void downloadNgrokTo_unreachableResourceThenHintIsLogged() {
         stubFor(
-         get(urlPathMatching("/__files/ngrok-test-archive.zip"))
-         .willReturn(
-         aResponse()
-         .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
+        get(urlPathMatching("/__files/ngrok-test-archive.zip"))
+        .willReturn(
+        aResponse()
+        .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
 
         ngrokDownloader.downloadNgrokTo("/not-exists-path");
     }
