@@ -4,18 +4,17 @@
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/createam-labs/ngrok-spring-boot-starter)
 
 ###### What is ngrok?
-tldr; Ngrok can give you public URLs for exposing your local web server, in our case it will be springs `http://localhost:8080` or whatever you set as `server.port`. 
-For simply usage account is not needed. For more details you can check out their [site](https://ngrok.com/).
+*tldr;* Ngrok can give you public URLs for exposing your local web server, in our case it will be springs `http://localhost:8080` or whatever you set as `server.port`. 
+For simply usage account is not needed. For more details you can check out their [Ngrok site](https://ngrok.com/).
 
 #### What this starter gives to you?
 This starter will automatically download ngrok binary corresponding to your OS and cached it in your home directory/.ngrok2. 
 Then every time you will run your spring boot application, ngrok will be automatically build http tunnel pointing to your springs web server
 and you will get pretty logs with the link, just like it's done below 👇
 
-![](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/screenshot.png
-)[]()
+![Screenshot of logs with public urls](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/screenshot.png)
 
-### dependency & build
+### Dependency
 - maven:
 ```xml
 <dependency>
@@ -30,14 +29,14 @@ and you will get pretty logs with the link, just like it's done below 👇
 compile('io.github.kilmajster:ngrok-spring-boot-starter:0.1')
 ````
 
-### configuration
-###### required properties
+### Configuration 
+##### Required ```application.properties```
 
 ```properties
 ngrok.enabled=true
 ```
 
-###### optional properties & descriptions
+###### Optional ```application.properties``` & descriptions
 
 ```
 # if you've got already running ngrok instance on non default port
@@ -69,3 +68,13 @@ ngrok.binary.custom=http://not-exist.com/custom-ngrok-platform-bsd-arm-sth.zip
 So now, the starter will run ngrok http tunneling on specified `server.port`, which in spring boot, by default will be `8080`.  
 
 ✅ That's all
+
+#### Issues & contributing
+If you've got any troubles or ideas, feel free to report an issue or create pull request with improvements 🙂.
+
+#### References
+ - https://ngrok.com/
+ - https://spring.io/projects/spring-boot
+ - https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using-boot-starter
+
+
