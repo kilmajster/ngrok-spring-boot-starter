@@ -91,7 +91,7 @@ public class NgrokRunner {
 
         systemCommandExecutor.execute(command);
 
-        log.info("Ngrok is running.");
+        log.info("Ngrok is running. Dashboard url -> {}", ngrokApiClient.getNgrokApiUrl());
     }
 
     private void logTunnelsDetails() {

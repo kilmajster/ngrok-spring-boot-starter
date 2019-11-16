@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
@@ -26,6 +27,10 @@ public class NgrokApiClient {
     private final String ngrokApiUrl;
 
     private RestTemplate restTemplate = new RestTemplate();
+//
+//    @Lazy
+//    @Value("${server.address}")
+//    private String serverAddress;
 
     public NgrokApiClient(
             @Value("${ngrok.api.url:http://localhost:4040}") String ngrokApiUrl) {
@@ -55,5 +60,9 @@ public class NgrokApiClient {
         }
 
         return false;
+    }
+
+    public String getNgrokApiUrl() {
+        return ngrokApiUrl;
     }
 }
