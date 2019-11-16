@@ -36,9 +36,10 @@ public class NgrokApiClientIntegrationTest {
     @Test
     public void isResponding_shouldReturnTrueWhenNgrokIsRunning() {
         // given
-        stubFor(get(urlPathMatching("/status"))
-                .willReturn(aResponse()
-                .withStatus(HttpStatus.OK.value())));
+        stubFor(
+        get(urlPathMatching("/status"))
+        .willReturn(aResponse()
+        .withStatus(HttpStatus.OK.value())));
 
         // when
         boolean responding = ngrokApiClient.isResponding();
@@ -50,9 +51,10 @@ public class NgrokApiClientIntegrationTest {
     @Test
     public void isResponding_shouldReturnFalseWhenNgrokIsNotWorking() {
         // given
-        stubFor(get(urlPathMatching("/status"))
-                .willReturn(aResponse()
-                .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
+        stubFor(
+        get(urlPathMatching("/status"))
+        .willReturn(aResponse()
+        .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
 
         // when
         boolean responding = ngrokApiClient.isResponding();
@@ -67,15 +69,15 @@ public class NgrokApiClientIntegrationTest {
         File file = ResourceUtils.getFile(this.getClass().getResource("/tunnels.json"));
         String tunnelsAsJson = FileUtils.readFileToString(file, Charset.defaultCharset());
 
-        stubFor(get(urlPathMatching("/api/tunnels"))
-                .willReturn(
-                        okJson(tunnelsAsJson)));
-        // when
+        stubFor(
+        get(urlPathMatching("/api/tunnels"))
+        .willReturn(
+        okJson(tunnelsAsJson)));
 
+        // when
         List<NgrokTunnel> tunnels = ngrokApiClient.fetchTunnels();
 
         // then
-
         assertThat(tunnels).hasSize(2);
         assertThat(tunnels).extracting(NgrokTunnel::getProto).contains("http", "https");
         assertThat(tunnels).extracting(NgrokTunnel::getPublicUrl).contains("https://12345678-not-existing.ngrok.io", "http://12345678-not-existing.ngrok.io");
@@ -84,10 +86,12 @@ public class NgrokApiClientIntegrationTest {
     @Test
     public void fetchTunnels_shouldReturnEmptyCollectionWhenNgrokApiRespondWithError() {
         // given
+        stubFor(
+        get(urlPathMatching("/api/tunnels"))
+        .willReturn(
+        serverError()));
 
-        stubFor(get(urlPathMatching("/api/tunnels")).willReturn(serverError()));
         // when
-
         List<NgrokTunnel> tunnels = ngrokApiClient.fetchTunnels();
 
         // then
