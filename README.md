@@ -40,7 +40,7 @@ Code of demo application available [here](https://github.com/kilmajster/demo).
 compile('io.github.kilmajster:ngrok-spring-boot-starter:0.1')
 ````
 
-### Configuration 
+### 🛠 Configuration 
 ##### Required ```application.properties```
 ```properties
 ngrok.enabled=true
