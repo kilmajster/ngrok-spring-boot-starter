@@ -17,11 +17,12 @@ configured ngrok binary location, ex. ```ngrok.directory=/Users/user/custom/loca
 
 ### What this starter gives to you?
 This starter will automatically download ngrok binary corresponding to your OS and cached it in 
-your home directory/.ngrok2. Then every time you will run your spring boot application, ngrok will 
+your ```home directory/.ngrok2```. Then every time you will run your Spring Boot application, ngrok will 
 be automatically build http tunnel pointing to your springs web server and you will get pretty logs 
 with the link, just like it's done below 👇
 
 ![Screenshot of logs with public urls](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/ngrok.gif)
+
 Code of demo application available [here](https://github.com/kilmajster/demo).
 
 ### Dependency
