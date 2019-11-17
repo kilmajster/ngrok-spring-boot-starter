@@ -4,14 +4,22 @@
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.kilmajster/ngrok-spring-boot-starter?style=flat)
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/createam-labs/ngrok-spring-boot-starter)
 
-###### What is ngrok?
-*tldr;* Ngrok can give you public URLs for exposing your local web server, in our case it will be springs `http://localhost:8080` or whatever you set as `server.port`. 
-For simply usage account is not needed. For more details you can check out their [Ngrok site](https://ngrok.com/).
+##### What is ngrok?
+*tldr;* Ngrok can create a http tunnel and give you a public URL with redirection to 
+specified port on your local machine, which in our case will be a standard springs `http://localhost:8080` 
+or whatever you set as `server.port`. For simply usage account is not needed. Tunnels created with 
+free version will be available for 8 hours, so it is great tool for development and testing purposes! 
+For more details you can check out their [site](https://ngrok.com/).
 
-#### What this starter gives to you?
-This starter will automatically download ngrok binary corresponding to your OS and cached it in your home directory/.ngrok2. 
-Then every time you will run your spring boot application, ngrok will be automatically build http tunnel pointing to your springs web server
-and you will get pretty logs with the link, just like it's done below 👇
+###### Paid version
+If you want to use this starter with paid ngrok version, you just have to set property, which determinate proper 
+configured ngrok binary location, ex. ```ngrok.directory=/Users/user/custom/location```
+
+### What this starter gives to you?
+This starter will automatically download ngrok binary corresponding to your OS and cached it in 
+your home directory/.ngrok2. Then every time you will run your spring boot application, ngrok will 
+be automatically build http tunnel pointing to your springs web server and you will get pretty logs 
+with the link, just like it's done below 👇
 
 ![Screenshot of logs with public urls](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/ngrok.gif)
 
@@ -32,13 +40,11 @@ compile('io.github.kilmajster:ngrok-spring-boot-starter:0.1')
 
 ### Configuration 
 ##### Required ```application.properties```
-
 ```properties
 ngrok.enabled=true
 ```
 
 ###### Optional ```application.properties``` & descriptions
-
 ```
 # if you've got already running ngrok instance on non default port
 ngrok.api.url=http://localhost:4040
