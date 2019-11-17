@@ -22,6 +22,7 @@ be automatically build http tunnel pointing to your springs web server and you w
 with the link, just like it's done below 👇
 
 ![Screenshot of logs with public urls](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/ngrok.gif)
+Code of demo application available [here](https://github.com/kilmajster/demo).
 
 ### Dependency
 - maven:
