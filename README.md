@@ -25,7 +25,7 @@ your ```home directory/.ngrok2```. Then every time you will run your Spring Boot
 be automatically build http tunnel pointing to your springs web server and you will get pretty logs 
 with the link, just like it's done below 👇
 
-![](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/screenshot.png)
+![](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/demo.png)
 
 
 ### Dependency
