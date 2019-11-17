@@ -13,7 +13,7 @@ This starter will automatically download ngrok binary corresponding to your OS a
 Then every time you will run your spring boot application, ngrok will be automatically build http tunnel pointing to your springs web server
 and you will get pretty logs with the link, just like it's done below 👇
 
-![Screenshot of logs with public urls](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/screenshot.png)
+![Screenshot of logs with public urls](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/ngrok.gif)
 
 ### Dependency
 - maven:
