@@ -4,6 +4,10 @@
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.kilmajster/ngrok-spring-boot-starter?style=flat)
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/createam-labs/ngrok-spring-boot-starter)
 
+![Gif with logs that contains public ngrok URLs](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/ngrok.gif)
+
+Code of demo application available [here](https://github.com/kilmajster/demo).
+
 ##### What is ngrok?
 *tldr;* Ngrok can create a http tunnel and give you a public URL with redirection to 
 specified port on your local machine, which in our case will be a standard springs `http://localhost:8080` 
@@ -21,9 +25,8 @@ your ```home directory/.ngrok2```. Then every time you will run your Spring Boot
 be automatically build http tunnel pointing to your springs web server and you will get pretty logs 
 with the link, just like it's done below 👇
 
-![Screenshot of logs with public urls](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/ngrok.gif)
+![](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/screenshot.png)
 
-Code of demo application available [here](https://github.com/kilmajster/demo).
 
 ### Dependency
 - maven:
