@@ -1,8 +1,8 @@
 # ngrok spring boot starter
-[![Travis build Status](https://img.shields.io/travis/kilmajster/ngrok-spring-boot-starter/master.svg?logo=travis&style=flat-square)](https://travis-ci.org/kilmajster/ngrok-spring-boot-starter)
-![GitHub last commit](https://img.shields.io/github/last-commit/kilmajster/ngrok-spring-boot-starter.svg?style=flat-square)
-![Maven metadata URL](https://img.shields.io/maven-metadata/v?metadataUrl=http%3A%2F%2Fcentral.maven.org%2Fmaven2%2Fio%2Fgithub%2Fkilmajster%2Fngrok-spring-boot-starter%2Fmaven-metadata.xml&style=flat-square)
-[![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat-square)](https://stackshare.io/createam-labs/ngrok-spring-boot-starter)
+[![Travis build Status](https://img.shields.io/travis/kilmajster/ngrok-spring-boot-starter/master.svg?logo=travis&style=for-the-badge)](https://travis-ci.org/kilmajster/ngrok-spring-boot-starter)
+![GitHub last commit](https://img.shields.io/github/last-commit/kilmajster/ngrok-spring-boot-starter.svg?style=for-the-badge)
+![Maven metadata URL](https://img.shields.io/maven-metadata/v?metadataUrl=http%3A%2F%2Fcentral.maven.org%2Fmaven2%2Fio%2Fgithub%2Fkilmajster%2Fngrok-spring-boot-starter%2Fmaven-metadata.xml&style=for-the-badge)
+[![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=for-the-badge)](https://stackshare.io/createam-labs/ngrok-spring-boot-starter)
 
 ![Gif with logs that contains public ngrok URLs](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/ngrok.gif)
 
