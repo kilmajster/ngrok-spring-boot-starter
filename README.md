@@ -1,7 +1,7 @@
 # ngrok spring boot starter
 [![Travis build Status](https://img.shields.io/travis/kilmajster/ngrok-spring-boot-starter/master.svg?logo=travis)](https://travis-ci.org/kilmajster/ngrok-spring-boot-starter)
 ![GitHub last commit](https://img.shields.io/github/last-commit/kilmajster/ngrok-spring-boot-starter.svg)
-![Maven Central](https://img.shields.io/maven-central/v/io.github.kilmajster/ngrok-spring-boot-starter?style=flat)
+![Maven metadata URL](https://img.shields.io/maven-metadata/v?metadataUrl=http%3A%2F%2Fcentral.maven.org%2Fmaven2%2Fio%2Fgithub%2Fkilmajster%2Fngrok-spring-boot-starter%2Fmaven-metadata.xml)
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/createam-labs/ngrok-spring-boot-starter)
 
 ![Gif with logs that contains public ngrok URLs](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/ngrok.gif)
