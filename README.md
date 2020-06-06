@@ -1,9 +1,9 @@
 # Ngrok Spring Boot Starter
-[![Travis build Status](https://img.shields.io/travis/kilmajster/ngrok-spring-boot-starter/master.svg?logo=travis&style=flat-square)](https://travis-ci.org/kilmajster/ngrok-spring-boot-starter)
-[![Coverage Status](https://coveralls.io/repos/github/kilmajster/ngrok-spring-boot-starter/badge.svg?style=flat-square)](https://coveralls.io/github/kilmajster/ngrok-spring-boot-starter)
-![GitHub last commit](https://img.shields.io/github/last-commit/kilmajster/ngrok-spring-boot-starter.svg?style=flat-square)
-![maven-central version](https://img.shields.io/maven-central/v/io.github.kilmajster/ngrok-spring-boot-starter?color=1&style=flat-square)
-[![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat-square)](https://stackshare.io/createam-labs/ngrok-spring-boot-starter)
+[![Travis build Status](https://img.shields.io/travis/kilmajster/ngrok-spring-boot-starter/master.svg?logo=travis)](https://travis-ci.org/kilmajster/ngrok-spring-boot-starter)
+[![Coverage Status](https://coveralls.io/repos/github/kilmajster/ngrok-spring-boot-starter/badge.svg)](https://coveralls.io/github/kilmajster/ngrok-spring-boot-starter)
+![GitHub last commit](https://img.shields.io/github/last-commit/kilmajster/ngrok-spring-boot-starter.svg)
+![maven-central version](https://img.shields.io/maven-central/v/io.github.kilmajster/ngrok-spring-boot-starter?color=1)
+[![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg)](https://stackshare.io/createam-labs/ngrok-spring-boot-starter)
 
 ![Gif with logs that contains public Ngrok URLs](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/ngrok.gif)
 
