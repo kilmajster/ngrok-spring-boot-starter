@@ -9,9 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.task.TaskExecutor;
@@ -27,20 +24,17 @@ public class NgrokRunner {
 
     private final String port;
     private final String ngrokDirectory;
+    private final String ngrokConfigFilePath;
     private final NgrokApiClient ngrokApiClient;
     private final NgrokDownloader ngrokDownloader;
     private final NgrokSystemCommandExecutor systemCommandExecutor;
     private final TaskExecutor ngrokExecutor;
 
-    public NgrokRunner(
-            @Value("${server.port:8080}") String port,
-            @Value("${ngrok.directory:}") String ngrokDirectory,
-            @Autowired NgrokApiClient ngrokApiClient,
-            @Autowired NgrokDownloader ngrokDownloader,
-            @Autowired NgrokSystemCommandExecutor systemCommandExecutor,
-            @Autowired @Qualifier("ngrokExecutor") TaskExecutor ngrokExecutor) {
+    public NgrokRunner(String port, String ngrokDirectory, String ngrokConfigFilePath, NgrokApiClient ngrokApiClient,
+            NgrokDownloader ngrokDownloader, NgrokSystemCommandExecutor systemCommandExecutor, TaskExecutor ngrokExecutor) {
         this.port = port;
         this.ngrokDirectory = ngrokDirectory;
+        this.ngrokConfigFilePath = ngrokConfigFilePath;
         this.ngrokApiClient = ngrokApiClient;
         this.ngrokDownloader = ngrokDownloader;
         this.systemCommandExecutor = systemCommandExecutor;
@@ -85,13 +79,24 @@ public class NgrokRunner {
     }
 
     private void startupNgrok() {
-        log.info("Starting ngrok...");
 
-        String command = getNgrokExecutablePath() + " http " + port;
+        String command = getNgrokExecutablePath()
+                + " http "
+                + prepareNgrokConfigParams(ngrokConfigFilePath)
+                + port;
+
+        log.info("Starting ngrok with command = {}", command);
 
         systemCommandExecutor.execute(command);
 
         log.info("Ngrok is running. Dashboard url -> {}", ngrokApiClient.getNgrokApiUrl());
+    }
+
+    private String prepareNgrokConfigParams(String ngrokConfigFilePath) {
+        return StringUtils.isBlank(ngrokConfigFilePath)
+                ? "" // no config arguments
+                : StringUtils.split(ngrokConfigFilePath, ";").length == 1 ? "-config " + ngrokConfigFilePath + " " // 1 config arg
+                : "-config " + String.join(" -config ", StringUtils.split(ngrokConfigFilePath, ";")) + " "; // multiple configs
     }
 
     private void logTunnelsDetails() {
