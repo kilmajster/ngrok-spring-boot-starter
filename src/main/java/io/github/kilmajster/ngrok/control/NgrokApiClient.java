@@ -27,10 +27,6 @@ public class NgrokApiClient {
     private final String ngrokApiUrl;
 
     private RestTemplate restTemplate = new RestTemplate();
-//
-//    @Lazy
-//    @Value("${server.address}")
-//    private String serverAddress;
 
     public NgrokApiClient(
             @Value("${ngrok.api.url:http://localhost:4040}") String ngrokApiUrl) {
@@ -56,7 +52,7 @@ public class NgrokApiClient {
 
             return response.getStatusCode().is2xxSuccessful();
         } catch (RestClientException ex) {
-//            log.info("Ngrok API not responding at {}, ", ngrokStatusUrl);
+            log.warn("Ngrok API not responding at {}, ", ngrokStatusUrl);
         }
 
         return false;

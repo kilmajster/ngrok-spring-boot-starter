@@ -26,12 +26,13 @@ public class NgrokAutoConfiguration {
     public NgrokRunner ngrokRunner(
             @Value("${server.port:8080}") String port,
             @Value("${ngrok.directory:}") String ngrokDirectory,
+            @Value("${ngrok.config:}") String ngrokConfigFilePath,
             @Autowired NgrokApiClient ngrokApiClient,
             @Autowired NgrokDownloader ngrokDownloader,
             @Autowired NgrokSystemCommandExecutor systemCommandExecutor,
             @Autowired @Qualifier("ngrokExecutor") TaskExecutor ngrokExecutor) {
         log.info("Ngrok is enabled.");
 
-        return new NgrokRunner(port, ngrokDirectory, ngrokApiClient, ngrokDownloader, systemCommandExecutor, ngrokExecutor);
+        return new NgrokRunner(port, ngrokDirectory, ngrokConfigFilePath, ngrokApiClient, ngrokDownloader, systemCommandExecutor, ngrokExecutor);
     }
 }
