@@ -1,6 +1,5 @@
 # Ngrok Spring Boot Starter
 [![Travis build Status](https://img.shields.io/travis/kilmajster/ngrok-spring-boot-starter/master.svg?logo=travis)](https://travis-ci.org/kilmajster/ngrok-spring-boot-starter)
-[![Coverage Status](https://coveralls.io/repos/github/kilmajster/ngrok-spring-boot-starter/badge.svg)](https://coveralls.io/github/kilmajster/ngrok-spring-boot-starter)
 ![GitHub last commit](https://img.shields.io/github/last-commit/kilmajster/ngrok-spring-boot-starter.svg)
 ![maven-central version](https://img.shields.io/maven-central/v/io.github.kilmajster/ngrok-spring-boot-starter?color=1)
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg)](https://stackshare.io/createam-labs/ngrok-spring-boot-starter)
@@ -35,13 +34,13 @@ with the link, just like it's done below 👇
 <dependency>
   <groupId>io.github.kilmajster</groupId>
   <artifactId>ngrok-spring-boot-starter</artifactId>
-  <version>0.1</version>
+  <version>0.2</version>
 </dependency>
 ```
 
 - or gradle:
 ```groovy
-compile('io.github.kilmajster:ngrok-spring-boot-starter:0.1')
+compile('io.github.kilmajster:ngrok-spring-boot-starter:0.2')
 ````
 
 ### 🛠 Configuration 
@@ -52,6 +51,12 @@ ngrok.enabled=true
 
 ###### Optional ```application.properties``` & descriptions
 ```
+# to specify configuration file location, use following property:
+ngrok.config=/home/user/ngrok-config.yml
+
+# for multiple config files, use semicolon ";" as delimiter, like below:
+ngrok.config=/home/user/ngrok-config.yml;/home/user/ngrok-config-secondary.yml
+
 # if you've got already running Ngrok instance on non default port
 ngrok.api.url=http://localhost:4040
 
