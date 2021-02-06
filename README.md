@@ -50,7 +50,7 @@ compile('io.github.kilmajster:ngrok-spring-boot-starter:0.3.0')
 ````
 
 ##  Configuration
-### 🚀 Minimal configuration
+### 🚀 inimal configuration
 For simple http tunneling to springs default server port, only one configuration property is required. 
 There are many ways to provide spring config, for `application.property` based configuration, it will be:
 ```properties
@@ -64,14 +64,14 @@ ngrok:
 or you can pass java execution attribute, like: `java -jar your-app.jar --ngrok.enabled=true`, 
 or with spring-boot plugin `mvn spring-boot:run -Dspring-boot.run.arguments="--ngrok.enabled=true"`, or any other way 😊
 
-✅ All done, configuration is ready! 
+✅ **All done, configuration is ready!** 
 
 > What will happen now?
 >
 > If you are using default spring configuration of server port, which is `8080`, then ngrok will 
 > be downloaded, extracted and cached into user default directory(eg. `/home/user/.ngrok2`) and then executed
 > on application startup, so final command executed in background as child process, should look like:
->```bash
+> ```bash
 > /home/user/.ngrok2/ngrok http 8080
 > ```
 > if you are using different server port, it will be picked up automatically from `server.port` property.
@@ -94,8 +94,8 @@ then generated ngrok command, should look like this:
 ```
 
 #### `ngrok.command` - ngrok custom command attributes
-If you want to achieve something more complex, you can use `ngrok.command` property to provide ngrok execution attributes.
-Example:
+If you want to achieve something more complex, you can use `ngrok.command` property to provide ngrok execution attributes, 
+example:
 ```properties
 # to run default behavior
 ngrok.command=http 8080
