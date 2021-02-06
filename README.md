@@ -11,10 +11,8 @@
     </a>
 </h1>
 <p align="center">
-    <img src="https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/main/ngrok.gif" alt="Gif with logs that contains public Ngrok URLs">
+    <img src="https://ngrok.com/static/img/overview.png" alt="ngrok overview">
 </p>
-
-Code of demo application available [here](https://github.com/kilmajster/demo).
 
 > What is Ngrok?
 >
@@ -31,10 +29,12 @@ Then every time you will run your Spring Boot application, Ngrok will
 automatically build http tunnel pointing to your springs web server, and you will get pretty logs 
 with the remote links, just like it's done below 👇
 
-![](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/main/demo.png)
+![demo app screenshot](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/main/demo.png)
+Code of demo application available [here](https://github.com/kilmajster/demo).
 
 
-### Dependency
+
+## Dependency
 - maven:
 ```xml
 <dependency>
@@ -49,14 +49,14 @@ with the remote links, just like it's done below 👇
 compile('io.github.kilmajster:ngrok-spring-boot-starter:0.3.0')
 ````
 
-###  Configuration
-#### 🚀 minimal configuration
+##  Configuration
+### 🚀 minimal configuration
 For simple http tunneling to springs default server port, only one configuration property is required. 
 There are many ways to provide spring config, for `application.property` based configuration, it will be:
 ```properties
 ngrok.enabled=true
 ```
-for yaml:
+or yaml:
 ```yaml
 ngrok:
   enabled: true
@@ -76,8 +76,8 @@ or with spring-boot plugin `mvn spring-boot:run -Dspring-boot.run.arguments="--n
 > ```
 > if you are using different server port, it will be picked up automatically from `server.port` property.
 
-#### ⚙️ advanced configuration
-##### ngrok configuration file(s)
+### ⚙️ advanced configuration
+#### `ngrok.config` - ngrok configuration file(s)
 If you want to start ngrok with configuration file or files, you can use `ngrok.config` property:
 ```properties
 ngrok.config=/home/user/custom-ngrok-config.yml
@@ -93,7 +93,7 @@ then generated ngrok command, should look like this:
 /home/user/.ngrok2/ngrok http -config /home/user/custom-ngrok-config.yml -config /home/user/another-ngrok-config.yml 8080
 ```
 
-##### custom execution command
+#### `ngrok.command` - custom execution command
 If you want to achieve something more complex, you can use `ngrok.command` property to provide ngrok execution arguments.
 Example:
 ```properties
