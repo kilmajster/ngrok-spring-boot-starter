@@ -50,7 +50,7 @@ compile('io.github.kilmajster:ngrok-spring-boot-starter:0.3.0')
 ````
 
 ##  Configuration
-### 🚀 minimal configuration
+### 🚀 Minimal configuration
 For simple http tunneling to springs default server port, only one configuration property is required. 
 There are many ways to provide spring config, for `application.property` based configuration, it will be:
 ```properties
@@ -76,7 +76,7 @@ or with spring-boot plugin `mvn spring-boot:run -Dspring-boot.run.arguments="--n
 > ```
 > if you are using different server port, it will be picked up automatically from `server.port` property.
 
-### ⚙️ advanced configuration
+### ⚙️ Advanced configuration
 #### `ngrok.config` - ngrok configuration file(s)
 If you want to start ngrok with configuration file or files, you can use `ngrok.config` property:
 ```properties
