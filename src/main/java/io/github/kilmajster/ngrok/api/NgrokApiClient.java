@@ -1,21 +1,23 @@
-package io.github.kilmajster.ngrok.control;
+package io.github.kilmajster.ngrok.api;
 
-import io.github.kilmajster.ngrok.data.NgrokTunnel;
-import io.github.kilmajster.ngrok.data.NgrokTunnelsList;
+import io.github.kilmajster.ngrok.api.model.NgrokTunnel;
+import io.github.kilmajster.ngrok.api.model.NgrokTunnelsList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.List;
 
-@ConditionalOnProperty(name = "ngrok.enabled", havingValue = "true")
+import static io.github.kilmajster.ngrok.NgrokConstants.PROP_NGROK_ENABLED;
+
+@ConditionalOnProperty(name = PROP_NGROK_ENABLED, havingValue = "true")
 @Component
 public class NgrokApiClient {
 
@@ -24,13 +26,15 @@ public class NgrokApiClient {
 
     private static final Logger log = LoggerFactory.getLogger(NgrokApiClient.class);
 
+    private final RestTemplate restTemplate = new RestTemplate();
+
     private final String ngrokApiUrl;
 
-    private RestTemplate restTemplate = new RestTemplate();
 
     public NgrokApiClient(
-            @Value("${ngrok.api.url:http://localhost:4040}") String ngrokApiUrl) {
-        this.ngrokApiUrl = ngrokApiUrl;
+            @Value("${ngrok.host:http://127.0.0.1}") String ngrokApiHost,
+            @Value("${ngrok.port:4040}") Integer ngrokApiPort) {
+        this.ngrokApiUrl = ngrokApiHost + ":" + ngrokApiPort;
     }
 
     public List<NgrokTunnel> fetchTunnels() {
@@ -45,14 +49,12 @@ public class NgrokApiClient {
     }
 
     public boolean isResponding() {
-        String ngrokStatusUrl = ngrokApiUrl + NGROK_URL_HTML_STATUS;
-
         try {
-            ResponseEntity<Void> response = restTemplate.getForEntity(ngrokStatusUrl, Void.class);
+            ResponseEntity<Void> response = restTemplate.getForEntity(getNgrokStatusUrl(), Void.class);
 
             return response.getStatusCode().is2xxSuccessful();
         } catch (RestClientException ex) {
-            log.warn("Ngrok API not responding at {}, ", ngrokStatusUrl);
+            log.debug("Ngrok API not responding at {}", getNgrokStatusUrl());
         }
 
         return false;
@@ -60,5 +62,9 @@ public class NgrokApiClient {
 
     public String getNgrokApiUrl() {
         return ngrokApiUrl;
+    }
+
+    public String getNgrokStatusUrl() {
+        return ngrokApiUrl + NGROK_URL_HTML_STATUS;
     }
 }

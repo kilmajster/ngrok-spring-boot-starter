@@ -1,9 +1,9 @@
 package io.github.kilmajster.ngrok.configuration;
 
-import io.github.kilmajster.ngrok.control.NgrokApiClient;
-import io.github.kilmajster.ngrok.control.NgrokDownloader;
+import io.github.kilmajster.ngrok.api.NgrokApiClient;
+import io.github.kilmajster.ngrok.util.NgrokDownloader;
 import io.github.kilmajster.ngrok.control.NgrokRunner;
-import io.github.kilmajster.ngrok.control.NgrokSystemCommandExecutor;
+import io.github.kilmajster.ngrok.control.SystemCommandExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
 
+import static io.github.kilmajster.ngrok.NgrokConstants.PROP_NGROK_ENABLED;
+
 @ComponentScan(basePackages = "io.github.kilmajster.ngrok")
 @Configuration
 public class NgrokAutoConfiguration {
@@ -22,17 +24,19 @@ public class NgrokAutoConfiguration {
     private static final Logger log = LoggerFactory.getLogger(NgrokAutoConfiguration.class);
 
     @Bean
-    @ConditionalOnProperty(name = "ngrok.enabled", havingValue = "true")
+    @ConditionalOnProperty(name = PROP_NGROK_ENABLED, havingValue = "true")
     public NgrokRunner ngrokRunner(
-            @Value("${server.port:8080}") String port,
+            @Value("${server.port:8080}") String springServerPort,
             @Value("${ngrok.directory:}") String ngrokDirectory,
             @Value("${ngrok.config:}") String ngrokConfigFilePath,
+            @Value("${ngrok.command:}") String ngrokCustomCommand,
             @Autowired NgrokApiClient ngrokApiClient,
             @Autowired NgrokDownloader ngrokDownloader,
-            @Autowired NgrokSystemCommandExecutor systemCommandExecutor,
+            @Autowired @Qualifier("ngrokCommandExecutor") SystemCommandExecutor systemCommandExecutor,
             @Autowired @Qualifier("ngrokExecutor") TaskExecutor ngrokExecutor) {
         log.info("Ngrok is enabled.");
 
-        return new NgrokRunner(port, ngrokDirectory, ngrokConfigFilePath, ngrokApiClient, ngrokDownloader, systemCommandExecutor, ngrokExecutor);
+        return new NgrokRunner(springServerPort, ngrokDirectory, ngrokConfigFilePath, ngrokCustomCommand,
+                ngrokApiClient, ngrokDownloader, systemCommandExecutor, ngrokExecutor);
     }
 }

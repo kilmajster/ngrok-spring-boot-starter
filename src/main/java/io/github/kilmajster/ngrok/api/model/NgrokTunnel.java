@@ -1,4 +1,4 @@
-package io.github.kilmajster.ngrok.data;
+package io.github.kilmajster.ngrok.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

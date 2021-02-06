@@ -1,6 +1,7 @@
 package io.github.kilmajster.ngrok.control;
 
-import io.github.kilmajster.ngrok.data.NgrokTunnel;
+import io.github.kilmajster.ngrok.api.NgrokApiClient;
+import io.github.kilmajster.ngrok.api.model.NgrokTunnel;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;

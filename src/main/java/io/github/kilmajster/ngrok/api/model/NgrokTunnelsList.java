@@ -1,4 +1,4 @@
-package io.github.kilmajster.ngrok.data;
+package io.github.kilmajster.ngrok.api.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;

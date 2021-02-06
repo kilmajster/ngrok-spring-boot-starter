@@ -1,8 +1,10 @@
 package io.github.kilmajster.ngrok.control;
 
-import io.github.kilmajster.ngrok.data.NgrokTunnel;
+import io.github.kilmajster.ngrok.api.NgrokApiClient;
+import io.github.kilmajster.ngrok.api.model.NgrokTunnel;
 import io.github.kilmajster.ngrok.exception.NgrokCommandExecuteException;
 import io.github.kilmajster.ngrok.exception.NgrokDownloadException;
+import io.github.kilmajster.ngrok.util.NgrokDownloader;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -22,23 +24,26 @@ public class NgrokRunner {
 
     private static final Logger log = LoggerFactory.getLogger(NgrokRunner.class);
 
-    private final String port;
+    private final String springServerPort;
     private final String ngrokDirectory;
     private final String ngrokConfigFilePath;
+    private final String ngrokCustomCommand;
     private final NgrokApiClient ngrokApiClient;
     private final NgrokDownloader ngrokDownloader;
-    private final NgrokSystemCommandExecutor systemCommandExecutor;
+    private final SystemCommandExecutor systemCommandExecutor;
     private final TaskExecutor ngrokExecutor;
 
-    public NgrokRunner(String port, String ngrokDirectory, String ngrokConfigFilePath, NgrokApiClient ngrokApiClient,
-            NgrokDownloader ngrokDownloader, NgrokSystemCommandExecutor systemCommandExecutor, TaskExecutor ngrokExecutor) {
-        this.port = port;
+    public NgrokRunner(String springServerPort, String ngrokDirectory, String ngrokConfigFilePath, String ngrokCustomCommand,
+                       NgrokApiClient ngrokApiClient, NgrokDownloader ngrokDownloader,
+                       SystemCommandExecutor systemCommandExecutor, TaskExecutor ngrokExecutor) {
+        this.springServerPort = springServerPort;
         this.ngrokDirectory = ngrokDirectory;
         this.ngrokConfigFilePath = ngrokConfigFilePath;
         this.ngrokApiClient = ngrokApiClient;
         this.ngrokDownloader = ngrokDownloader;
         this.systemCommandExecutor = systemCommandExecutor;
         this.ngrokExecutor = ngrokExecutor;
+        this.ngrokCustomCommand = ngrokCustomCommand;
     }
 
     @EventListener(ApplicationReadyEvent.class)
@@ -79,17 +84,29 @@ public class NgrokRunner {
     }
 
     private void startupNgrok() {
+        String command = isCustomConfigPresent() ? buildCustomShellCmd() : buildNgrokDefaultShellCmd();
 
-        String command = getNgrokExecutablePath()
-                + " http "
-                + prepareNgrokConfigParams(ngrokConfigFilePath)
-                + port;
-
-        log.info("Starting ngrok with command = {}", command);
+        log.debug("Starting ngrok with command = [{}]", command);
 
         systemCommandExecutor.execute(command);
 
-        log.info("Ngrok is running. Dashboard url -> {}", ngrokApiClient.getNgrokApiUrl());
+        if (ngrokApiClient.isResponding()) {
+            log.info("Ngrok is running. Dashboard url -> {}", ngrokApiClient.getNgrokApiUrl());
+        } else {
+            log.warn("Ngrok seems to not responding! Ngrok status url = [{}] Ngrok execution command was = [{}]",
+                    ngrokApiClient.getNgrokStatusUrl(), command);
+        }
+    }
+
+    private String buildNgrokDefaultShellCmd() {
+        return getNgrokExecutablePath()
+                + " http "
+                + prepareNgrokConfigParams(ngrokConfigFilePath)
+                + springServerPort;
+    }
+
+    private String buildCustomShellCmd() {
+        return getNgrokExecutablePath() + " " + ngrokCustomCommand;
     }
 
     private String prepareNgrokConfigParams(String ngrokConfigFilePath) {
@@ -97,6 +114,10 @@ public class NgrokRunner {
                 ? "" // no config arguments
                 : StringUtils.split(ngrokConfigFilePath, ";").length == 1 ? "-config " + ngrokConfigFilePath + " " // 1 config arg
                 : "-config " + String.join(" -config ", StringUtils.split(ngrokConfigFilePath, ";")) + " "; // multiple configs
+    }
+
+    private boolean isCustomConfigPresent() {
+        return StringUtils.isNotBlank(ngrokCustomCommand);
     }
 
     private void logTunnelsDetails() {
