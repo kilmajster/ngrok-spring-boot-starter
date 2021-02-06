@@ -82,7 +82,7 @@ or with spring-boot plugin `mvn spring-boot:run -Dspring-boot.run.arguments="--n
 > if you are using different server port, it will be picked up automatically from `server.port` property.
 
 #### ⚙️ advanced configuration
-###### ngrok configuration file(s)
+##### ngrok configuration file(s)
 If you want to start ngrok with configuration file or files, you can use `ngrok.config` property:
 ```properties
 ngrok.config=/home/user/custom-ngrok-config.yml
@@ -98,7 +98,7 @@ then generated ngrok command, should look like this:
 /home/user/.ngrok2/ngrok http -config /home/user/custom-ngrok-config.yml -config /home/user/another-ngrok-config.yml 8080
 ```
 
-###### custom execution command
+##### custom execution command
 If you want to achieve something more complex, you can use `ngrok.command` property to provide ngrok execution arguments.
 Example:
 ```properties
