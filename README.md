@@ -1,29 +1,40 @@
-# Ngrok Spring Boot Starter
-[![Travis build Status](https://img.shields.io/travis/kilmajster/ngrok-spring-boot-starter/master.svg?logo=travis)](https://travis-ci.org/kilmajster/ngrok-spring-boot-starter)
-![GitHub last commit](https://img.shields.io/github/last-commit/kilmajster/ngrok-spring-boot-starter.svg)
-![maven-central version](https://img.shields.io/maven-central/v/io.github.kilmajster/ngrok-spring-boot-starter?color=1)
-[![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg)](https://stackshare.io/createam-labs/ngrok-spring-boot-starter)
-
-![Gif with logs that contains public Ngrok URLs](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/ngrok.gif)
+<h1 align="center">
+    Ngrok Spring Boot Starter
+    <br>
+    <a href="https://travis-ci.org/kilmajster/ngrok-spring-boot-starter">
+        <img align="center" src="https://img.shields.io/travis/kilmajster/ngrok-spring-boot-starter/master.svg?logo=travis" alt="Travis build status badge">
+    </a>
+    <img align="center" src="https://img.shields.io/github/last-commit/kilmajster/ngrok-spring-boot-starter.svg" alt="Github last commit badge">
+    <img align="center" src="https://img.shields.io/maven-central/v/io.github.kilmajster/ngrok-spring-boot-starter?color=1" alt="latest maven-central version badge">
+    <a href="https://stackshare.io/createam-labs/ngrok-spring-boot-starter">
+        <img align="center" src="https://img.shields.io/badge/tech-stack-0690fa.svg" alt="stackshare.io badge">
+    </a>
+    <br>
+    <br>
+</h1>
+<p align="center">
+    <img src="https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/ngrok.gif" alt="Gif with logs that contains public Ngrok URLs">
+</p>
 
 Code of demo application available [here](https://github.com/kilmajster/demo).
 
-##### What is Ngrok?
-*tldr;* Ngrok can create a http tunnel and give you a public URL with redirection to 
-specified port on your local machine, which in our case will be a standard springs `http://localhost:8080` 
-or whatever you set as `server.port`. For simply usage account is not needed. Tunnels created with 
-free version will be available for 8 hours, so it is great tool for development and testing purposes! 
-For more details you can check out their [site](https://ngrok.com/).
 
-###### Paid version
-If you want to use this starter with paid Ngrok version, you just have to set property, which determinate proper 
-configured ngrok binary location, ex. ```ngrok.directory=/Users/user/custom/location```
 
-### What this starter gives to you?
-This starter will automatically download Ngrok binary corresponding to your operating system and cache it in 
-your ```home directory/.ngrok2```. Then every time you will run your Spring Boot application, Ngrok will 
-automatically build http tunnel pointing to your springs web server and you will get pretty logs 
-with the link, just like it's done below 👇
+
+> What is Ngrok?
+>
+> *tldr;* Ngrok can create a http tunnel and give you a public URL with redirection to
+> specified port on your local machine, which in our case will be a standard springs `http://localhost:8080`
+> or whatever you set as `server.port` springs property. For simply usage any account is not needed. Tunnels created with
+> free version will be available for 2 hours, so it is a great tool for development and testing purposes!
+> For more details you can check out their [site](https://ngrok.com/).
+
+## What this starter gives to you?
+This starter will automatically download Ngrok binary corresponding to your 
+operating system (Windows, Linux, OSX or even Docker) and then cache it into `home_directory/.ngrok2`. 
+Then every time you will run your Spring Boot application, Ngrok will 
+automatically build http tunnel pointing to your springs web server, and you will get pretty logs 
+with the remote links, just like it's done below 👇
 
 ![](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/demo.png)
 
@@ -34,39 +45,86 @@ with the link, just like it's done below 👇
 <dependency>
   <groupId>io.github.kilmajster</groupId>
   <artifactId>ngrok-spring-boot-starter</artifactId>
-  <version>0.2</version>
+  <version>0.3.0</version>
 </dependency>
 ```
 
 - or gradle:
 ```groovy
-compile('io.github.kilmajster:ngrok-spring-boot-starter:0.2')
+compile('io.github.kilmajster:ngrok-spring-boot-starter:0.3.0')
 ````
 
-### 🛠 Configuration 
-##### Required ```application.properties```
+###  Configuration
+#### 🚀 minimal configuration
+For simple http tunneling to springs default server port, only one configuration property is required. 
+There are many ways to provide spring config, for `application.property` based configuration, it will be:
 ```properties
 ngrok.enabled=true
 ```
-
-###### Optional ```application.properties``` & descriptions
+for yaml:
+```yaml
+ngrok:
+  enabled: true
 ```
-# to specify configuration file location, use following property:
-ngrok.config=/home/user/ngrok-config.yml
+or you can pass java execution attribute, like: `java -jar your-app.jar --ngrok.enabled=true`, 
+or with spring-boot plugin `mvn spring-boot:run -Dspring-boot.run.arguments="--ngrok.enabled=true"`, or any other way 😊
 
-# for multiple config files, use semicolon ";" as delimiter, like below:
-ngrok.config=/home/user/ngrok-config.yml;/home/user/ngrok-config-secondary.yml
+✅ All done, configuration is ready! 
 
-# if you've got already running Ngrok instance on non default port
-ngrok.api.url=http://localhost:4040
+> What will happen now?
+>
+> If you are using default spring configuration of server port, which is `8080`, then ngrok will 
+> be downloaded, extracted and cached into user default directory(eg. `/home/user/.ngrok2`) and then executed
+> on application startup, so final command executed in background as child process, should look like:
+>```bash
+> /home/user/.ngrok2/ngrok http 8080
+> ```
+> if you are using different server port, it will be picked up automatically from `server.port` property.
+
+#### ⚙️ advanced configuration
+###### ngrok configuration file(s)
+If you want to start ngrok with configuration file or files, you can use `ngrok.config` property:
+```properties
+ngrok.config=/home/user/custom-ngrok-config.yml
+```
+or if you've got multiple configuration files, use semicolon (`;`) as separator, like below:
+```properties
+ngrok.config=/home/user/custom-ngrok-config.yml;/home/user/another-ngrok-config.yml
+```
+then generated ngrok command, should look like this:
+```bash
+/home/user/.ngrok2/ngrok http -config /home/user/custom-ngrok-config.yml 8080
+# or for multiple configs, could be something like this:
+/home/user/.ngrok2/ngrok http -config /home/user/custom-ngrok-config.yml -config /home/user/another-ngrok-config.yml 8080
+```
+
+###### custom execution command
+If you want to achieve something more complex, you can use `ngrok.command` property to provide ngrok execution arguments.
+Example:
+```properties
+# to run default behavior
+ngrok.command=http 8080
+# should result with command = /home/user/.ngrok2/ngrok http 8000
+
+# or some more specific
+ngrok.command=http -region=us -hostname=dev.example.com 8000
+# should be = /home/user/.ngrok2/ngrok http -region=us -hostname=dev.example.com 8000
+```
+
+###### Optional properties & descriptions
+```properties
+# if you've got already running Ngrok instance somewhere else, you can specify its host & port, whoch defaults are:
+ngrok.host=http://127.0.0.1
+ngrok.port=4040
 
 # if you want to use Ngrok directory location different than default, which are:
 #  - for Windows C:\Users\user\.ngrok2
 #  - for unix systems ~/.ngrok2
+# use ngrok.directory property, like below:
 ngrok.directory=C:\\Users\\user\\Desktop\\ngrok
 
 # if for some reason Ngrok starting takes longer than really quick, you can override time 
-# of waiting for ngrok startup
+# of waiting for ngrok startup:
 ngrok.waitForStartup.millis=3000
 
 # if for some reason Ngrok binary file address has changed you can override it 
@@ -76,16 +134,12 @@ ngrok.binary.linux32=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386
 ngrok.binary.osx32=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-386.zip
 
 ngrok.binary.windows=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip
-ngrok.binary.windows=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+ngrok.binary.linux=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
 ngrok.binary.osx=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.zip
 
-# in case of trouble, you can specify the custom Ngrok binary zip archive url by:
+# or just specify custom location as fallback:
 ngrok.binary.custom=http://not-exist.com/custom-ngrok-platform-bsd-arm-sth.zip
 ```
-
-So now, the starter will run Ngrok http tunneling on specified `server.port`, which in Spring Boot, by default will be `8080`.  
-
-✅ That's all
 
 #### Issues & contributing
 If you've got any troubles or ideas, feel free to report an issue or create pull request with improvements 🙂.
@@ -94,5 +148,4 @@ If you've got any troubles or ideas, feel free to report an issue or create pull
  - https://ngrok.com/
  - https://spring.io/projects/spring-boot
  - https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using-boot-starter
-
 
