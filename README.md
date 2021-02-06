@@ -4,8 +4,8 @@
     <a href="https://travis-ci.org/kilmajster/ngrok-spring-boot-starter">
         <img align="center" src="https://img.shields.io/travis/kilmajster/ngrok-spring-boot-starter/master.svg?logo=travis&branch=main" alt="Travis build status badge">
     </a>
-    <img align="center" src="https://img.shields.io/github/last-commit/kilmajster/ngrok-spring-boot-starter.svg" alt="Github last commit badge">
     <img align="center" src="https://img.shields.io/maven-central/v/io.github.kilmajster/ngrok-spring-boot-starter?color=1" alt="latest maven-central version badge">
+    <img align="center" src="https://img.shields.io/github/last-commit/kilmajster/ngrok-spring-boot-starter.svg" alt="Github last commit badge">
     <a href="https://stackshare.io/createam-labs/ngrok-spring-boot-starter">
         <img align="center" src="https://img.shields.io/badge/tech-stack-0690fa.svg" alt="stackshare.io badge">
     </a>
