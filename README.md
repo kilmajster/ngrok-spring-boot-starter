@@ -9,17 +9,12 @@
     <a href="https://stackshare.io/createam-labs/ngrok-spring-boot-starter">
         <img align="center" src="https://img.shields.io/badge/tech-stack-0690fa.svg" alt="stackshare.io badge">
     </a>
-    <br>
-    <br>
 </h1>
 <p align="center">
     <img src="https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/ngrok.gif" alt="Gif with logs that contains public Ngrok URLs">
 </p>
 
 Code of demo application available [here](https://github.com/kilmajster/demo).
-
-
-
 
 > What is Ngrok?
 >
@@ -82,7 +77,7 @@ or with spring-boot plugin `mvn spring-boot:run -Dspring-boot.run.arguments="--n
 > if you are using different server port, it will be picked up automatically from `server.port` property.
 
 #### ⚙️ advanced configuration
-##### ngrok configuration file(s)
+###### ngrok configuration file(s)
 If you want to start ngrok with configuration file or files, you can use `ngrok.config` property:
 ```properties
 ngrok.config=/home/user/custom-ngrok-config.yml
