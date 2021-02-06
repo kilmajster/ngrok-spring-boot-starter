@@ -2,7 +2,7 @@
     Ngrok Spring Boot Starter
     <br>
     <a href="https://travis-ci.org/kilmajster/ngrok-spring-boot-starter">
-        <img align="center" src="https://img.shields.io/travis/kilmajster/ngrok-spring-boot-starter/master.svg?logo=travis" alt="Travis build status badge">
+        <img align="center" src="https://img.shields.io/travis/kilmajster/ngrok-spring-boot-starter/main.svg?logo=travis" alt="Travis build status badge">
     </a>
     <img align="center" src="https://img.shields.io/github/last-commit/kilmajster/ngrok-spring-boot-starter.svg" alt="Github last commit badge">
     <img align="center" src="https://img.shields.io/maven-central/v/io.github.kilmajster/ngrok-spring-boot-starter?color=1" alt="latest maven-central version badge">
@@ -11,7 +11,7 @@
     </a>
 </h1>
 <p align="center">
-    <img src="https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/ngrok.gif" alt="Gif with logs that contains public Ngrok URLs">
+    <img src="https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/main/ngrok.gif" alt="Gif with logs that contains public Ngrok URLs">
 </p>
 
 Code of demo application available [here](https://github.com/kilmajster/demo).
@@ -31,7 +31,7 @@ Then every time you will run your Spring Boot application, Ngrok will
 automatically build http tunnel pointing to your springs web server, and you will get pretty logs 
 with the remote links, just like it's done below 👇
 
-![](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/master/demo.png)
+![](https://raw.githubusercontent.com/kilmajster/ngrok-spring-boot-starter/main/demo.png)
 
 
 ### Dependency

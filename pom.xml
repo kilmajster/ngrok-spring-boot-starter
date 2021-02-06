@@ -21,7 +21,7 @@
     <licenses>
         <license>
             <name>Apache License 2.0</name>
-            <url>https://github.com/kilmajster/ngrok-spring-boot-starter/blob/master/LICENSE</url>
+            <url>https://github.com/kilmajster/ngrok-spring-boot-starter/blob/main/LICENSE</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
