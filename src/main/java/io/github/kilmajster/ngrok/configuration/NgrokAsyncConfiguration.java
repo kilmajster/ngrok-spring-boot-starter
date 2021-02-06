@@ -6,7 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 
-@ConditionalOnProperty(name = "ngrok.enabled", havingValue = "true")
+import static io.github.kilmajster.ngrok.NgrokConstants.PROP_NGROK_ENABLED;
+
+@ConditionalOnProperty(name = PROP_NGROK_ENABLED, havingValue = "true")
 @Configuration
 public class NgrokAsyncConfiguration {
 

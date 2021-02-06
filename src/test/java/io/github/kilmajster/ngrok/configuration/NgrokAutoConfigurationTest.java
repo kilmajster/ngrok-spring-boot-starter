@@ -1,7 +1,7 @@
 package io.github.kilmajster.ngrok.configuration;
 
-import io.github.kilmajster.ngrok.control.NgrokApiClient;
-import io.github.kilmajster.ngrok.control.NgrokDownloader;
+import io.github.kilmajster.ngrok.api.NgrokApiClient;
+import io.github.kilmajster.ngrok.util.NgrokDownloader;
 import io.github.kilmajster.ngrok.control.NgrokRunner;
 import io.github.kilmajster.ngrok.control.NgrokSystemCommandExecutor;
 import org.junit.Test;

@@ -3,6 +3,7 @@ package io.github.kilmajster.ngrok.control;
 import io.github.kilmajster.ngrok.configuration.NgrokAutoConfiguration;
 import io.github.kilmajster.ngrok.exception.NgrokDownloadException;
 import io.github.kilmajster.ngrok.test.NgrokIntegrationTestFakeApp;
+import io.github.kilmajster.ngrok.util.NgrokDownloader;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Ignore;

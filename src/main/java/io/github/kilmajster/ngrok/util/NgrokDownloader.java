@@ -1,11 +1,6 @@
-package io.github.kilmajster.ngrok.control;
+package io.github.kilmajster.ngrok.util;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
+import io.github.kilmajster.ngrok.exception.NgrokDownloadException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -16,10 +11,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
-import io.github.kilmajster.ngrok.exception.NgrokDownloadException;
-import io.github.kilmajster.ngrok.util.NgrokFileExtractUtils;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
-@ConditionalOnProperty(name = "ngrok.enabled", havingValue = "true")
+import static io.github.kilmajster.ngrok.NgrokConstants.PROP_NGROK_ENABLED;
+
+@ConditionalOnProperty(name = PROP_NGROK_ENABLED, havingValue = "true")
 @Component
 public class NgrokDownloader {
 
