@@ -77,7 +77,7 @@ or with spring-boot plugin `mvn spring-boot:run -Dspring-boot.run.arguments="--n
 > if you are using different server port, it will be picked up automatically from `server.port` property.
 
 #### ⚙️ advanced configuration
-###### ngrok configuration file(s)
+##### ngrok configuration file(s)
 If you want to start ngrok with configuration file or files, you can use `ngrok.config` property:
 ```properties
 ngrok.config=/home/user/custom-ngrok-config.yml
@@ -106,7 +106,7 @@ ngrok.command=http -region=us -hostname=dev.example.com 8000
 # should be = /home/user/.ngrok2/ngrok http -region=us -hostname=dev.example.com 8000
 ```
 
-###### Optional properties & descriptions
+##### Optional properties & descriptions
 ```properties
 # if you've got already running Ngrok instance somewhere else, you can specify its host & port, whoch defaults are:
 ngrok.host=http://127.0.0.1
