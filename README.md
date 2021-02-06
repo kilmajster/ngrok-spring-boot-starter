@@ -93,8 +93,8 @@ then generated ngrok command, should look like this:
 /home/user/.ngrok2/ngrok http -config /home/user/custom-ngrok-config.yml -config /home/user/another-ngrok-config.yml 8080
 ```
 
-#### `ngrok.command` - custom execution command
-If you want to achieve something more complex, you can use `ngrok.command` property to provide ngrok execution arguments.
+#### `ngrok.command` - ngrok custom command attributes
+If you want to achieve something more complex, you can use `ngrok.command` property to provide ngrok execution attributes.
 Example:
 ```properties
 # to run default behavior
