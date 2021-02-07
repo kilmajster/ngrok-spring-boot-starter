@@ -51,7 +51,7 @@ compile('io.github.kilmajster:ngrok-spring-boot-starter:0.3.0')
 
 ##  Configuration
 ### 🚀 Minimal configuration
-#### `ngrok.enabled` - only one required configuration property
+#### `ngrok.enabled` - one required configuration property
 For simple http tunneling to springs default server port, **only one configuration property is required**. 
 There are many ways to provide spring config, for `application.property` based configuration, it will be:
 ```properties
