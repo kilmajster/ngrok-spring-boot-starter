@@ -4,11 +4,10 @@
     <a href="https://github.com/kilmajster/ngrok-spring-boot-starter/actions">
         <img align="center" src="https://github.com/kilmajster/ngrok-spring-boot-starter/workflows/main/badge.svg" alt="CI status badge">
     </a>
-    <img align="center" src="https://img.shields.io/maven-central/v/io.github.kilmajster/ngrok-spring-boot-starter?color=1" alt="latest maven-central version badge">
+    <img align="center" src="https://img.shields.io/maven-central/v/io.github.kilmajster/ngrok-spring-boot-starter?color=blue" alt="Maven Central" >
     <img align="center" src="https://img.shields.io/github/last-commit/kilmajster/ngrok-spring-boot-starter.svg" alt="Github last commit badge">
-    <a href="https://stackshare.io/createam-labs/ngrok-spring-boot-starter">
-        <img align="center" src="https://img.shields.io/badge/tech-stack-0690fa.svg" alt="stackshare.io badge">
-    </a>
+    <img align="center" src="https://img.shields.io/github/license/kilmajster/ngrok-spring-boot-starter?color=blue" alt="stackshare.io badge">
+    
 </h1>
 <p align="center">
     <img src="https://ngrok.com/static/img/overview.png" alt="ngrok overview">
