@@ -4,9 +4,8 @@ on:
     branches: [ main, development, tests_fixes ]
   pull_request:
     branches: [ main ]
-
 jobs:
-  build:
+  test:
     strategy:
       matrix:
         operating-system: [ubuntu-latest, windows-latest]
@@ -17,8 +16,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: build & test main project
-        run: mvn install
+      - name: build & test & cache main project
+        run: mvn --batch-mode --no-transfer-progress install
       - name: execute automation tests
         working-directory: ./.github/test-app/
         run: mvn --batch-mode --no-transfer-progress test
