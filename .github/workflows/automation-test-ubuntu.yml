@@ -1,4 +1,4 @@
-name: tests on ubuntu
+name: Ubuntu CI
 on:
   push:
     branches: [ main, development, tests_fixes ]
