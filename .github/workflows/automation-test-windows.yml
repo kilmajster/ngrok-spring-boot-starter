@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [ main ]
 jobs:
-  test-on-ubuntu:
+  test-on-windows:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
