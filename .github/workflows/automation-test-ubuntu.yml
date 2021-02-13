@@ -13,8 +13,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: build & test & cache main project
+      - name: Silent install main project
         run: mvn --batch-mode --no-transfer-progress install
-      - name: execute automation tests
+      - name: Run automation with latest ngrok-spring-boot-starter version on test-app
         working-directory: ./.github/test-app/
         run: mvn --batch-mode --no-transfer-progress test
