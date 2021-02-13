@@ -37,7 +37,7 @@ Then every time you will run your Spring Boot application, Ngrok will
 automatically build http tunnel pointing to your springs web server, and you will get pretty logs 
 with the remote links, just like it's done below 👇
 <p align="center">
-    <img src="/demo.gif" alt="demo gif">
+    <img src="/.github/demo.gif" alt="demo gif">
 </p>
 
 Code of demo application available [here](https://github.com/kilmajster/demo).
