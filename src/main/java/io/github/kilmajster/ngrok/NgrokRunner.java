@@ -2,9 +2,9 @@ package io.github.kilmajster.ngrok;
 
 import io.github.kilmajster.ngrok.api.NgrokApiClient;
 import io.github.kilmajster.ngrok.api.model.NgrokTunnel;
-import io.github.kilmajster.ngrok.os.SystemCommandExecutor;
 import io.github.kilmajster.ngrok.exception.NgrokCommandExecuteException;
 import io.github.kilmajster.ngrok.exception.NgrokDownloadException;
+import io.github.kilmajster.ngrok.os.SystemCommandExecutor;
 import io.github.kilmajster.ngrok.util.NgrokDownloader;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -40,35 +40,36 @@ public class NgrokRunner {
         this.springServerPort = springServerPort;
         this.ngrokDirectory = ngrokDirectory;
         this.ngrokConfigFilePath = ngrokConfigFilePath;
+        this.ngrokCustomCommand = ngrokCustomCommand;
         this.ngrokApiClient = ngrokApiClient;
         this.ngrokDownloader = ngrokDownloader;
         this.systemCommandExecutor = systemCommandExecutor;
         this.ngrokExecutor = ngrokExecutor;
-        this.ngrokCustomCommand = ngrokCustomCommand;
     }
 
     @EventListener(ApplicationReadyEvent.class)
     public void run() throws NgrokDownloadException, NgrokCommandExecuteException {
         ngrokExecutor.execute(() -> {
-
             if (ngrokIsNotRunning()) {
-
                 if (needToDownloadNgrok()) {
-                    ngrokDownloader.downloadAndExtractNgrokTo(getNgrokDirectoryOrDefault());
-
+                    downloadAndExtractNgrokBinary();
                     addPermissionsIfNeeded();
                 }
-
-                startupNgrok();
+                startNgrok();
+            } else {
+                log.info("Ngrok was already running! Dashboard url -> [{}]", ngrokApiClient.getNgrokApiUrl());
             }
-
             logTunnelsDetails();
         });
     }
 
+    private void downloadAndExtractNgrokBinary() {
+        ngrokDownloader.downloadAndExtractNgrokTo(getNgrokDirectoryOrDefault());
+    }
+
     private void addPermissionsIfNeeded() {
         if (SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC) {
-            String chmod = "chmod +x ".concat(getNgrokExecutablePath());
+            final String chmod = "chmod +x ".concat(getNgrokExecutablePath());
 
             log.info("Running: " + chmod);
 
@@ -84,7 +85,7 @@ public class NgrokRunner {
         return !Files.isExecutable(Paths.get(getNgrokExecutablePath()));
     }
 
-    private void startupNgrok() {
+    private void startNgrok() {
         String command = isCustomConfigPresent() ? buildCustomShellCmd() : buildNgrokDefaultShellCmd();
 
         log.debug("Starting ngrok with command = [{}]", command);
@@ -92,7 +93,7 @@ public class NgrokRunner {
         systemCommandExecutor.execute(command);
 
         if (ngrokApiClient.isResponding()) {
-            log.info("Ngrok is running. Dashboard url -> {}", ngrokApiClient.getNgrokApiUrl());
+            log.info("Ngrok started successfully! Dashboard url -> [{}]", ngrokApiClient.getNgrokApiUrl());
         } else {
             log.warn("Ngrok seems to not responding! Ngrok status url = [{}] Ngrok execution command was = [{}]",
                     ngrokApiClient.getNgrokStatusUrl(), command);
