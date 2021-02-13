@@ -14,7 +14,7 @@ jobs:
         with:
           java-version: 1.8
       - name: build & test & cache main project
-        run: mvn --batch-mode --no-transfer-progress install
+        run: mvn --batch-mode --no-transfer-progress install -DskipTests
       - name: execute automation tests
         working-directory: ./.github/test-app/
         run: mvn --batch-mode --no-transfer-progress test
