@@ -1,9 +1,0 @@
-language: java
-
-sudo: false
-
-jdk:
-  - openjdk8
-
-script:
-  - mvn package

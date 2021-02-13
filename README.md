@@ -7,7 +7,16 @@
     <img align="center" src="https://img.shields.io/maven-central/v/io.github.kilmajster/ngrok-spring-boot-starter?color=blue" alt="Maven Central" >
     <img align="center" src="https://img.shields.io/github/last-commit/kilmajster/ngrok-spring-boot-starter.svg" alt="Github last commit badge">
     <img align="center" src="https://img.shields.io/github/license/kilmajster/ngrok-spring-boot-starter?color=blue" alt="stackshare.io badge">
-    
+    <br>
+    <a href="https://github.com/kilmajster/ngrok-spring-boot-starter/actions?query=workflow%3A%22CI+on+windows-latest%22">
+        <img align="center" src="https://github.com/kilmajster/ngrok-spring-boot-starter/workflows/CI%20on%20windows-latest/badge.svg" alt="CI on Windows">
+    </a>
+    <a href="https://github.com/kilmajster/ngrok-spring-boot-starter/actions?query=workflow%3A%22CI+on+ubuntu-latest%22">
+        <img align="center" src="https://github.com/kilmajster/ngrok-spring-boot-starter/workflows/CI%20on%20ubuntu-latest/badge.svg" alt="CI on Ubuntu">
+    </a>
+    <a href="https://github.com/kilmajster/ngrok-spring-boot-starter/actions?query=workflow%3A%22CI+on+macos-latest%22">
+        <img align="center" src="https://github.com/kilmajster/ngrok-spring-boot-starter/workflows/CI%20on%20macos-latest/badge.svg" alt="CI on MacOS">
+    </a>
 </h1>
 <p align="center">
     <img src="https://ngrok.com/static/img/overview.png" alt="ngrok overview">
@@ -28,7 +37,7 @@ Then every time you will run your Spring Boot application, Ngrok will
 automatically build http tunnel pointing to your springs web server, and you will get pretty logs 
 with the remote links, just like it's done below 👇
 <p align="center">
-    <img src="/demo.gif" alt="demo gif">
+    <img src="/.github/demo.gif" alt="demo gif">
 </p>
 
 Code of demo application available [here](https://github.com/kilmajster/demo).
