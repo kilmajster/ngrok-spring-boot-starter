@@ -50,7 +50,9 @@ class AppTests {
 		final String ngrokHttpsRemoteUrl = StringUtils.substringBetween(output.toString(), "(https) ->", "\n");
 		log.info("[TEST] Ngrok tunnel url = [{}]", ngrokHttpsRemoteUrl);
 
+
 		ResponseEntity<String> responseFromTunnel = new RestTemplate().getForEntity(new URL(ngrokHttpsRemoteUrl).toURI(), String.class);
+
 		log.info("Response from [{}] = \n\n{}\n\n", ngrokHttpsRemoteUrl, responseFromTunnel.toString());
 
 		assertThat(responseFromTunnel.getStatusCode()).isEqualTo(HttpStatus.OK);

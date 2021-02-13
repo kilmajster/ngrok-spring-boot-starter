@@ -1,5 +1,6 @@
 package io.github.kilmajster.ngrok.api;
 
+import io.github.kilmajster.ngrok.NgrokComponent;
 import io.github.kilmajster.ngrok.api.model.NgrokTunnel;
 import io.github.kilmajster.ngrok.api.model.NgrokTunnelsList;
 import org.slf4j.Logger;
@@ -17,8 +18,7 @@ import java.util.List;
 
 import static io.github.kilmajster.ngrok.NgrokConstants.PROP_NGROK_ENABLED;
 
-@ConditionalOnProperty(name = PROP_NGROK_ENABLED, havingValue = "true")
-@Component
+@NgrokComponent
 public class NgrokApiClient {
 
     public static final String NGROK_URL_API_TUNNELS = "/api/tunnels";

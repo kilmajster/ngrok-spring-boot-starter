@@ -1,7 +1,8 @@
-package io.github.kilmajster.ngrok.control;
+package io.github.kilmajster.ngrok;
 
 import io.github.kilmajster.ngrok.api.NgrokApiClient;
 import io.github.kilmajster.ngrok.api.model.NgrokTunnel;
+import io.github.kilmajster.ngrok.os.SystemCommandExecutor;
 import io.github.kilmajster.ngrok.exception.NgrokCommandExecuteException;
 import io.github.kilmajster.ngrok.exception.NgrokDownloadException;
 import io.github.kilmajster.ngrok.util.NgrokDownloader;
@@ -33,8 +34,8 @@ public class NgrokRunner {
     private final SystemCommandExecutor systemCommandExecutor;
     private final TaskExecutor ngrokExecutor;
 
-    public NgrokRunner(String springServerPort, String ngrokDirectory, String ngrokConfigFilePath, String ngrokCustomCommand,
-                       NgrokApiClient ngrokApiClient, NgrokDownloader ngrokDownloader,
+    public NgrokRunner(String springServerPort, String ngrokDirectory, String ngrokConfigFilePath,
+                       String ngrokCustomCommand, NgrokApiClient ngrokApiClient, NgrokDownloader ngrokDownloader,
                        SystemCommandExecutor systemCommandExecutor, TaskExecutor ngrokExecutor) {
         this.springServerPort = springServerPort;
         this.ngrokDirectory = ngrokDirectory;

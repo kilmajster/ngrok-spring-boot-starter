@@ -2,8 +2,8 @@ package io.github.kilmajster.ngrok.configuration;
 
 import io.github.kilmajster.ngrok.api.NgrokApiClient;
 import io.github.kilmajster.ngrok.util.NgrokDownloader;
-import io.github.kilmajster.ngrok.control.NgrokRunner;
-import io.github.kilmajster.ngrok.control.SystemCommandExecutor;
+import io.github.kilmajster.ngrok.NgrokRunner;
+import io.github.kilmajster.ngrok.os.SystemCommandExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

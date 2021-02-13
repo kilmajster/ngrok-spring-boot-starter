@@ -1,15 +1,15 @@
 package io.github.kilmajster.ngrok.util;
 
+import io.github.kilmajster.ngrok.NgrokComponent;
 import io.github.kilmajster.ngrok.exception.NgrokDownloadException;
+import io.github.kilmajster.ngrok.os.NgrokPlatformDetector;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,10 +17,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static io.github.kilmajster.ngrok.NgrokConstants.PROP_NGROK_ENABLED;
-
-@ConditionalOnProperty(name = PROP_NGROK_ENABLED, havingValue = "true")
-@Component
+@NgrokComponent
 public class NgrokDownloader {
 
     private static final Logger log = LoggerFactory.getLogger(NgrokDownloader.class);
@@ -45,6 +42,13 @@ public class NgrokDownloader {
 
     @Value("${ngrok.binary.custom:}")
     private String ngrokBinaryCustom;
+
+    @Autowired
+    private final NgrokPlatformDetector platformDetector;
+
+    public NgrokDownloader(final NgrokPlatformDetector platformDetector) {
+        this.platformDetector = platformDetector;
+    }
 
     public void downloadAndExtractNgrokTo(String destinationPath) throws NgrokDownloadException {
         String downloadedFilePath = downloadNgrokTo(destinationPath);
@@ -92,22 +96,18 @@ public class NgrokDownloader {
             return ngrokBinaryCustom;
         }
 
-        if (SystemUtils.IS_OS_WINDOWS) {
-            return is64bitOS() ? windows64BinaryUrl : windowsBinaryUrl;
+        if (platformDetector.isWindows()) {
+            return platformDetector.is64bitOS() ? windows64BinaryUrl : windowsBinaryUrl;
         }
 
-        if (SystemUtils.IS_OS_MAC) {
-            return is64bitOS() ? osx64BinaryUrl : osxBinaryUrl;
+        if (platformDetector.isMacOS()) {
+            return platformDetector.is64bitOS() ? osx64BinaryUrl : osxBinaryUrl;
         }
 
-        if (SystemUtils.IS_OS_LINUX) {
-            return is64bitOS() ? linux64BinaryUrl : linuxBinaryUrl;
+        if (platformDetector.isLinux()) {
+            return platformDetector.is64bitOS() ? linux64BinaryUrl : linuxBinaryUrl;
         }
 
-        throw new NgrokDownloadException("Unsupported OS.");
-    }
-
-    private boolean is64bitOS() {
-        return SystemUtils.OS_ARCH.contains("64");
+        throw new NgrokDownloadException("Unsupported OS ");
     }
 }

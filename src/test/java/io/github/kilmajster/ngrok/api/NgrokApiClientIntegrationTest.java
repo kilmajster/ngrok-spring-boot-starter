@@ -1,6 +1,6 @@
-package io.github.kilmajster.ngrok.control;
+package io.github.kilmajster.ngrok.api;
 
-import io.github.kilmajster.ngrok.api.NgrokApiClient;
+import io.github.kilmajster.ngrok.TestConstants;
 import io.github.kilmajster.ngrok.api.model.NgrokTunnel;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ResourceUtils;
 
@@ -22,13 +20,12 @@ import java.util.List;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@AutoConfigureWireMock(port = 4040)
 @RunWith(SpringRunner.class)
 @SpringBootTest(
         classes = NgrokApiClient.class,
-        webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@TestPropertySource(locations = "classpath:/application-integration-test.properties")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@AutoConfigureWireMock(port = 4040)
+        webEnvironment = SpringBootTest.WebEnvironment.MOCK,
+        properties = TestConstants.NGROK_ENABLED)
 public class NgrokApiClientIntegrationTest {
 
     @Autowired

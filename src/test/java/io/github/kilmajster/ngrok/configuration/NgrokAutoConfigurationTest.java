@@ -1,9 +1,8 @@
 package io.github.kilmajster.ngrok.configuration;
 
-import io.github.kilmajster.ngrok.api.NgrokApiClient;
+import io.github.kilmajster.ngrok.NgrokComponent;
+import io.github.kilmajster.ngrok.NgrokRunner;
 import io.github.kilmajster.ngrok.util.NgrokDownloader;
-import io.github.kilmajster.ngrok.control.NgrokRunner;
-import io.github.kilmajster.ngrok.control.NgrokSystemCommandExecutor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -18,44 +17,27 @@ import static org.assertj.core.api.Assertions.assertThat;
         webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @RunWith(SpringRunner.class)
 public class NgrokAutoConfigurationTest {
-    
-    private static final String NGROK_DISABLED_PROPERTY = "ngrok.enabled=false";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(NgrokAutoConfiguration.class));
 
     @Test
     public void ngrokAsyncConfigurationShouldBeNotVisibleWhenPropertyIsDisabled() {
-        this.contextRunner.withPropertyValues(NGROK_DISABLED_PROPERTY);
-
         this.contextRunner.run((context) -> assertThat(context).doesNotHaveBean(NgrokAsyncConfiguration.class));
     }
 
     @Test
     public void ngrokRunnerShouldBeNotVisibleWhenPropertyIsDisabled() {
-        this.contextRunner.withPropertyValues(NGROK_DISABLED_PROPERTY);
-
         this.contextRunner.run((context) -> assertThat(context).doesNotHaveBean(NgrokRunner.class));
     }
 
     @Test
     public void ngrokDownloaderShouldBeNotVisibleWhenPropertyIsDisabled() {
-        this.contextRunner.withPropertyValues(NGROK_DISABLED_PROPERTY);
-
         this.contextRunner.run((context) -> assertThat(context).doesNotHaveBean(NgrokDownloader.class));
     }
 
     @Test
-    public void ngrokApiClientShouldBeNotVisibleWhenPropertyIsDisabled() {
-        this.contextRunner.withPropertyValues(NGROK_DISABLED_PROPERTY);
-
-        this.contextRunner.run((context) -> assertThat(context).doesNotHaveBean(NgrokApiClient.class));
-    }
-
-    @Test
-    public void systemCommandExecutorShouldBeNotVisibleWhenPropertyIsDisabled() {
-        this.contextRunner.withPropertyValues(NGROK_DISABLED_PROPERTY);
-
-        this.contextRunner.run((context) -> assertThat(context).doesNotHaveBean(NgrokSystemCommandExecutor.class));
+    public void whenNgrokIsNotEnabled_shouldNotIncludeAnyNgrokBeans() {
+        this.contextRunner.run((context) -> assertThat(context).doesNotHaveBean(NgrokComponent.class));
     }
 }
