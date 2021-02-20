@@ -1,6 +1,7 @@
 package io.github.kilmajster.ngrok.os;
 
 import io.github.kilmajster.ngrok.NgrokComponent;
+import io.github.kilmajster.ngrok.NgrokProperties;
 import io.github.kilmajster.ngrok.exception.NgrokCommandExecuteException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,7 @@ public class NgrokSystemCommandExecutor {
 
     private static final Logger log = LoggerFactory.getLogger(NgrokSystemCommandExecutor.class);
 
-    @Value("${ngrok.waitForStartup.millis:3000}")
+    @Value("${" + NgrokProperties.NGROK_WAIT_FOR_STARTUP + ":" + NgrokProperties.NGROK_WAIT_FOR_STARTUP_DEFAULT + "}")
     private long waitForStartupMillis;
 
     public void execute(final String command) {

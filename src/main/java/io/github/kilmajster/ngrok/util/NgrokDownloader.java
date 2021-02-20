@@ -1,6 +1,7 @@
 package io.github.kilmajster.ngrok.util;
 
 import io.github.kilmajster.ngrok.NgrokComponent;
+import io.github.kilmajster.ngrok.NgrokProperties;
 import io.github.kilmajster.ngrok.exception.NgrokDownloadException;
 import io.github.kilmajster.ngrok.os.NgrokPlatformDetector;
 import org.apache.commons.io.FileUtils;
@@ -22,25 +23,25 @@ public class NgrokDownloader {
 
     private static final Logger log = LoggerFactory.getLogger(NgrokDownloader.class);
 
-    @Value("${ngrok.binary.windows32:https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-386.zip}")
+    @Value("${" + NgrokProperties.NGROK_BINARY_WINDOWS_32 + ":" + NgrokProperties.NGROK_BINARY_WINDOWS_32_DEFAULT + "}")
     private String windowsBinaryUrl;
 
-    @Value("${ngrok.binary.linux32:https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip}")
+    @Value("${" + NgrokProperties.NGROK_BINARY_LINUX_32 + ":" + NgrokProperties.NGROK_BINARY_LINUX_32_DEFAULT + "}")
     private String linuxBinaryUrl;
 
-    @Value("${ngrok.binary.osx32:https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-386.zip}")
+    @Value("${" + NgrokProperties.NGROK_BINARY_OSX_32 + ":" + NgrokProperties.NGROK_BINARY_OSX_32_DEFAULT + "}")
     private String osxBinaryUrl;
 
-    @Value("${ngrok.binary.windows:https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip}")
+    @Value("${" + NgrokProperties.NGROK_BINARY_WINDOWS_64 + ":" + NgrokProperties.NGROK_BINARY_WINDOWS_64_DEFAULT + "}")
     private String windows64BinaryUrl;
 
-    @Value("${ngrok.binary.windows:https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip}")
+    @Value("${" + NgrokProperties.NGROK_BINARY_LINUX_64 + ":" + NgrokProperties.NGROK_BINARY_LINUX_64_DEFAULT + "}")
     private String linux64BinaryUrl;
 
-    @Value("${ngrok.binary.osx:https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.zip}")
+    @Value("${" + NgrokProperties.NGROK_BINARY_OSX_64 + ":" + NgrokProperties.NGROK_BINARY_OSX_64_DEFAULT + "}")
     private String osx64BinaryUrl;
 
-    @Value("${ngrok.binary.custom:}")
+    @Value("${"+ NgrokProperties.NGROK_BINARY_CUSTOM +":}")
     private String ngrokBinaryCustom;
 
     @Autowired

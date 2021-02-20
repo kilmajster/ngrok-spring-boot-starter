@@ -1,6 +1,7 @@
 package io.github.kilmajster.ngrok.os;
 
 import io.github.kilmajster.ngrok.NgrokComponent;
+import io.github.kilmajster.ngrok.NgrokProperties;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +15,7 @@ import java.nio.file.Paths;
 @NgrokComponent
 public class NgrokBinaryProvider {
 
-    @Value("${ngrok.directory:}")
+    @Value("${" + NgrokProperties.NGROK_DIRECTORY + ":}")
     private String ngrokDirectory;
 
     public String getNgrokBinaryFilePath() {

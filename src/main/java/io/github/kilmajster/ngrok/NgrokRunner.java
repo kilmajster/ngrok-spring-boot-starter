@@ -22,14 +22,14 @@ public class NgrokRunner {
 
     private static final Logger log = LoggerFactory.getLogger(NgrokRunner.class);
 
-    @Value("${server.port:8080}")
-    private  String springServerPort;
+    @Value("${" + NgrokProperties.SPRING_SERVER_PORT + ":" + NgrokProperties.SPRING_SERVER_PORT_DEFAULT + "}")
+    private String springServerPort;
 
-    @Value("${ngrok.config:}")
-    private  String ngrokConfigFilePath;
+    @Value("${" + NgrokProperties.NGROK_CONFIG + ":}")
+    private String ngrokConfigFilePath;
 
-    @Value("${ngrok.command:}")
-    private  String ngrokCustomCommand;
+    @Value("${" + NgrokProperties.NGROK_COMMAND + ":}")
+    private String ngrokCustomCommand;
 
     private final NgrokApiClient ngrokApiClient;
     private final NgrokBinaryProvider ngrokBinaryProvider;

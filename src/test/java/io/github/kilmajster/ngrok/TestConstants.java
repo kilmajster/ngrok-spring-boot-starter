@@ -1,7 +1,7 @@
 package io.github.kilmajster.ngrok;
 
 public interface TestConstants {
-    String TEST_NGROK_PROP_ENABLED = NgrokConstants.PROP_NGROK_ENABLED + "=true";
+    String TEST_NGROK_PROP_ENABLED = NgrokProperties.NGROK_ENABLED + "=true";
 
     String TEST_NGROK_PROFILE = "test";
     String TEST_NGROK_PROFILE_WINDOWS = "test-windows";

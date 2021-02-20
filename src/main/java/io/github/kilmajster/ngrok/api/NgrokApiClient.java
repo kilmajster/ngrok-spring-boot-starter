@@ -1,6 +1,7 @@
 package io.github.kilmajster.ngrok.api;
 
 import io.github.kilmajster.ngrok.NgrokComponent;
+import io.github.kilmajster.ngrok.NgrokProperties;
 import io.github.kilmajster.ngrok.api.model.NgrokTunnel;
 import io.github.kilmajster.ngrok.api.model.NgrokTunnelsList;
 import org.slf4j.Logger;
@@ -26,8 +27,8 @@ public class NgrokApiClient {
     private final String ngrokApiUrl;
 
     public NgrokApiClient(
-            @Value("${ngrok.host:http://127.0.0.1}") String ngrokApiHost,
-            @Value("${ngrok.port:4040}") Integer ngrokApiPort) {
+            @Value("${" + NgrokProperties.NGROK_HOST + ":" + NgrokProperties.NGROK_HOST_DEFAULT + "}") String ngrokApiHost,
+            @Value("${" + NgrokProperties.NGROK_PORT + ":" + NgrokProperties.NGROK_PORT_DEFAULT + "}") Integer ngrokApiPort) {
         this.ngrokApiUrl = ngrokApiHost + ":" + ngrokApiPort;
     }
 

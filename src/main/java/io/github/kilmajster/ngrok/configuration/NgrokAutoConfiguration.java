@@ -1,6 +1,6 @@
 package io.github.kilmajster.ngrok.configuration;
 
-import io.github.kilmajster.ngrok.NgrokConstants;
+import io.github.kilmajster.ngrok.NgrokProperties;
 import io.github.kilmajster.ngrok.os.NgrokBinaryProvider;
 import io.github.kilmajster.ngrok.NgrokRunner;
 import io.github.kilmajster.ngrok.api.NgrokApiClient;
@@ -24,7 +24,7 @@ public class NgrokAutoConfiguration {
     private static final Logger log = LoggerFactory.getLogger(NgrokAutoConfiguration.class);
 
     @Bean
-    @ConditionalOnProperty(name = NgrokConstants.PROP_NGROK_ENABLED, havingValue = "true")
+    @ConditionalOnProperty(name = NgrokProperties.NGROK_ENABLED, havingValue = "true")
     public NgrokRunner ngrokRunner(
             @Autowired NgrokApiClient ngrokApiClient,
             @Autowired NgrokDownloader ngrokDownloader,
