@@ -21,4 +21,8 @@ public class NgrokPlatformDetector {
     public boolean is64bitOS() {
         return SystemUtils.OS_ARCH.contains("64");
     }
+
+    public boolean isUnix() {
+        return SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC;
+    }
 }

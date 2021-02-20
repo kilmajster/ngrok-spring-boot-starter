@@ -8,18 +8,14 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 
-@NgrokComponent("ngrokCommandExecutor")
-public class NgrokSystemCommandExecutor implements SystemCommandExecutor {
+@NgrokComponent
+public class NgrokSystemCommandExecutor {
 
     private static final Logger log = LoggerFactory.getLogger(NgrokSystemCommandExecutor.class);
 
-    private final long waitForStartupMillis;
+    @Value("${ngrok.waitForStartup.millis:3000}")
+    private long waitForStartupMillis;
 
-    public NgrokSystemCommandExecutor(@Value("${ngrok.waitForStartup.millis:3000}") long waitForStartupMillis) {
-        this.waitForStartupMillis = waitForStartupMillis;
-    }
-
-    @Override
     public void execute(final String command) {
         try {
             Runtime.getRuntime().exec(command);

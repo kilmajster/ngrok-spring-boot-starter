@@ -6,17 +6,12 @@ import io.github.kilmajster.ngrok.api.model.NgrokTunnelsList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.List;
-
-import static io.github.kilmajster.ngrok.NgrokConstants.PROP_NGROK_ENABLED;
 
 @NgrokComponent
 public class NgrokApiClient {
@@ -29,7 +24,6 @@ public class NgrokApiClient {
     private final RestTemplate restTemplate = new RestTemplate();
 
     private final String ngrokApiUrl;
-
 
     public NgrokApiClient(
             @Value("${ngrok.host:http://127.0.0.1}") String ngrokApiHost,

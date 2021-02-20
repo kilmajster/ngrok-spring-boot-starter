@@ -1,6 +1,5 @@
 package io.github.kilmajster.ngrok.api;
 
-import io.github.kilmajster.ngrok.TestConstants;
 import io.github.kilmajster.ngrok.api.model.NgrokTunnel;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ResourceUtils;
 
@@ -18,14 +18,16 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static io.github.kilmajster.ngrok.TestConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ActiveProfiles(TEST_NGROK_PROFILE)
 @AutoConfigureWireMock(port = 4040)
 @RunWith(SpringRunner.class)
 @SpringBootTest(
         classes = NgrokApiClient.class,
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
-        properties = TestConstants.NGROK_ENABLED)
+        properties = TEST_NGROK_PROP_ENABLED)
 public class NgrokApiClientIntegrationTest {
 
     @Autowired
@@ -64,7 +66,7 @@ public class NgrokApiClientIntegrationTest {
     @Test
     public void fetchTunnels_shouldReturnTunnelsWhenNgrokIsRunning() throws IOException {
         // given
-        File file = ResourceUtils.getFile(this.getClass().getResource("/tunnels.json"));
+        File file = ResourceUtils.getFile(this.getClass().getResource(TEST_NGROK_TUNNELS_FILE_PATH));
         String tunnelsAsJson = FileUtils.readFileToString(file, Charset.defaultCharset());
 
         stubFor(

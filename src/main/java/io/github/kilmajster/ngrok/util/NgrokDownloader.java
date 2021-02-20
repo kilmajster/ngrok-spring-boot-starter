@@ -55,7 +55,7 @@ public class NgrokDownloader {
         NgrokFileExtractUtils.extractArchive(downloadedFilePath, destinationPath);
     }
 
-    public String downloadNgrokTo(String destinationPath) throws NgrokDownloadException {
+    private String downloadNgrokTo(String destinationPath) throws NgrokDownloadException {
         String zipFileName = getFileNameFromUrl(getBinaryUrl());
         String destinationFile = FilenameUtils.concat(destinationPath, zipFileName);
 
@@ -92,7 +92,7 @@ public class NgrokDownloader {
     }
 
     public String getBinaryUrl() {
-        if(StringUtils.isNotBlank(ngrokBinaryCustom)) {
+        if (StringUtils.isNotBlank(ngrokBinaryCustom)) {
             return ngrokBinaryCustom;
         }
 

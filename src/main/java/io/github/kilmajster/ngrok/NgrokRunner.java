@@ -4,48 +4,51 @@ import io.github.kilmajster.ngrok.api.NgrokApiClient;
 import io.github.kilmajster.ngrok.api.model.NgrokTunnel;
 import io.github.kilmajster.ngrok.exception.NgrokCommandExecuteException;
 import io.github.kilmajster.ngrok.exception.NgrokDownloadException;
-import io.github.kilmajster.ngrok.os.SystemCommandExecutor;
+import io.github.kilmajster.ngrok.os.NgrokBinaryProvider;
+import io.github.kilmajster.ngrok.os.NgrokPlatformDetector;
+import io.github.kilmajster.ngrok.os.NgrokSystemCommandExecutor;
 import io.github.kilmajster.ngrok.util.NgrokDownloader;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.task.TaskExecutor;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 
 public class NgrokRunner {
 
     private static final Logger log = LoggerFactory.getLogger(NgrokRunner.class);
 
-    private final String springServerPort;
-    private final String ngrokDirectory;
-    private final String ngrokConfigFilePath;
-    private final String ngrokCustomCommand;
+    @Value("${server.port:8080}")
+    private  String springServerPort;
+
+    @Value("${ngrok.config:}")
+    private  String ngrokConfigFilePath;
+
+    @Value("${ngrok.command:}")
+    private  String ngrokCustomCommand;
+
     private final NgrokApiClient ngrokApiClient;
+    private final NgrokBinaryProvider ngrokBinaryProvider;
     private final NgrokDownloader ngrokDownloader;
-    private final SystemCommandExecutor systemCommandExecutor;
+    private final NgrokPlatformDetector ngrokPlatformDetector;
+    private final NgrokSystemCommandExecutor ngrokSystemCommandExecutor;
     private final TaskExecutor ngrokExecutor;
 
-    public NgrokRunner(String springServerPort, String ngrokDirectory, String ngrokConfigFilePath,
-                       String ngrokCustomCommand, NgrokApiClient ngrokApiClient, NgrokDownloader ngrokDownloader,
-                       SystemCommandExecutor systemCommandExecutor, TaskExecutor ngrokExecutor) {
-        this.springServerPort = springServerPort;
-        this.ngrokDirectory = ngrokDirectory;
-        this.ngrokConfigFilePath = ngrokConfigFilePath;
-        this.ngrokCustomCommand = ngrokCustomCommand;
+    public NgrokRunner(
+            NgrokApiClient ngrokApiClient, NgrokBinaryProvider ngrokBinaryProvider, NgrokDownloader ngrokDownloader,
+            NgrokPlatformDetector ngrokPlatformDetector, NgrokSystemCommandExecutor ngrokSystemCommandExecutor, TaskExecutor ngrokExecutor) {
         this.ngrokApiClient = ngrokApiClient;
+        this.ngrokBinaryProvider = ngrokBinaryProvider;
         this.ngrokDownloader = ngrokDownloader;
-        this.systemCommandExecutor = systemCommandExecutor;
+        this.ngrokPlatformDetector = ngrokPlatformDetector;
+        this.ngrokSystemCommandExecutor = ngrokSystemCommandExecutor;
         this.ngrokExecutor = ngrokExecutor;
     }
+
 
     @EventListener(ApplicationReadyEvent.class)
     public void run() throws NgrokDownloadException, NgrokCommandExecuteException {
@@ -64,16 +67,16 @@ public class NgrokRunner {
     }
 
     private void downloadAndExtractNgrokBinary() {
-        ngrokDownloader.downloadAndExtractNgrokTo(getNgrokDirectoryOrDefault());
+        ngrokDownloader.downloadAndExtractNgrokTo(ngrokBinaryProvider.getNgrokDirectoryOrDefault());
     }
 
     private void addPermissionsIfNeeded() {
-        if (SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC) {
-            final String chmod = "chmod +x ".concat(getNgrokExecutablePath());
+        if (ngrokPlatformDetector.isUnix()) {
+            final String chmod = "chmod +x ".concat(ngrokBinaryProvider.getNgrokBinaryFilePath());
 
             log.info("Running: " + chmod);
 
-            systemCommandExecutor.execute(chmod);
+            ngrokSystemCommandExecutor.execute(chmod);
         }
     }
 
@@ -82,15 +85,14 @@ public class NgrokRunner {
     }
 
     private boolean needToDownloadNgrok() {
-        return !Files.isExecutable(Paths.get(getNgrokExecutablePath()));
+        return !ngrokBinaryProvider.isNgrokBinaryPresent();
     }
 
     private void startNgrok() {
         String command = isCustomConfigPresent() ? buildCustomShellCmd() : buildNgrokDefaultShellCmd();
-
         log.debug("Starting ngrok with command = [{}]", command);
 
-        systemCommandExecutor.execute(command);
+        ngrokSystemCommandExecutor.execute(command);
 
         if (ngrokApiClient.isResponding()) {
             log.info("Ngrok started successfully! Dashboard url -> [{}]", ngrokApiClient.getNgrokApiUrl());
@@ -101,14 +103,14 @@ public class NgrokRunner {
     }
 
     private String buildNgrokDefaultShellCmd() {
-        return getNgrokExecutablePath()
+        return ngrokBinaryProvider.getNgrokBinaryFilePath()
                 + " http "
                 + prepareNgrokConfigParams(ngrokConfigFilePath)
-                + springServerPort;
+                + this.springServerPort;
     }
 
     private String buildCustomShellCmd() {
-        return getNgrokExecutablePath() + " " + ngrokCustomCommand;
+        return ngrokBinaryProvider.getNgrokBinaryFilePath() + " " + ngrokCustomCommand;
     }
 
     private String prepareNgrokConfigParams(String ngrokConfigFilePath) {
@@ -126,19 +128,5 @@ public class NgrokRunner {
         List<NgrokTunnel> tunnels = ngrokApiClient.fetchTunnels();
 
         tunnels.forEach(t -> log.info("Remote url ({}) -> {}", t.getProto(), t.getPublicUrl()));
-    }
-
-    private String getNgrokExecutablePath() {
-        String executable = SystemUtils.IS_OS_WINDOWS ? "ngrok.exe" : "ngrok";
-
-        return getNgrokDirectoryOrDefault() + File.separator + executable;
-    }
-
-    private String getNgrokDirectoryOrDefault() {
-        return StringUtils.isNotBlank(ngrokDirectory) ? ngrokDirectory : getDefaultNgrokDirectory();
-    }
-
-    private String getDefaultNgrokDirectory() {
-        return FilenameUtils.concat(FileUtils.getUserDirectory().getPath(), ".ngrok2");
     }
 }
