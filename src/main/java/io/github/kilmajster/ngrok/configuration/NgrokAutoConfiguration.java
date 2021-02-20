@@ -1,9 +1,9 @@
 package io.github.kilmajster.ngrok.configuration;
 
 import io.github.kilmajster.ngrok.NgrokProperties;
-import io.github.kilmajster.ngrok.os.NgrokBinaryProvider;
 import io.github.kilmajster.ngrok.NgrokRunner;
 import io.github.kilmajster.ngrok.api.NgrokApiClient;
+import io.github.kilmajster.ngrok.os.NgrokBinaryProvider;
 import io.github.kilmajster.ngrok.os.NgrokPlatformDetector;
 import io.github.kilmajster.ngrok.os.NgrokSystemCommandExecutor;
 import io.github.kilmajster.ngrok.util.NgrokDownloader;

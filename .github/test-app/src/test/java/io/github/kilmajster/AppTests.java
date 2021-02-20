@@ -32,28 +32,29 @@ class AppTests {
 
 	@Test
 	public void shouldStartNgrok(CapturedOutput output) throws IOException, URISyntaxException, InterruptedException {
-		log.info("[TEST] Waiting for ngrok...");
+		log.info("[ TEST ] Waiting for ngrok...");
 
 		boolean ngrokStarted = false;
 
+		Thread.sleep(1000);
 		for (int i = WAIT_FOR_STARTUP_SECONDS; i > 0; i--) {
 			Thread.sleep(1000);
-			if(output.toString().contains("(http) ->")) {
+			if(output.toString().contains("Ngrok started successfully!")) {
 				ngrokStarted = true;
-				log.info("[TEST] Ngrok start detected!");
+				log.info("[ TEST ] Ngrok start detected!");
 				break;
 			}
 		}
 
 		assertThat(ngrokStarted).isTrue();
 
-		final String ngrokHttpsRemoteUrl = StringUtils.substringBetween(output.toString(), "(https) ->", "\n");
-		log.info("[TEST] Ngrok tunnel url = [{}]", ngrokHttpsRemoteUrl);
+		final String ngrokHttpsRemoteUrl = StringUtils.substringBetween(output.toString(), "Remote url (https)	-> [ ", "]\n");
+		log.info("[ TEST ] Captured ngrok tunnel url = [ {} ]", ngrokHttpsRemoteUrl);
 
 
 		ResponseEntity<String> responseFromTunnel = new RestTemplate().getForEntity(new URL(ngrokHttpsRemoteUrl).toURI(), String.class);
 
-		log.info("Response from [{}] = \n\n{}\n\n", ngrokHttpsRemoteUrl, responseFromTunnel.toString());
+		log.info("Response from [ {} ] = \n\n\n{}\n\n", ngrokHttpsRemoteUrl, responseFromTunnel.toString());
 
 		assertThat(responseFromTunnel.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(responseFromTunnel.getBody()).isEqualTo("<h1>Hello World!</h1>");

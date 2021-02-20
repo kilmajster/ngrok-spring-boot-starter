@@ -41,7 +41,7 @@ public class NgrokDownloader {
     @Value("${" + NgrokProperties.NGROK_BINARY_OSX_64 + ":" + NgrokProperties.NGROK_BINARY_OSX_64_DEFAULT + "}")
     private String osx64BinaryUrl;
 
-    @Value("${"+ NgrokProperties.NGROK_BINARY_CUSTOM +":}")
+    @Value("${" + NgrokProperties.NGROK_BINARY_CUSTOM + ":}")
     private String ngrokBinaryCustom;
 
     @Autowired

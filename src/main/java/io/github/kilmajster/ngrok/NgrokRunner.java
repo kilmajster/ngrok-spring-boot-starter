@@ -18,6 +18,9 @@ import org.springframework.core.task.TaskExecutor;
 
 import java.util.List;
 
+/**
+ * For details see <a href="https://github.com/kilmajster/ngrok-spring-boot-starter">docs</a>.
+ */
 public class NgrokRunner {
 
     private static final Logger log = LoggerFactory.getLogger(NgrokRunner.class);
@@ -60,7 +63,7 @@ public class NgrokRunner {
                 }
                 startNgrok();
             } else {
-                log.info("Ngrok was already running! Dashboard url -> [{}]", ngrokApiClient.getNgrokApiUrl());
+                log.info("Ngrok was already running! Dashboard url -> [ {} ]", ngrokApiClient.getNgrokApiUrl());
             }
             logTunnelsDetails();
         });
@@ -90,14 +93,14 @@ public class NgrokRunner {
 
     private void startNgrok() {
         String command = isCustomConfigPresent() ? buildCustomShellCmd() : buildNgrokDefaultShellCmd();
-        log.debug("Starting ngrok with command = [{}]", command);
+        log.debug("Starting ngrok with command = [ {} ]", command);
 
         ngrokSystemCommandExecutor.execute(command);
 
         if (ngrokApiClient.isResponding()) {
-            log.info("Ngrok started successfully! Dashboard url -> [{}]", ngrokApiClient.getNgrokApiUrl());
+            log.info("Ngrok started successfully! Dashboard url -> [ {} ]", ngrokApiClient.getNgrokApiUrl());
         } else {
-            log.warn("Ngrok seems to not responding! Ngrok status url = [{}] Ngrok execution command was = [{}]",
+            log.warn("Ngrok seems to not responding! Ngrok status url = [ {} ] Ngrok execution command was = [ {} ]",
                     ngrokApiClient.getNgrokStatusUrl(), command);
         }
     }
@@ -127,6 +130,6 @@ public class NgrokRunner {
     private void logTunnelsDetails() {
         List<NgrokTunnel> tunnels = ngrokApiClient.fetchTunnels();
 
-        tunnels.forEach(t -> log.info("Remote url ({}) -> {}", t.getProto(), t.getPublicUrl()));
+        tunnels.forEach(t -> log.info("Remote url ({})\t-> [ {} ]", t.getProto(), t.getPublicUrl()));
     }
 }
