@@ -28,7 +28,7 @@ public class NgrokBinaryProvider {
     }
 
     public boolean isNgrokBinaryPresent() {
-        return !Files.isExecutable(Paths.get(getNgrokBinaryFilePath()));
+        return Files.isExecutable(Paths.get(getNgrokBinaryFilePath()));
     }
 
     private String getDefaultNgrokDirectory() {
