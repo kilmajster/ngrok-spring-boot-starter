@@ -2,6 +2,9 @@ package io.github.kilmajster.ngrok;
 
 public interface TestConstants {
     String TEST_NGROK_PROP_ENABLED = NgrokProperties.NGROK_ENABLED + "=true";
+    String TEST_NGROK_PROP_CUSTOM_CONFIG = NgrokProperties.NGROK_CONFIG + "=/ngrok-config.yml";
+    String TEST_NGROK_PROP_CUSTOM_COMMAND = NgrokProperties.NGROK_COMMAND + "=http 8081";
+    String TEST_SPRING_PROP_SERVER_PORT = NgrokProperties.SPRING_SERVER_PORT + "=8081";
 
     String TEST_NGROK_PROFILE = "test";
     String TEST_NGROK_PROFILE_WINDOWS = "test-windows";
@@ -18,4 +21,6 @@ public interface TestConstants {
     String TEST_NGROK_UNIX_BINARY_PATH = "/home/user/.ngrok2/ngrok";
     String TEST_NGROK_UNIX_CHMOD_COMMAND = "chmod +x " + TEST_NGROK_UNIX_BINARY_PATH;
     String TEST_NGROK_UNIX_START_COMMAND = TEST_NGROK_UNIX_BINARY_PATH + " http 8080";
+    String TEST_NGROK_UNIX_START_COMMAND_WITH_CONFIG = TEST_NGROK_UNIX_BINARY_PATH + " http -config /ngrok-config.yml 8080";
+    String TEST_NGROK_UNIX_START_CUSTOM_COMMAND = TEST_NGROK_UNIX_BINARY_PATH + " http 8081";
 }
