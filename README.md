@@ -4,9 +4,9 @@
     <a href="https://github.com/kilmajster/ngrok-spring-boot-starter/actions">
         <img align="center" src="https://github.com/kilmajster/ngrok-spring-boot-starter/workflows/main/badge.svg" alt="CI status badge">
     </a>
-    <img align="center" src="https://img.shields.io/maven-central/v/io.github.kilmajster/ngrok-spring-boot-starter?color=blue" alt="Maven Central" >
     <img align="center" src="https://img.shields.io/github/last-commit/kilmajster/ngrok-spring-boot-starter.svg" alt="Github last commit badge">
-    <img align="center" src="https://img.shields.io/github/license/kilmajster/ngrok-spring-boot-starter?color=blue" alt="stackshare.io badge">
+    <img align="center" src="https://img.shields.io/maven-central/v/io.github.kilmajster/ngrok-spring-boot-starter?color=blue" alt="Maven Central" >
+    <img align="center" src="https://img.shields.io/github/license/kilmajster/ngrok-spring-boot-starter?color=blue" alt="MIT license badge">
     <br>
     <a href="https://github.com/kilmajster/ngrok-spring-boot-starter/actions?query=workflow%3A%22CI+on+windows-latest%22">
         <img align="center" src="https://github.com/kilmajster/ngrok-spring-boot-starter/workflows/CI%20on%20windows-latest/badge.svg" alt="CI on Windows">
