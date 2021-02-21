@@ -1,7 +1,7 @@
 package ngrok.runner;
 
 import ngrok.runner.config.NgrokRunnerUnixTestConfiguration;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -13,7 +13,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 
-@ActiveProfiles({TEST_NGROK_PROFILE, TEST_NGROK_PROFILE_UNIX})
+@ActiveProfiles({
+        TEST_NGROK_PROFILE,
+        TEST_NGROK_PROFILE_UNIX
+})
 @EnableAutoConfiguration
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,

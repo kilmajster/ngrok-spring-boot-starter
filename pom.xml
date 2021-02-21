@@ -59,7 +59,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.1.RELEASE</version>
+        <version>2.4.2</version>
         <relativePath/>
     </parent>
 
@@ -77,7 +77,6 @@
         <commons-lang3.version>3.11</commons-lang3.version>
 
         <spring-cloud-contract-wiremock.version>3.0.1</spring-cloud-contract-wiremock.version>
-        <mockito-all.version>1.10.19</mockito-all.version>
     </properties>
 
     <dependencies>
@@ -117,7 +116,6 @@
             <version>${spring-cloud-contract-wiremock.version}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>

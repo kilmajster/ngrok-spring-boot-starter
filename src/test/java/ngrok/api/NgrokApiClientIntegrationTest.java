@@ -3,14 +3,12 @@ package ngrok.api;
 import ngrok.TestConstants;
 import ngrok.api.model.NgrokTunnel;
 import org.apache.commons.io.FileUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
@@ -23,7 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles(TestConstants.TEST_NGROK_PROFILE)
 @AutoConfigureWireMock(port = 4040)
-@RunWith(SpringRunner.class)
 @SpringBootTest(
         classes = NgrokApiClient.class,
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,

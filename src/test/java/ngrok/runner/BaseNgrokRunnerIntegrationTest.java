@@ -1,16 +1,19 @@
 package ngrok.runner;
 
-import org.junit.Before;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 
 @DirtiesContext
-@RunWith(SpringRunner.class)
 public abstract class BaseNgrokRunnerIntegrationTest {
 
-    @Before
+    private final Logger log = LoggerFactory.getLogger(BaseNgrokRunnerIntegrationTest.class);
+
+    @BeforeEach
     public void waitForAppReadyEventAndNgrokStartup() throws InterruptedException {
+        log.debug("Waiting 1s for ApplicationReadyEvent and ngrok starter logic to be done...");
         Thread.sleep(1000);
     }
 }
