@@ -48,7 +48,7 @@ class AppTests {
 
 		assertThat(ngrokStarted).isTrue();
 
-		final String ngrokHttpsRemoteUrl = StringUtils.substringBetween(output.toString(), "Remote url (https)	-> [ ", "]\n");
+		final String ngrokHttpsRemoteUrl = StringUtils.substringBetween(output.toString(), "Remote url (https)\t-> [ ", "]\n");
 		log.info("[ TEST ] Captured ngrok tunnel url = [ {} ]", ngrokHttpsRemoteUrl);
 
 
