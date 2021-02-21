@@ -6,17 +6,17 @@ package ngrok;
 public interface NgrokProperties {
     // properties keys
     /**
-     * Property key for enabling ngrok. eg. <code></>ngrok.enabled=true</code>.
+     * Property key for enabling ngrok. eg. <code>ngrok.enabled=true</code>.
      */
     String NGROK_ENABLED = "ngrok.enabled";
 
     /**
-     * Property key for providing custom configuration. eg. <code></>ngrok.config=/home/user/example-directory/custom-config.yml</code>
+     * Property key for providing custom configuration. eg. <code>ngrok.config=/home/user/example-directory/custom-config.yml</code>
      */
     String NGROK_CONFIG = "ngrok.config";
 
     /**
-     * Property key for providing ngrok custom execution parameters. eg. <code></>ngrok.command=http 3000 -config /root/ngrok.yml</code>
+     * Property key for providing ngrok custom execution parameters. eg. <code>ngrok.command=http 3000 -config /root/ngrok.yml</code>
      */
     String NGROK_COMMAND = "ngrok.command";
 
