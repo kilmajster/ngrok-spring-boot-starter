@@ -15,48 +15,54 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(
-		webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
-		properties = {
-				"ngrok.enabled=true"
-		}
+        webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
+        properties = {
+                "ngrok.enabled=true"
+        }
 )
 @ExtendWith(OutputCaptureExtension.class)
 class AppTests {
 
-	private final static Logger log = LoggerFactory.getLogger(AppTests.class);
-	private static final int WAIT_FOR_STARTUP_SECONDS = 30;
+    private final static Logger log = LoggerFactory.getLogger(AppTests.class);
+    private static final int WAIT_FOR_STARTUP_SECONDS = 30;
+    private static final String HTTPS_NGROK_TUNNEL_REGEX = "(https:\\/\\/)?(([^.]+)\\.)?ngrok\\.io";
 
-	@Test
-	public void shouldStartNgrok(CapturedOutput output) throws IOException, URISyntaxException, InterruptedException {
-		log.info("[ TEST ] Waiting for ngrok...");
+    @Test
+    public void shouldStartNgrok(CapturedOutput output) throws IOException, URISyntaxException, InterruptedException {
+        log.info("[ TEST ] Waiting for ngrok...");
 
-		boolean ngrokStarted = false;
+        boolean ngrokStarted = false;
 
-		Thread.sleep(1000);
-		for (int i = WAIT_FOR_STARTUP_SECONDS; i > 0; i--) {
-			Thread.sleep(1000);
-			if(output.toString().contains("Ngrok started successfully!")) {
-				ngrokStarted = true;
-				log.info("[ TEST ] Ngrok start detected!");
-				break;
-			}
-		}
+        Thread.sleep(1000);
+        for (int i = WAIT_FOR_STARTUP_SECONDS; i > 0; i--) {
+            Thread.sleep(1000);
+            if (output.toString().contains("Ngrok started successfully!")) {
+                ngrokStarted = true;
+                log.info("[ TEST ] Ngrok start detected!");
+                break;
+            }
+        }
 
-		assertThat(ngrokStarted).isTrue();
+        assertThat(ngrokStarted).isTrue();
 
-		final String ngrokHttpsRemoteUrl = StringUtils.substringBetween(output.toString(), "Remote url (https)\t-> [ ", "]\n");
-		log.info("[ TEST ] Captured ngrok tunnel url = [ {} ]", ngrokHttpsRemoteUrl);
+        Pattern pattern = Pattern.compile(HTTPS_NGROK_TUNNEL_REGEX);
+        Matcher matcher = pattern.matcher(output.getOut());
 
+        assertThat(matcher.find()).isTrue();
+        final String ngrokHttpsRemoteUrl = StringUtils.split(matcher.group(), "[")[1];
+        log.info("[ TEST ] Captured ngrok tunnel url = [ {} ]", ngrokHttpsRemoteUrl);
 
-		ResponseEntity<String> responseFromTunnel = new RestTemplate().getForEntity(new URL(ngrokHttpsRemoteUrl).toURI(), String.class);
+        ResponseEntity<String> responseFromTunnel = new RestTemplate().getForEntity(new URL(ngrokHttpsRemoteUrl).toURI(), String.class);
 
-		log.info("Response from [ {} ] = \n\n\n{}\n\n", ngrokHttpsRemoteUrl, responseFromTunnel.toString());
+        log.info("Response from [ {} ] = \n\n\n{}\n\n", ngrokHttpsRemoteUrl, responseFromTunnel.toString());
 
-		assertThat(responseFromTunnel.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(responseFromTunnel.getBody()).isEqualTo("<h1>Hello World!</h1>");
-	}
+        assertThat(responseFromTunnel.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseFromTunnel.getBody()).isEqualTo("<h1>Hello World!</h1>");
+    }
 }
