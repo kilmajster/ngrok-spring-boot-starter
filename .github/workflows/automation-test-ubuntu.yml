@@ -15,6 +15,6 @@ jobs:
           java-version: 11
       - name: Silent install main project
         run: mvn --batch-mode --no-transfer-progress install
-      - name: Run automation with latest ngrok-spring-boot-starter version on test-app
+      - name: Run automation tests with latest ngrok-spring-boot-starter version on test-app
         working-directory: ./.github/test-app/
         run: mvn --batch-mode --no-transfer-progress test
