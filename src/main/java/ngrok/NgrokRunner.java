@@ -2,6 +2,7 @@ package ngrok;
 
 import ngrok.api.NgrokApiClient;
 import ngrok.api.model.NgrokTunnel;
+import ngrok.configuration.NgrokConfigurationProvider;
 import ngrok.exception.NgrokCommandExecuteException;
 import ngrok.exception.NgrokDownloadException;
 import ngrok.os.NgrokBinaryProvider;
@@ -28,24 +29,25 @@ public class NgrokRunner {
     @Value("${" + NgrokProperties.SPRING_SERVER_PORT + ":" + NgrokProperties.SPRING_SERVER_PORT_DEFAULT + "}")
     private String springServerPort;
 
-    @Value("${" + NgrokProperties.NGROK_CONFIG + ":}")
-    private String ngrokConfigFilePath;
-
     @Value("${" + NgrokProperties.NGROK_COMMAND + ":}")
     private String ngrokCustomCommand;
 
     private final NgrokApiClient ngrokApiClient;
     private final NgrokBinaryProvider ngrokBinaryProvider;
+    private final NgrokConfigurationProvider ngrokConfigurationProvider;
     private final NgrokDownloader ngrokDownloader;
     private final NgrokPlatformDetector ngrokPlatformDetector;
     private final NgrokSystemCommandExecutor ngrokSystemCommandExecutor;
     private final TaskExecutor ngrokExecutor;
 
     public NgrokRunner(
-            NgrokApiClient ngrokApiClient, NgrokBinaryProvider ngrokBinaryProvider, NgrokDownloader ngrokDownloader,
-            NgrokPlatformDetector ngrokPlatformDetector, NgrokSystemCommandExecutor ngrokSystemCommandExecutor, TaskExecutor ngrokExecutor) {
+            NgrokApiClient ngrokApiClient, NgrokBinaryProvider ngrokBinaryProvider,
+            NgrokConfigurationProvider ngrokConfigurationProvider, NgrokDownloader ngrokDownloader,
+            NgrokPlatformDetector ngrokPlatformDetector, NgrokSystemCommandExecutor ngrokSystemCommandExecutor,
+            TaskExecutor ngrokExecutor) {
         this.ngrokApiClient = ngrokApiClient;
         this.ngrokBinaryProvider = ngrokBinaryProvider;
+        this.ngrokConfigurationProvider = ngrokConfigurationProvider;
         this.ngrokDownloader = ngrokDownloader;
         this.ngrokPlatformDetector = ngrokPlatformDetector;
         this.ngrokSystemCommandExecutor = ngrokSystemCommandExecutor;
@@ -108,19 +110,12 @@ public class NgrokRunner {
     private String buildNgrokDefaultShellCmd() {
         return ngrokBinaryProvider.getNgrokBinaryFilePath()
                 + " http "
-                + prepareNgrokConfigParams(ngrokConfigFilePath)
+                + ngrokConfigurationProvider.prepareNgrokConfigParams()
                 + this.springServerPort;
     }
 
     private String buildCustomShellCmd() {
         return ngrokBinaryProvider.getNgrokBinaryFilePath() + " " + ngrokCustomCommand;
-    }
-
-    private String prepareNgrokConfigParams(String ngrokConfigFilePath) {
-        return StringUtils.isBlank(ngrokConfigFilePath)
-                ? "" // no config arguments
-                : StringUtils.split(ngrokConfigFilePath, ";").length == 1 ? "-config " + ngrokConfigFilePath + " " // 1 config arg
-                : "-config " + String.join(" -config ", StringUtils.split(ngrokConfigFilePath, ";")) + " "; // multiple configs
     }
 
     private boolean isCustomConfigPresent() {

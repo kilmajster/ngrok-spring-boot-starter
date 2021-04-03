@@ -25,10 +25,10 @@ import static org.mockito.Mockito.verify;
                 TEST_NGROK_PROP_ENABLED,
                 TEST_NGROK_PROP_CUSTOM_CONFIG,
         })
-public class NgrokRunnerWithConfigTest extends BaseNgrokRunnerIntegrationTest {
+public class NgrokRunnerWithConfigFileTest extends BaseNgrokRunnerIntegrationTest {
 
     @Test
-    public void shouldStartNgrok_withCustomConfigFile_onUnix() {
+    public void shouldStartNgrok_withConfigFile_onUnix() {
         verify(mockedNgrokBinaryProvider).isNgrokBinaryPresent();
         verify(mockedNgrokDownloader).downloadAndExtractNgrokTo(eq(TEST_NGROK_UNIX_DEFAULT_DIR));
         verify(mockedNgrokPlatformDetector).isUnix();
