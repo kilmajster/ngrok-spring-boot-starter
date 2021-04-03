@@ -46,7 +46,6 @@ public class NgrokRunnerUnixTestConfiguration extends BaseNgrokRunnerMockedConfi
 
     @AfterAll
     public static void tearDown() throws InterruptedException {
-        Thread.sleep(1000); // because spring context initialized in thic class needs to be shutted down gracefully
+        Thread.sleep(1000); // because spring context initialized in this class needs to be shutted down gracefully
     }
-
 }

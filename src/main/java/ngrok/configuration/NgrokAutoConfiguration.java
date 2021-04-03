@@ -30,12 +30,12 @@ public class NgrokAutoConfiguration {
             @Autowired NgrokDownloader ngrokDownloader,
             @Autowired NgrokBinaryProvider ngrokBinaryProvider,
             @Autowired NgrokPlatformDetector ngrokPlatformDetector,
+            @Autowired NgrokConfigurationProvider ngrokConfigurationProvider,
             @Autowired NgrokSystemCommandExecutor ngrokSystemCommandExecutor,
             @Autowired @Qualifier("ngrokAsyncExecutor") TaskExecutor ngrokExecutor) {
         log.info("Ngrok is enabled.");
 
-        return new NgrokRunner(
-                ngrokApiClient, ngrokBinaryProvider, ngrokDownloader,
+        return new NgrokRunner(ngrokApiClient, ngrokBinaryProvider, ngrokConfigurationProvider, ngrokDownloader,
                 ngrokPlatformDetector, ngrokSystemCommandExecutor, ngrokExecutor);
     }
 }
