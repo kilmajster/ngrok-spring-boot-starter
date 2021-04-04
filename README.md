@@ -48,13 +48,13 @@ Code of demo application available [here](https://github.com/kilmajster/demo).
 <dependency>
   <groupId>io.github.kilmajster</groupId>
   <artifactId>ngrok-spring-boot-starter</artifactId>
-  <version>0.3.1</version>
+  <version>0.3.2</version>
 </dependency>
 ```
 
 - or gradle:
 ```groovy
-compile('io.github.kilmajster:ngrok-spring-boot-starter:0.3.1')
+compile('io.github.kilmajster:ngrok-spring-boot-starter:0.3.2')
 ````
 
 ##  Configuration
@@ -100,6 +100,12 @@ then generated ngrok command, should look like this:
 /home/user/.ngrok2/ngrok http -config /home/user/custom-ngrok-config.yml 8080
 # or for multiple configs, could be something like this:
 /home/user/.ngrok2/ngrok http -config /home/user/custom-ngrok-config.yml -config /home/user/another-ngrok-config.yml 8080
+```
+###### configuration from Classpath
+If you prefer to keep ngrok configuration file inside your app, just add it as resource file and prefix `ngrok.config` property
+with `classpath:`, so for config in standard springs resources root dir `src/main/resources/ngrok.yml`, should look like following:
+```properties
+ngrok.config=classpath:ngrok.yml
 ```
 
 #### `ngrok.command` - ngrok custom command attributes
