@@ -103,7 +103,7 @@ then generated ngrok command, should look like this:
 ```
 ###### configuration from Classpath
 If you prefer to keep ngrok configuration file inside your app, just add it as resource file and prefix `ngrok.config` property
-with `classpath:`, so for config in standard springs resources root dir `src/main/resources/ngrok.yml`, should look like following:
+with `classpath:`, so for config in standard springs resources root dir `src/main/resources/ngrok.yml`, it should look like following:
 ```properties
 ngrok.config=classpath:ngrok.yml
 ```
