@@ -20,7 +20,7 @@ jobs:
         run: mvn --batch-mode --no-transfer-progress install
 
       - name: Install xmllint
-        run: brew install xmllint
+        run: brew install xmlstarlet
 
       - name: Set current starter version in test-app
         working-directory: ./.github/scripts/
