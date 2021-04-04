@@ -24,7 +24,7 @@ jobs:
 
       - name: Set current starter version in test-app
         working-directory: ./.github/scripts/
-        run: sh set-current-starter-version.sh
+        run: sh set-current-starter-version-macos.sh
 
       - name: Run automation tests with latest ngrok-spring-boot-starter version on test-app
         working-directory: ./.github/test-app/
