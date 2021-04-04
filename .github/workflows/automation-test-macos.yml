@@ -16,6 +16,9 @@ jobs:
       - name: Silent install main project
         run: mvn --batch-mode --no-transfer-progress install
 
+      - name: Install xmllint
+        run: sudo apt-get install libxml2-utils
+
       - name: Set current starter version in test-app
         working-directory: ./.github/scripts/
         run: sh set-current-starter-version.sh
