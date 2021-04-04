@@ -17,7 +17,7 @@ jobs:
           java-version: 11
 
       - name: Silent install main project
-        run: mvn --batch-mode --no-transfer-progress install -Dmaven.test.skip=true
+        run: mvn --batch-mode --no-transfer-progress install -DskipTests
 
       - name: Set current starter version in test-app
         working-directory: ./.github/scripts/
