@@ -1,9 +1,11 @@
 name: CI on macos-latest
+
 on:
   push:
     branches: [ main, development, tests_fixes ]
   pull_request:
     branches: [ main ]
+
 jobs:
   test-on-macos:
     runs-on: macos-latest
@@ -13,6 +15,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+
       - name: Silent install main project
         run: mvn --batch-mode --no-transfer-progress install
 
