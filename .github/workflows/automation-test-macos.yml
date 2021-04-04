@@ -17,7 +17,7 @@ jobs:
           java-version: 11
 
       - name: Silent install main project
-        run: mvn --batch-mode --no-transfer-progress install
+        run: mvn --batch-mode --no-transfer-progress install -Dmaven.test.skip=true
 
       - name: Install xmllint
         run: brew install xmlstarlet
