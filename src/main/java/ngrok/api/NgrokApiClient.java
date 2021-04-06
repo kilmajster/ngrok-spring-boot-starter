@@ -62,4 +62,32 @@ public class NgrokApiClient {
     public String getNgrokStatusUrl() {
         return ngrokApiUrl + NGROK_URL_HTML_STATUS;
     }
+
+    /**
+     * Returns http tunnel URL or null in case ngrok is not running.
+     *
+     * @return http tunnel url
+     */
+    public String getHttpTunnelUrl() {
+        return fetchTunnels()
+                .stream()
+                .filter(NgrokTunnel::isHttp)
+                .findFirst()
+                .map(NgrokTunnel::getPublicUrl)
+                .orElse(null);
+    }
+
+    /**
+     * Returns https tunnel URL or null in case ngrok is not running.
+     *
+     * @return https tunnel url
+     */
+    public String getHttpsTunnelUrl() {
+        return fetchTunnels()
+                .stream()
+                .filter(NgrokTunnel::isHttps)
+                .findFirst()
+                .map(NgrokTunnel::getPublicUrl)
+                .orElse(null);
+    }
 }
