@@ -5,7 +5,7 @@
 
     <groupId>io.github.kilmajster</groupId>
     <artifactId>ngrok-spring-boot-starter</artifactId>
-    <version>0.3.2</version>
+    <version>0.3.3</version>
     <packaging>jar</packaging>
 
     <name>ngrok-spring-boot-starter</name>

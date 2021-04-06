@@ -1,5 +1,6 @@
 package ngrok.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -27,5 +28,15 @@ public class NgrokTunnel implements Serializable {
 
     public void setProto(String proto) {
         this.proto = proto;
+    }
+
+    @JsonIgnore
+    public boolean isHttps() {
+        return "https".equals(proto);
+    }
+
+    @JsonIgnore
+    public boolean isHttp() {
+        return "http".equals(proto);
     }
 }
