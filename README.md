@@ -48,13 +48,13 @@ Code of demo application available [here](https://github.com/kilmajster/demo).
 <dependency>
   <groupId>io.github.kilmajster</groupId>
   <artifactId>ngrok-spring-boot-starter</artifactId>
-  <version>0.3.2</version>
+  <version>0.3.4</version>
 </dependency>
 ```
 
 - or gradle:
 ```groovy
-compile('io.github.kilmajster:ngrok-spring-boot-starter:0.3.2')
+compile('io.github.kilmajster:ngrok-spring-boot-starter:0.3.4')
 ````
 
 ##  Configuration
@@ -119,6 +119,21 @@ ngrok.command=http 8080
 # or some more specific
 ngrok.command=http -region=us -hostname=dev.example.com 8000
 # should be = /home/user/.ngrok2/ngrok http -region=us -hostname=dev.example.com 8000
+```
+
+## Ngrok API
+To access ngrok tunneling details you can use `NgrokApiClient` bean. Example below:
+```java
+@Autowired
+private NgrokApiClient ngrok;
+
+public void someMethod() {
+    # returns https tunnel URL or null in case ngrok is not running
+    String httpsTunnelUrl = ngrok.getHttpsTunnelUrl();
+
+    # returns http tunnel URL or null in case ngrok is not running
+    String httpTunnelUrl = ngrok.getHttpTunnelUrl();
+}
 ```
 
 ##### Optional properties & descriptions
