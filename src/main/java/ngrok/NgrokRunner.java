@@ -12,8 +12,10 @@ import ngrok.util.NgrokDownloader;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.task.TaskExecutor;
 
@@ -28,6 +30,9 @@ public class NgrokRunner {
 
     @Value("${" + NgrokProperties.NGROK_COMMAND + ":}")
     private String ngrokCustomCommand;
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     private final NgrokApiClient ngrokApiClient;
     private final NgrokBinaryProvider ngrokBinaryProvider;
@@ -64,6 +69,7 @@ public class NgrokRunner {
                 log.info("Ngrok was already running! Dashboard url -> [ {} ]", ngrokApiClient.getNgrokApiUrl());
             }
             logTunnelsDetails();
+            applicationEventPublisher.publishEvent(new NgrokInitializedEvent(this, ngrokApiClient.fetchTunnels()));
         });
     }
 
