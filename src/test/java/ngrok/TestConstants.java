@@ -4,7 +4,7 @@ public interface TestConstants {
     String TEST_NGROK_PROP_ENABLED = NgrokProperties.NGROK_ENABLED + "=true";
     String TEST_NGROK_PROP_CUSTOM_CONFIG = NgrokProperties.NGROK_CONFIG + "=/ngrok-config.yml";
     String TEST_NGROK_PROP_CUSTOM_COMMAND = NgrokProperties.NGROK_COMMAND + "=http 8081";
-    String TEST_SPRING_PROP_SERVER_PORT = NgrokProperties.SPRING_SERVER_PORT + "=8081";
+    String TEST_SPRING_PROP_SERVER_PORT = "server.port=8081";
 
     String TEST_NGROK_PROFILE = "test";
     String TEST_NGROK_PROFILE_WINDOWS = "test-windows";

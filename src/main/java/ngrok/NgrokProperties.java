@@ -75,11 +75,6 @@ public interface NgrokProperties {
      */
     String NGROK_BINARY_CUSTOM = "ngrok.binary.custom";
 
-    /**
-     * Property key for Springs server port. See <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#server.port">docs</a>.
-     */
-    String SPRING_SERVER_PORT = "server.port";
-
     // defaults
     String NGROK_HOST_DEFAULT = "http://127.0.0.1";
     int NGROK_PORT_DEFAULT = 4040;
@@ -90,5 +85,4 @@ public interface NgrokProperties {
     String NGROK_BINARY_WINDOWS_64_DEFAULT = "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip";
     String NGROK_BINARY_LINUX_64_DEFAULT = "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip";
     String NGROK_BINARY_OSX_64_DEFAULT = "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.zip";
-    int SPRING_SERVER_PORT_DEFAULT = 8080;
 }
