@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.task.TaskExecutor;
 
@@ -25,9 +25,6 @@ import java.util.List;
 public class NgrokRunner {
 
     private static final Logger log = LoggerFactory.getLogger(NgrokRunner.class);
-
-    @Value("${" + NgrokProperties.SPRING_SERVER_PORT + ":" + NgrokProperties.SPRING_SERVER_PORT_DEFAULT + "}")
-    private String springServerPort;
 
     @Value("${" + NgrokProperties.NGROK_COMMAND + ":}")
     private String ngrokCustomCommand;
@@ -54,16 +51,15 @@ public class NgrokRunner {
         this.ngrokExecutor = ngrokExecutor;
     }
 
-
-    @EventListener(ApplicationReadyEvent.class)
-    public void run() throws NgrokDownloadException, NgrokCommandExecuteException {
+    @EventListener
+    public void run(WebServerInitializedEvent event) throws NgrokDownloadException, NgrokCommandExecuteException {
         ngrokExecutor.execute(() -> {
             if (ngrokIsNotRunning()) {
                 if (needToDownloadNgrok()) {
                     downloadAndExtractNgrokBinary();
                     addPermissionsIfNeeded();
                 }
-                startNgrok();
+                startNgrok(event.getWebServer().getPort());
             } else {
                 log.info("Ngrok was already running! Dashboard url -> [ {} ]", ngrokApiClient.getNgrokApiUrl());
             }
@@ -93,8 +89,8 @@ public class NgrokRunner {
         return !ngrokBinaryProvider.isNgrokBinaryPresent();
     }
 
-    private void startNgrok() {
-        String command = isCustomConfigPresent() ? buildCustomShellCmd() : buildNgrokDefaultShellCmd();
+    private void startNgrok(int springServerPort) {
+        String command = isCustomConfigPresent() ? buildCustomShellCmd() : buildNgrokDefaultShellCmd(springServerPort);
         log.debug("Starting ngrok with command = [ {} ]", command);
 
         ngrokSystemCommandExecutor.execute(command);
@@ -107,11 +103,11 @@ public class NgrokRunner {
         }
     }
 
-    private String buildNgrokDefaultShellCmd() {
+    private String buildNgrokDefaultShellCmd(int springServerPort) {
         return ngrokBinaryProvider.getNgrokBinaryFilePath()
                 + " http "
                 + ngrokConfigurationProvider.prepareNgrokConfigParams()
-                + this.springServerPort;
+                + springServerPort;
     }
 
     private String buildCustomShellCmd() {
