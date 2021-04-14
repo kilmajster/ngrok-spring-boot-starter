@@ -90,4 +90,11 @@ public class NgrokApiClient {
                 .map(NgrokTunnel::getPublicUrl)
                 .orElse(null);
     }
+
+    /**
+     * @return true if ngrok is running
+     */
+    public boolean isRunning() {
+        return isResponding();
+    }
 }
