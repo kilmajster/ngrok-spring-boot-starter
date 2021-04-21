@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import static ngrok.NgrokProperties.NGROK_ENABLED;
+import static ngrok.configuration.NgrokConfiguration.NGROK_ENABLED;
 
 @ConditionalOnProperty(name = NGROK_ENABLED, havingValue = "true")
 @Component

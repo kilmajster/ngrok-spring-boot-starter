@@ -1,22 +1,22 @@
 package ngrok.os;
 
+import lombok.RequiredArgsConstructor;
 import ngrok.NgrokComponent;
-import ngrok.NgrokProperties;
+import ngrok.configuration.NgrokConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @NgrokComponent
+@RequiredArgsConstructor
 public class NgrokBinaryProvider {
 
-    @Value("${" + NgrokProperties.NGROK_DIRECTORY + ":}")
-    private String ngrokDirectory;
+    private final NgrokConfiguration ngrokConfiguration;
 
     public String getNgrokBinaryFilePath() {
         String executable = SystemUtils.IS_OS_WINDOWS ? "ngrok.exe" : "ngrok";
@@ -25,7 +25,8 @@ public class NgrokBinaryProvider {
     }
 
     public String getNgrokDirectoryOrDefault() {
-        return StringUtils.isNotBlank(ngrokDirectory) ? ngrokDirectory : getDefaultNgrokDirectory();
+        return StringUtils.isNotBlank(ngrokConfiguration.getDirectory()) ?
+                ngrokConfiguration.getDirectory() : getDefaultNgrokDirectory();
     }
 
     public boolean isNgrokBinaryPresent() {

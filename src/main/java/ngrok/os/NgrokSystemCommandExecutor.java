@@ -1,26 +1,24 @@
 package ngrok.os;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ngrok.NgrokComponent;
-import ngrok.NgrokProperties;
+import ngrok.configuration.NgrokConfiguration;
 import ngrok.exception.NgrokCommandExecuteException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 
+@Slf4j
 @NgrokComponent
+@RequiredArgsConstructor
 public class NgrokSystemCommandExecutor {
 
-    private static final Logger log = LoggerFactory.getLogger(NgrokSystemCommandExecutor.class);
-
-    @Value("${" + NgrokProperties.NGROK_WAIT_FOR_STARTUP + ":" + NgrokProperties.NGROK_WAIT_FOR_STARTUP_DEFAULT + "}")
-    private long waitForStartupMillis;
+    private final NgrokConfiguration ngrokConfiguration;
 
     public void execute(final String command) {
         try {
             Runtime.getRuntime().exec(command);
-            Thread.sleep(waitForStartupMillis);
+            Thread.sleep(ngrokConfiguration.getStartupDelay());
         } catch (IOException | InterruptedException e) {
             log.error("Failed to run: " + command, e);
 

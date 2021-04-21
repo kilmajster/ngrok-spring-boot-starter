@@ -1,9 +1,11 @@
 package ngrok;
 
+import ngrok.configuration.NgrokConfiguration;
+
 public interface TestConstants {
-    String TEST_NGROK_PROP_ENABLED = NgrokProperties.NGROK_ENABLED + "=true";
-    String TEST_NGROK_PROP_CUSTOM_CONFIG = NgrokProperties.NGROK_CONFIG + "=/ngrok-config.yml";
-    String TEST_NGROK_PROP_CUSTOM_COMMAND = NgrokProperties.NGROK_COMMAND + "=http 8081";
+    String TEST_NGROK_PROP_ENABLED = NgrokConfiguration.NGROK_ENABLED + "=true";
+    String TEST_NGROK_PROP_CUSTOM_CONFIG = "ngrok.config=/ngrok-config.yml";
+    String TEST_NGROK_PROP_CUSTOM_COMMAND = "ngrok.command=http 8081";
     String TEST_SPRING_PROP_SERVER_PORT = "server.port=8081";
 
     String TEST_NGROK_PROFILE = "test";
