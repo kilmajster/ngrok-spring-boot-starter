@@ -24,12 +24,12 @@ public class NgrokConfiguration {
     private Boolean enabled;
 
     /**
-     * Custom configuration path e.g. "/home/user/example-directory/custom-config.yml"
+     * Custom configuration path e.g.: '/home/user/example-directory/custom-config.yml'
      */
     private String configPath;
 
     /**
-     * Provide custom ngrok execution parameters. e.g. "http 3000 -config /root/ngrok.yml"
+     * Provide custom ngrok execution parameters. e.g.: 'http 3000 -config /root/ngrok.yml'
      */
     private String command;
 
@@ -39,12 +39,12 @@ public class NgrokConfiguration {
     private String host = "http://127.0.0.1";
 
     /**
-     * ngrok port
+     * ngrok web-interface port
      */
     private Integer port = 4040;
 
     /**
-     * Custom ngrok directory e.g. "/some-custom/ngrok/location/.ngrok2"
+     * Custom ngrok directory e.g.: '/some-custom/ngrok/location/.ngrok2'
      */
     private String directory;
 

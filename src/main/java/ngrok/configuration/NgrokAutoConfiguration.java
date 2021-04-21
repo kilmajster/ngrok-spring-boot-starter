@@ -8,7 +8,7 @@ import ngrok.os.NgrokPlatformDetector;
 import ngrok.os.NgrokSystemCommandExecutor;
 import ngrok.util.NgrokDownloader;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -18,7 +18,7 @@ import org.springframework.core.task.TaskExecutor;
 @Slf4j
 @ComponentScan(basePackages = "ngrok")
 @Configuration
-@ConditionalOnProperty(name = NgrokConfiguration.NGROK_ENABLED, havingValue = "true")
+@ConditionalOnBean(NgrokConfiguration.class)
 public class NgrokAutoConfiguration {
 
     @Bean
