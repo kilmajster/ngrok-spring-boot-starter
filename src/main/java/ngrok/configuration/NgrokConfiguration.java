@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.context.annotation.Configuration;
 
 @Getter
@@ -23,12 +24,12 @@ public class NgrokConfiguration {
     private Boolean enabled;
 
     /**
-     * Custom configuration path e.g. <code>/home/user/example-directory/custom-config.yml</code>
+     * Custom configuration path e.g. "/home/user/example-directory/custom-config.yml"
      */
     private String configPath;
 
     /**
-     * Provide custom ngrok execution parameters. e.g. <code>http 3000 -config /root/ngrok.yml</code>
+     * Provide custom ngrok execution parameters. e.g. "http 3000 -config /root/ngrok.yml"
      */
     private String command;
 
@@ -43,7 +44,7 @@ public class NgrokConfiguration {
     private Integer port = 4040;
 
     /**
-     * Custom ngrok directory e.g. <code>/some-custom/ngrok/location/.ngrok2</code>
+     * Custom ngrok directory e.g. "/some-custom/ngrok/location/.ngrok2"
      */
     private String directory;
 
@@ -52,7 +53,11 @@ public class NgrokConfiguration {
      */
     private Long startupDelay = 3000L;
 
-    private NgrokBinary binary;
+    /**
+     * Set the binary download URL
+     */
+    @NestedConfigurationProperty
+    private NgrokBinary binary = new NgrokBinary();
 
     @Getter
     @Setter
@@ -77,7 +82,7 @@ public class NgrokConfiguration {
         /**
          * Windows 32 bit binary
          */
-        private String windows32 = "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-386.zip";;
+        private String windows32 = "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-386.zip";
 
         /**
          * Linux 32 bit binary
@@ -90,7 +95,7 @@ public class NgrokConfiguration {
         private String osx32 = "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-386.zip";
 
         /**
-         * Custom url to download ngrok binary from
+         * Custom url to download ngrok binary from (independent from system)
          */
         private String custom;
 
