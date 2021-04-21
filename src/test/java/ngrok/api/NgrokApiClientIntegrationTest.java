@@ -2,6 +2,7 @@ package ngrok.api;
 
 import ngrok.TestConstants;
 import ngrok.api.model.NgrokTunnel;
+import ngrok.configuration.NgrokConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles(TestConstants.TEST_NGROK_PROFILE)
 @AutoConfigureWireMock(port = 4040)
 @SpringBootTest(
-        classes = NgrokApiClient.class,
+        classes = {NgrokConfiguration.class, NgrokApiClient.class},
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
         properties = TestConstants.TEST_NGROK_PROP_ENABLED)
 public class NgrokApiClientIntegrationTest {
