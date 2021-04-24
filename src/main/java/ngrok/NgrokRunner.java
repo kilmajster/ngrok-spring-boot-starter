@@ -69,7 +69,7 @@ public class NgrokRunner {
                 log.info("Ngrok was already running! Dashboard url -> [ {} ]", ngrokApiClient.getNgrokApiUrl());
             }
             logTunnelsDetails();
-            applicationEventPublisher.publishEvent(new NgrokInitializedEvent(this, ngrokApiClient.fetchTunnels()));
+            applicationEventPublisher.publishEvent(new NgrokInitializedEvent(this, ngrokApiClient.listTunnels()));
         });
     }
 
@@ -125,7 +125,7 @@ public class NgrokRunner {
     }
 
     private void logTunnelsDetails() {
-        List<NgrokTunnel> tunnels = ngrokApiClient.fetchTunnels();
+        List<NgrokTunnel> tunnels = ngrokApiClient.listTunnels();
 
         tunnels.forEach(t -> log.info("Remote url ({})\t-> [ {} ]", t.getProto(), t.getPublicUrl()));
     }

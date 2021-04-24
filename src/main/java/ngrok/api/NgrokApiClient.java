@@ -1,29 +1,32 @@
 package ngrok.api;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.vavr.control.Try;
 import ngrok.NgrokComponent;
 import ngrok.NgrokProperties;
+import ngrok.api.model.NgrokCapturedRequest;
+import ngrok.api.model.NgrokCapturedRequestsList;
 import ngrok.api.model.NgrokTunnel;
 import ngrok.api.model.NgrokTunnelsList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import ngrok.exception.NgrokApiException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestClientException;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @NgrokComponent
 public class NgrokApiClient {
 
-    public static final String NGROK_URL_API_TUNNELS = "/api/tunnels";
-    public static final String NGROK_URL_HTML_STATUS = "/status";
-
-    private static final Logger log = LoggerFactory.getLogger(NgrokApiClient.class);
+    public static final String URI_NGROK_API_TUNNELS = "/api/tunnels";
+    public static final String URI_NGROK_API_TUNNEL_DETAIL = "/api/tunnels/{tunnelName}";
+    public static final String URI_NGROK_API_CAPTURED_REQUESTS = "/api/requests/http";
+    public static final String URI_NGROK_API_CAPTURED_REQUEST_DETAILS = "/api/requests/http/{requestId}";
+    public static final String URI_NGROK_HTML_STATUS = "/status";
 
     private final RestTemplate restTemplate = new RestTemplate();
-
     private final String ngrokApiUrl;
 
     public NgrokApiClient(
@@ -32,27 +35,151 @@ public class NgrokApiClient {
         this.ngrokApiUrl = ngrokApiHost + ":" + ngrokApiPort;
     }
 
-    public List<NgrokTunnel> fetchTunnels() {
-        try {
-            NgrokTunnelsList tunnels = restTemplate.getForObject(ngrokApiUrl + NGROK_URL_API_TUNNELS, NgrokTunnelsList.class);
+    /**
+     * Returns a list of running tunnels with status and metrics information.
+     */
+    public List<NgrokTunnel> listTunnels() {
+        return Try.of(() -> restTemplate
+                .getForObject(
+                        apiUrlOf(URI_NGROK_API_TUNNELS),
+                        NgrokTunnelsList.class
+                ).getTunnels()
+        ).getOrElse(Collections.emptyList());
+    }
 
-            assert tunnels != null;
-            return tunnels.getTunnels();
-        } catch (Exception e) {
-            return Collections.emptyList();
-        }
+    private String apiUrlOf(final String apiUri) {
+        return ngrokApiUrl + apiUri;
+    }
+
+    /**
+     * Dynamically starts a new tunnel on the ngrok client. The request body parameters are the same
+     * as those you would use to define the tunnel in the configuration file.
+     */
+    public NgrokTunnel startTunnel(final String addr, final String proto, final String name) {
+        return Try.of(() -> restTemplate
+                .postForObject(
+                        apiUrlOf(URI_NGROK_API_TUNNELS),
+                        NgrokStartTunnel.of(addr, proto, name),
+                        NgrokTunnel.class
+                )
+        ).getOrElseThrow(t -> new NgrokApiException("Failed to start ngrok tunnel!", t));
+    }
+
+    /**
+     * Get status and metrics about the named running tunnel.
+     */
+    public NgrokTunnel tunnelDetail(final String tunnelName) {
+        return Try.of(() -> restTemplate
+                .getForObject(
+                        apiUrlOf(URI_NGROK_API_TUNNEL_DETAIL),
+                        NgrokTunnel.class,
+                        tunnelName
+                )
+        ).getOrElseThrow(t -> new NgrokApiException("Failed to fetch details of ngrok tunnel with tunnelName = " + tunnelName, t));
+    }
+
+    /**
+     * Stop a running tunnel.
+     * Returns true when tunnel was stopped successfully.
+     */
+    public boolean stopTunnel(final String tunnelName) {
+        return Try.of(() -> restTemplate
+                .exchange(
+                        apiUrlOf(URI_NGROK_API_TUNNEL_DETAIL),
+                        HttpMethod.DELETE, null,
+                        Void.class,
+                        tunnelName
+                ).getStatusCode().is2xxSuccessful()
+        ).getOrElse(Boolean.FALSE);
+    }
+
+    /**
+     * Returns a list of all HTTP requests captured for inspection. This will only return requests
+     * that are still in memory (ngrok evicts captured requests when their memory usage exceeds inspect_db_size)
+     */
+    public List<NgrokCapturedRequest> listCapturedRequests(final int limit, final String tunnelName) {
+        return Try.of(() -> restTemplate
+                .getForObject(
+                        apiUrlOf(URI_NGROK_API_CAPTURED_REQUESTS)
+                                + asQueryParam("limit", limit)
+                                + asQueryParam("tunnel_name", tunnelName),
+                        NgrokCapturedRequestsList.class
+                ).getRequests()
+        ).getOrElse(Collections.emptyList());
+    }
+
+    private String asQueryParam(final String name, final String value) {
+        return Objects.nonNull(name) && Objects.nonNull(value)
+                ? "&" + name + "=" + value
+                : "";
+    }
+
+    private String asQueryParam(final String name, final int value) {
+        return Objects.nonNull(name) && value > 0
+                ? "&" + name + "=" + value
+                : "";
+    }
+
+    public List<NgrokCapturedRequest> listCapturedRequests(final int limit) {
+        return listCapturedRequests(limit, null);
+    }
+
+    public List<NgrokCapturedRequest> listCapturedRequests(final String tunnelName) {
+        return listCapturedRequests(-1, tunnelName);
+    }
+
+    public List<NgrokCapturedRequest> listCapturedRequests() {
+        return listCapturedRequests(-1, null);
+    }
+
+    /**
+     * Replays a request against the local endpoint of a tunnel.
+     */
+    public boolean replayCapturedRequest(String id, String tunnelName) {
+        return Try.of(() -> restTemplate
+                .postForEntity(
+                        apiUrlOf(URI_NGROK_API_CAPTURED_REQUESTS),
+                        ReplayCapturedRequest.of(id, tunnelName),
+                        Void.class
+                ).getStatusCode().is2xxSuccessful()
+        ).getOrElse(Boolean.FALSE);
+    }
+
+    /**
+     * Deletes all captured requests.
+     */
+    public boolean deleteCapturedRequests() {
+        return Try.of(() -> restTemplate
+                .exchange(
+                        apiUrlOf(URI_NGROK_API_CAPTURED_REQUESTS),
+                        HttpMethod.DELETE,
+                        null,
+                        Void.class
+                ).getStatusCode().is2xxSuccessful()
+        ).getOrElse(Boolean.FALSE);
+    }
+
+    /**
+     * Returns metadata and raw bytes of a captured request. The raw data is base64-encoded in the JSON response.
+     * The response value maybe null if the local server has not yet responded to a request.
+     */
+    public NgrokCapturedRequest capturedRequestDetail(String requestId) {
+        return Try.of(() -> restTemplate
+                .getForObject(
+                        apiUrlOf(URI_NGROK_API_CAPTURED_REQUEST_DETAILS),
+                        NgrokCapturedRequest.class,
+                        requestId
+                )
+        ).getOrElseThrow(t -> new NgrokApiException("Failed to fetch details of ngrok request with requestId = " + requestId, t));
     }
 
     public boolean isResponding() {
-        try {
-            ResponseEntity<Void> response = restTemplate.getForEntity(getNgrokStatusUrl(), Void.class);
-
-            return response.getStatusCode().is2xxSuccessful();
-        } catch (RestClientException ex) {
-            log.debug("Ngrok API not responding at {}", getNgrokStatusUrl());
-        }
-
-        return false;
+        return Try.of(() -> restTemplate
+                .getForEntity(
+                        getNgrokStatusUrl(),
+                        Void.class
+                ).getStatusCode().is2xxSuccessful()
+        ).getOrElse(Boolean.FALSE);
     }
 
     public String getNgrokApiUrl() {
@@ -60,7 +187,7 @@ public class NgrokApiClient {
     }
 
     public String getNgrokStatusUrl() {
-        return ngrokApiUrl + NGROK_URL_HTML_STATUS;
+        return ngrokApiUrl + URI_NGROK_HTML_STATUS;
     }
 
     /**
@@ -69,7 +196,7 @@ public class NgrokApiClient {
      * @return http tunnel url
      */
     public String getHttpTunnelUrl() {
-        return fetchTunnels()
+        return listTunnels()
                 .stream()
                 .filter(NgrokTunnel::isHttp)
                 .findFirst()
@@ -83,7 +210,7 @@ public class NgrokApiClient {
      * @return https tunnel url
      */
     public String getHttpsTunnelUrl() {
-        return fetchTunnels()
+        return listTunnels()
                 .stream()
                 .filter(NgrokTunnel::isHttps)
                 .findFirst()
@@ -96,5 +223,80 @@ public class NgrokApiClient {
      */
     public boolean isRunning() {
         return isResponding();
+    }
+
+    public static class NgrokStartTunnel {
+
+        private String addr;
+        private String proto;
+        private String name;
+
+        public static NgrokStartTunnel of(String addr, String proto, String name) {
+            NgrokStartTunnel ngrokStartTunnel = new NgrokStartTunnel();
+            ngrokStartTunnel.setAddr(addr);
+            ngrokStartTunnel.setProto(proto);
+            ngrokStartTunnel.setName(name);
+            return ngrokStartTunnel;
+        }
+
+
+        public NgrokStartTunnel() {
+        }
+
+        public String getAddr() {
+            return addr;
+        }
+
+        public void setAddr(String addr) {
+            this.addr = addr;
+        }
+
+        public String getProto() {
+            return proto;
+        }
+
+        public void setProto(String proto) {
+            this.proto = proto;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+    public static class ReplayCapturedRequest {
+        private String id;
+        @JsonProperty("tunnel_name")
+        private String tunnelName;
+
+        public static ReplayCapturedRequest of(String id, String tunnelName) {
+            ReplayCapturedRequest replayCapturedRequest = new ReplayCapturedRequest();
+            replayCapturedRequest.setId(id);
+            replayCapturedRequest.setTunnelName(tunnelName);
+            return replayCapturedRequest;
+        }
+
+        public ReplayCapturedRequest() {
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getTunnelName() {
+            return tunnelName;
+        }
+
+        public void setTunnelName(String tunnelName) {
+            this.tunnelName = tunnelName;
+        }
     }
 }

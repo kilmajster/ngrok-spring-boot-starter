@@ -11,7 +11,8 @@ public interface TestConstants {
     String TEST_NGROK_PROFILE_UNIX = "test-unix";
 
     String TEST_NGROK_API_URL = "http://mocked-ngrok-api-url:1234";
-    String TEST_NGROK_TUNNELS_FILE_PATH = "/tunnels.json";
+    String TEST_NGROK_TUNNELS_LIST_FILE_PATH = "/tunnels-list.json";
+    String TEST_NGROK_SINGLE_TUNNEL_FILE_PATH = "/single-tunnel.json";
 
     String TEST_NGROK_WINDOWS_DEFAULT_DIR = "C:\\Users\\user\\.ngrok2";
     String TEST_NGROK_WINDOWS_BINARY_PATH = "C:\\Users\\user\\.ngrok2\\ngrok.exe";

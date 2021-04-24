@@ -1,11 +1,15 @@
 package ngrok.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class NgrokTunnelsList implements Serializable {
 
+    private String uri;
     private List<NgrokTunnel> tunnels;
 
     public NgrokTunnelsList() {
@@ -18,5 +22,13 @@ public class NgrokTunnelsList implements Serializable {
 
     public void setTunnels(List<NgrokTunnel> tunnels) {
         this.tunnels = tunnels;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 }
