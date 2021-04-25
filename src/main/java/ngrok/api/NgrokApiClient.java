@@ -1,5 +1,6 @@
 package ngrok.api;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ngrok.NgrokComponent;
 import ngrok.api.model.NgrokTunnel;
@@ -19,11 +20,13 @@ public class NgrokApiClient {
     public static final String NGROK_URL_API_TUNNELS = "/api/tunnels";
     public static final String NGROK_URL_HTML_STATUS = "/status";
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
 
+    @Getter
     private final String ngrokApiUrl;
 
     public NgrokApiClient(NgrokConfiguration ngrokConfiguration) {
+        this.restTemplate = new RestTemplate();
         this.ngrokApiUrl = ngrokConfiguration.getHost() + ":" + ngrokConfiguration.getPort();
     }
 
@@ -48,10 +51,6 @@ public class NgrokApiClient {
         }
 
         return false;
-    }
-
-    public String getNgrokApiUrl() {
-        return ngrokApiUrl;
     }
 
     public String getNgrokStatusUrl() {

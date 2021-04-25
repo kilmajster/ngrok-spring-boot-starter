@@ -1,7 +1,6 @@
 package ngrok.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
 import java.io.*;
@@ -16,23 +15,22 @@ import java.util.zip.ZipInputStream;
  * <p>
  * FileExtractUtils
  */
+@Slf4j
 public class NgrokFileExtractUtils {
-
-    private static final Logger log = LoggerFactory.getLogger(NgrokFileExtractUtils.class);
 
     /**
      * The constant BUFFER_SIZE.
      */
     private static final int BUFFER_SIZE = 4096;
 
-    public static void extractArchive(String archiveFile, String outdirPath) {
-        log.info("Extracting {} to {}", archiveFile, outdirPath);
+    public static void extractArchive(String archiveFile, String outDirPath) {
+        log.info("Extracting {} to {}", archiveFile, outDirPath);
 
         File archive = new File(archiveFile);
-        File outdir = new File(outdirPath);
+        File outDir = new File(outDirPath);
 
         if (StringUtils.endsWithIgnoreCase(archive.getName(), "zip")) {
-            extractZip(archive, outdir);
+            extractZip(archive, outDir);
             deleteArchive(archiveFile);
         }
     }
@@ -49,9 +47,9 @@ public class NgrokFileExtractUtils {
      * Extract zip.
      *
      * @param zipfile the zipfile
-     * @param outdir  the outdir
+     * @param outDir  the outDir
      */
-    public static void extractZip(File zipfile, File outdir) {
+    public static void extractZip(File zipfile, File outDir) {
         try {
             ZipInputStream is = new ZipInputStream(
                     new BufferedInputStream(new FileInputStream(zipfile)));
@@ -59,13 +57,13 @@ public class NgrokFileExtractUtils {
             while ((entry = is.getNextEntry()) != null) {
                 String name = entry.getName();
                 if (entry.isDirectory()) {
-                    mkDirs(outdir, name);
+                    mkDirs(outDir, name);
                 } else {
                     String dir = directoryPart(name);
                     if (dir != null) {
-                        mkDirs(outdir, dir);
+                        mkDirs(outDir, dir);
                     }
-                    extractFile(is, outdir, name);
+                    extractFile(is, outDir, name);
                 }
             }
             is.close();
@@ -85,7 +83,7 @@ public class NgrokFileExtractUtils {
     private static void extractFile(InputStream inputStream, File outDir,
                                     String name) throws IOException {
         int count = -1;
-        byte buffer[] = new byte[BUFFER_SIZE];
+        byte[] buffer = new byte[BUFFER_SIZE];
         BufferedOutputStream out = new BufferedOutputStream(
                 new FileOutputStream(new File(outDir, name)), BUFFER_SIZE);
         while ((count = inputStream.read(buffer, 0, BUFFER_SIZE)) != -1) {
@@ -97,11 +95,11 @@ public class NgrokFileExtractUtils {
     /**
      * Mk dirs.
      *
-     * @param outdir the outdir
+     * @param outDir the outDir
      * @param path   the path
      */
-    private static void mkDirs(File outdir, String path) {
-        File d = new File(outdir, path);
+    private static void mkDirs(File outDir, String path) {
+        File d = new File(outDir, path);
         if (!d.exists()) {
             d.mkdirs();
         }

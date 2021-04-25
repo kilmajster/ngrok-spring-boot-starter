@@ -1,10 +1,12 @@
 package ngrok;
 
+import lombok.Getter;
 import ngrok.api.model.NgrokTunnel;
 import org.springframework.context.ApplicationEvent;
 
 import java.util.List;
 
+@Getter
 public class NgrokInitializedEvent extends ApplicationEvent {
 
     private final List<NgrokTunnel> tunnels;
@@ -13,7 +15,5 @@ public class NgrokInitializedEvent extends ApplicationEvent {
         super(source);
         this.tunnels = tunnels;
     }
-    public List<NgrokTunnel> getTunnels() {
-        return tunnels;
-    }
+
 }
