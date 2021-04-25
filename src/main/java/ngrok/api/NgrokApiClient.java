@@ -4,12 +4,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import io.vavr.control.Try;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import ngrok.NgrokComponent;
 import ngrok.NgrokProperties;
 import ngrok.api.model.NgrokCapturedRequest;
 import ngrok.api.model.NgrokCapturedRequestsList;
 import ngrok.api.model.NgrokTunnel;
 import ngrok.api.model.NgrokTunnelsList;
+import ngrok.configuration.NgrokConfiguration;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
 import ngrok.exception.NgrokApiException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -19,22 +24,26 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 @NgrokComponent
 public class NgrokApiClient {
 
+    public static final String NGROK_URL_API_TUNNELS = "/api/tunnels";
+    public static final String NGROK_URL_HTML_STATUS = "/status";
+
+    private final RestTemplate restTemplate;
     public static final String URI_NGROK_API_TUNNELS = "/api/tunnels";
     public static final String URI_NGROK_API_TUNNEL_DETAIL = "/api/tunnels/{tunnelName}";
     public static final String URI_NGROK_API_CAPTURED_REQUESTS = "/api/requests/http";
     public static final String URI_NGROK_API_CAPTURED_REQUEST_DETAILS = "/api/requests/http/{requestId}";
     public static final String URI_NGROK_HTML_STATUS = "/status";
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    @Getter
     private final String ngrokApiUrl;
 
-    public NgrokApiClient(
-            @Value("${" + NgrokProperties.NGROK_HOST + ":" + NgrokProperties.NGROK_HOST_DEFAULT + "}") String ngrokApiHost,
-            @Value("${" + NgrokProperties.NGROK_PORT + ":" + NgrokProperties.NGROK_PORT_DEFAULT + "}") Integer ngrokApiPort) {
-        this.ngrokApiUrl = ngrokApiHost + ":" + ngrokApiPort;
+    public NgrokApiClient(NgrokConfiguration ngrokConfiguration) {
+        this.restTemplate = new RestTemplate();
+        this.ngrokApiUrl = ngrokConfiguration.getHost() + ":" + ngrokConfiguration.getPort();
     }
 
     /**
@@ -182,10 +191,6 @@ public class NgrokApiClient {
                         Void.class
                 ).getStatusCode().is2xxSuccessful()
         ).getOrElse(Boolean.FALSE);
-    }
-
-    public String getNgrokApiUrl() {
-        return ngrokApiUrl;
     }
 
     public String getNgrokStatusUrl() {

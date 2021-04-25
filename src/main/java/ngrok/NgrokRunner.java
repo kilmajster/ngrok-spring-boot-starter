@@ -1,7 +1,10 @@
 package ngrok;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ngrok.api.NgrokApiClient;
 import ngrok.api.model.NgrokTunnel;
+import ngrok.configuration.NgrokConfiguration;
 import ngrok.configuration.NgrokConfigurationProvider;
 import ngrok.exception.NgrokCommandExecuteException;
 import ngrok.exception.NgrokDownloadException;
@@ -10,10 +13,6 @@ import ngrok.os.NgrokPlatformDetector;
 import ngrok.os.NgrokSystemCommandExecutor;
 import ngrok.util.NgrokDownloader;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
@@ -24,16 +23,13 @@ import java.util.List;
 /**
  * For details see <a href="https://github.com/kilmajster/ngrok-spring-boot-starter">docs</a>.
  */
+@Slf4j
+@RequiredArgsConstructor
 public class NgrokRunner {
 
-    private static final Logger log = LoggerFactory.getLogger(NgrokRunner.class);
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    @Value("${" + NgrokProperties.NGROK_COMMAND + ":}")
-    private String ngrokCustomCommand;
-
-    @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
-
+    private final NgrokConfiguration ngrokConfiguration;
     private final NgrokApiClient ngrokApiClient;
     private final NgrokBinaryProvider ngrokBinaryProvider;
     private final NgrokConfigurationProvider ngrokConfigurationProvider;
@@ -41,20 +37,6 @@ public class NgrokRunner {
     private final NgrokPlatformDetector ngrokPlatformDetector;
     private final NgrokSystemCommandExecutor ngrokSystemCommandExecutor;
     private final TaskExecutor ngrokExecutor;
-
-    public NgrokRunner(
-            NgrokApiClient ngrokApiClient, NgrokBinaryProvider ngrokBinaryProvider,
-            NgrokConfigurationProvider ngrokConfigurationProvider, NgrokDownloader ngrokDownloader,
-            NgrokPlatformDetector ngrokPlatformDetector, NgrokSystemCommandExecutor ngrokSystemCommandExecutor,
-            TaskExecutor ngrokExecutor) {
-        this.ngrokApiClient = ngrokApiClient;
-        this.ngrokBinaryProvider = ngrokBinaryProvider;
-        this.ngrokConfigurationProvider = ngrokConfigurationProvider;
-        this.ngrokDownloader = ngrokDownloader;
-        this.ngrokPlatformDetector = ngrokPlatformDetector;
-        this.ngrokSystemCommandExecutor = ngrokSystemCommandExecutor;
-        this.ngrokExecutor = ngrokExecutor;
-    }
 
     @EventListener
     public void run(WebServerInitializedEvent event) throws NgrokDownloadException, NgrokCommandExecuteException {
@@ -117,11 +99,11 @@ public class NgrokRunner {
     }
 
     private String buildCustomShellCmd() {
-        return ngrokBinaryProvider.getNgrokBinaryFilePath() + " " + ngrokCustomCommand;
+        return ngrokBinaryProvider.getNgrokBinaryFilePath() + " " + ngrokConfiguration.getCommand();
     }
 
     private boolean isCustomConfigPresent() {
-        return StringUtils.isNotBlank(ngrokCustomCommand);
+        return StringUtils.isNotBlank(ngrokConfiguration.getCommand());
     }
 
     private void logTunnelsDetails() {

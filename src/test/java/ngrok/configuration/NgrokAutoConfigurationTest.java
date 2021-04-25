@@ -22,5 +22,6 @@ public class NgrokAutoConfigurationTest {
     @Test
     public void whenNgrokIsNotEnabled_shouldNotIncludeAnyNgrokBeans() {
         this.contextRunner.run((context) -> assertThat(context).doesNotHaveBean(NgrokComponent.class));
+        this.contextRunner.run((context) -> assertThat(context).doesNotHaveBean(NgrokConfiguration.class));
     }
 }

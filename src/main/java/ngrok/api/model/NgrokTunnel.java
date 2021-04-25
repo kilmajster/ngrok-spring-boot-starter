@@ -3,10 +3,16 @@ package ngrok.api.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Map;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NgrokTunnel implements Serializable {
 
@@ -118,9 +124,13 @@ public class NgrokTunnel implements Serializable {
 
     public NgrokTunnelMetrics getMetrics() {
         return metrics;
+    @JsonIgnore
+    public boolean isHttps() {
+        return "https".equals(proto);
     }
 
     public void setMetrics(NgrokTunnelMetrics metrics) {
         this.metrics = metrics;
     }
+
 }
