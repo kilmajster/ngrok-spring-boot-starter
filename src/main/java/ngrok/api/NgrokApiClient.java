@@ -1,6 +1,8 @@
 package ngrok.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import io.vavr.control.Try;
 import ngrok.NgrokComponent;
 import ngrok.NgrokProperties;
@@ -298,5 +300,30 @@ public class NgrokApiClient {
         public void setTunnelName(String tunnelName) {
             this.tunnelName = tunnelName;
         }
+    }
+
+    public static class NgrokApiErrorResponse {
+        @JsonProperty("error_code")
+        private int errorCode;
+        @JsonProperty("status_code")
+        private int statusCode;
+        @JsonProperty("msg")
+        private String message;
+        @JsonUnwrapped
+        private NgrokApiErrorResponseDetails details;
+
+        public static class NgrokApiErrorResponseDetails {
+            private String err;
+        }
+        /**
+         * {
+         *     "error_code": 103,
+         *     "status_code": 502,
+         *     "msg": "failed to start tunnel",
+         *     "details": {
+         *         "err": "TCP tunnels are only available after you sign up.\nSign up at: https://dashboard.ngrok.com/signup\n\nIf you have already signed up, make sure your authtoken is installed.\nYour authtoken is available on your dashboard: https://dashboard.ngrok.com/get-started/your-authtoken\r\n\r\nERR_NGROK_302\r\n"
+         *     }
+         * }
+         */
     }
 }
