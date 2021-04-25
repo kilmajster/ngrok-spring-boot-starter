@@ -3,16 +3,14 @@ package ngrok.configuration;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import ngrok.NgrokComponent;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
-import org.springframework.context.annotation.Configuration;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@ConditionalOnProperty(name = NgrokConfiguration.NGROK_ENABLED, havingValue = "true")
-@Configuration
+@NgrokComponent
 @ConfigurationProperties(prefix = "ngrok")
 public class NgrokConfiguration {
 
@@ -26,7 +24,7 @@ public class NgrokConfiguration {
     /**
      * Custom configuration path e.g.: '/home/user/example-directory/custom-config.yml'
      */
-    private String configPath;
+    private String config;
 
     /**
      * Provide custom ngrok execution parameters. e.g.: 'http 3000 -config /root/ngrok.yml'

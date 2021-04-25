@@ -25,7 +25,7 @@ public class NgrokConfigurationProvider {
     }
 
     private String loadNgrokConfigFile() {
-        return isClasspathConfig() ? handleClasspathConfig() : loadConfigurationFile(ngrokConfiguration.getConfigPath());
+        return isClasspathConfig() ? handleClasspathConfig() : loadConfigurationFile(ngrokConfiguration.getConfig());
     }
 
     private String handleClasspathConfig() {
@@ -53,7 +53,7 @@ public class NgrokConfigurationProvider {
     }
 
     private String getClassPathConfigFilePath() {
-        return StringUtils.removeStart(ngrokConfiguration.getConfigPath(), CLASSPATH_CONFIG_PREFIX);
+        return StringUtils.removeStart(ngrokConfiguration.getConfig(), CLASSPATH_CONFIG_PREFIX);
     }
 
     private String extractFileName(final String fullFilename) {
@@ -70,10 +70,10 @@ public class NgrokConfigurationProvider {
     }
 
     private boolean isConfigPresent() {
-        return StringUtils.isNotBlank(ngrokConfiguration.getConfigPath());
+        return StringUtils.isNotBlank(ngrokConfiguration.getConfig());
     }
 
     private boolean isClasspathConfig() {
-        return StringUtils.startsWith(ngrokConfiguration.getConfigPath(), CLASSPATH_CONFIG_PREFIX);
+        return StringUtils.startsWith(ngrokConfiguration.getConfig(), CLASSPATH_CONFIG_PREFIX);
     }
 }
