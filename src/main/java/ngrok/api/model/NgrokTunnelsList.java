@@ -1,22 +1,17 @@
 package ngrok.api.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class NgrokTunnelsList implements Serializable {
 
     private List<NgrokTunnel> tunnels;
 
-    public NgrokTunnelsList() {
-        this.tunnels = new ArrayList<>();
-    }
-
-    public List<NgrokTunnel> getTunnels() {
-        return tunnels;
-    }
-
-    public void setTunnels(List<NgrokTunnel> tunnels) {
-        this.tunnels = tunnels;
-    }
 }

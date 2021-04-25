@@ -1,12 +1,11 @@
 package ngrok.api;
 
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import ngrok.NgrokComponent;
-import ngrok.NgrokProperties;
 import ngrok.api.model.NgrokTunnel;
 import ngrok.api.model.NgrokTunnelsList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import ngrok.configuration.NgrokConfiguration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -14,22 +13,21 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @NgrokComponent
 public class NgrokApiClient {
 
     public static final String NGROK_URL_API_TUNNELS = "/api/tunnels";
     public static final String NGROK_URL_HTML_STATUS = "/status";
 
-    private static final Logger log = LoggerFactory.getLogger(NgrokApiClient.class);
+    private final RestTemplate restTemplate;
 
-    private final RestTemplate restTemplate = new RestTemplate();
-
+    @Getter
     private final String ngrokApiUrl;
 
-    public NgrokApiClient(
-            @Value("${" + NgrokProperties.NGROK_HOST + ":" + NgrokProperties.NGROK_HOST_DEFAULT + "}") String ngrokApiHost,
-            @Value("${" + NgrokProperties.NGROK_PORT + ":" + NgrokProperties.NGROK_PORT_DEFAULT + "}") Integer ngrokApiPort) {
-        this.ngrokApiUrl = ngrokApiHost + ":" + ngrokApiPort;
+    public NgrokApiClient(NgrokConfiguration ngrokConfiguration) {
+        this.restTemplate = new RestTemplate();
+        this.ngrokApiUrl = ngrokConfiguration.getHost() + ":" + ngrokConfiguration.getPort();
     }
 
     public List<NgrokTunnel> fetchTunnels() {
@@ -53,10 +51,6 @@ public class NgrokApiClient {
         }
 
         return false;
-    }
-
-    public String getNgrokApiUrl() {
-        return ngrokApiUrl;
     }
 
     public String getNgrokStatusUrl() {

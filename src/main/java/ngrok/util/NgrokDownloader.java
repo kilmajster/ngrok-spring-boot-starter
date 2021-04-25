@@ -1,16 +1,14 @@
 package ngrok.util;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ngrok.NgrokComponent;
-import ngrok.NgrokProperties;
-import ngrok.os.NgrokPlatformDetector;
+import ngrok.configuration.NgrokConfiguration;
 import ngrok.exception.NgrokDownloadException;
+import ngrok.os.NgrokPlatformDetector;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,38 +16,13 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+@Slf4j
 @NgrokComponent
+@RequiredArgsConstructor
 public class NgrokDownloader {
 
-    private static final Logger log = LoggerFactory.getLogger(NgrokDownloader.class);
-
-    @Value("${" + NgrokProperties.NGROK_BINARY_WINDOWS_32 + ":" + NgrokProperties.NGROK_BINARY_WINDOWS_32_DEFAULT + "}")
-    private String windowsBinaryUrl;
-
-    @Value("${" + NgrokProperties.NGROK_BINARY_LINUX_32 + ":" + NgrokProperties.NGROK_BINARY_LINUX_32_DEFAULT + "}")
-    private String linuxBinaryUrl;
-
-    @Value("${" + NgrokProperties.NGROK_BINARY_OSX_32 + ":" + NgrokProperties.NGROK_BINARY_OSX_32_DEFAULT + "}")
-    private String osxBinaryUrl;
-
-    @Value("${" + NgrokProperties.NGROK_BINARY_WINDOWS_64 + ":" + NgrokProperties.NGROK_BINARY_WINDOWS_64_DEFAULT + "}")
-    private String windows64BinaryUrl;
-
-    @Value("${" + NgrokProperties.NGROK_BINARY_LINUX_64 + ":" + NgrokProperties.NGROK_BINARY_LINUX_64_DEFAULT + "}")
-    private String linux64BinaryUrl;
-
-    @Value("${" + NgrokProperties.NGROK_BINARY_OSX_64 + ":" + NgrokProperties.NGROK_BINARY_OSX_64_DEFAULT + "}")
-    private String osx64BinaryUrl;
-
-    @Value("${" + NgrokProperties.NGROK_BINARY_CUSTOM + ":}")
-    private String ngrokBinaryCustom;
-
-    @Autowired
+    private final NgrokConfiguration ngrokConfiguration;
     private final NgrokPlatformDetector platformDetector;
-
-    public NgrokDownloader(final NgrokPlatformDetector platformDetector) {
-        this.platformDetector = platformDetector;
-    }
 
     public void downloadAndExtractNgrokTo(String destinationPath) throws NgrokDownloadException {
         String downloadedFilePath = downloadNgrokTo(destinationPath);
@@ -93,22 +66,25 @@ public class NgrokDownloader {
     }
 
     public String getBinaryUrl() {
-        if (StringUtils.isNotBlank(ngrokBinaryCustom)) {
-            return ngrokBinaryCustom;
+
+        final NgrokConfiguration.NgrokBinary ngrokBinary = ngrokConfiguration.getBinary();
+
+        if (StringUtils.isNotBlank(ngrokBinary.getCustom())) {
+            return ngrokBinary.getCustom();
         }
 
         if (platformDetector.isWindows()) {
-            return platformDetector.is64bitOS() ? windows64BinaryUrl : windowsBinaryUrl;
+            return platformDetector.is64bitOS() ? ngrokBinary.getWindows() : ngrokBinary.getWindows32();
         }
 
         if (platformDetector.isMacOS()) {
-            return platformDetector.is64bitOS() ? osx64BinaryUrl : osxBinaryUrl;
+            return platformDetector.is64bitOS() ? ngrokBinary.getOsx() : ngrokBinary.getOsx32();
         }
 
         if (platformDetector.isLinux()) {
-            return platformDetector.is64bitOS() ? linux64BinaryUrl : linuxBinaryUrl;
+            return platformDetector.is64bitOS() ? ngrokBinary.getLinux() : ngrokBinary.getLinux32();
         }
 
-        throw new NgrokDownloadException("Unsupported OS ");
+        throw new NgrokDownloadException("Unsupported OS");
     }
 }

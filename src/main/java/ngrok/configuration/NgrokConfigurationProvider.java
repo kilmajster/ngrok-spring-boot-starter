@@ -1,11 +1,10 @@
 package ngrok.configuration;
 
+import lombok.RequiredArgsConstructor;
 import ngrok.NgrokComponent;
-import ngrok.NgrokProperties;
 import ngrok.exception.NgrokMalformedConfigurationException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
@@ -14,19 +13,19 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 
 @NgrokComponent
+@RequiredArgsConstructor
 public class NgrokConfigurationProvider {
 
     private static final String CLASSPATH_CONFIG_PREFIX = "classpath:";
 
-    @Value("${" + NgrokProperties.NGROK_CONFIG + ":}")
-    private String ngrokConfigFilePath;
+    private final NgrokConfiguration ngrokConfiguration;
 
     public String prepareNgrokConfigParams() {
         return isConfigPresent() ? loadNgrokConfigFile() : "";
     }
 
     private String loadNgrokConfigFile() {
-        return isClasspathConfig() ? handleClasspathConfig() : loadConfigurationFile(ngrokConfigFilePath);
+        return isClasspathConfig() ? handleClasspathConfig() : loadConfigurationFile(ngrokConfiguration.getConfig());
     }
 
     private String handleClasspathConfig() {
@@ -54,7 +53,7 @@ public class NgrokConfigurationProvider {
     }
 
     private String getClassPathConfigFilePath() {
-        return StringUtils.removeStart(ngrokConfigFilePath, CLASSPATH_CONFIG_PREFIX);
+        return StringUtils.removeStart(ngrokConfiguration.getConfig(), CLASSPATH_CONFIG_PREFIX);
     }
 
     private String extractFileName(final String fullFilename) {
@@ -71,10 +70,10 @@ public class NgrokConfigurationProvider {
     }
 
     private boolean isConfigPresent() {
-        return StringUtils.isNotBlank(ngrokConfigFilePath);
+        return StringUtils.isNotBlank(ngrokConfiguration.getConfig());
     }
 
     private boolean isClasspathConfig() {
-        return StringUtils.startsWith(ngrokConfigFilePath, CLASSPATH_CONFIG_PREFIX);
+        return StringUtils.startsWith(ngrokConfiguration.getConfig(), CLASSPATH_CONFIG_PREFIX);
     }
 }
