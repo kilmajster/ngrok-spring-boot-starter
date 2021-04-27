@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @NgrokComponent
@@ -83,6 +84,14 @@ public class NgrokApiClient {
                 .findFirst()
                 .map(NgrokTunnel::getPublicUrl)
                 .orElse(null);
+    }
+
+    public Optional<NgrokTunnel> getTunnel(int port) {
+        String addr = "localhost:" + port;
+        return fetchTunnels()
+                .stream()
+                .filter(it -> it.getConfig().getAddr().equals(addr))
+                .findAny();
     }
 
     /**

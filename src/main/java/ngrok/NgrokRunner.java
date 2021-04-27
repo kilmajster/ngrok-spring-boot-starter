@@ -41,14 +41,19 @@ public class NgrokRunner {
     @EventListener
     public void run(WebServerInitializedEvent event) throws NgrokDownloadException, NgrokCommandExecuteException {
         ngrokExecutor.execute(() -> {
+            int port = event.getWebServer().getPort();
             if (ngrokIsNotRunning()) {
                 if (needToDownloadNgrok()) {
                     downloadAndExtractNgrokBinary();
                     addPermissionsIfNeeded();
                 }
-                startNgrok(event.getWebServer().getPort());
+                startNgrok(port);
             } else {
-                log.info("Ngrok was already running! Dashboard url -> [ {} ]", ngrokApiClient.getNgrokApiUrl());
+                if (ngrokIsListening(port)) {
+                    log.info("Ngrok was already running! Dashboard url -> [ {} ]", ngrokApiClient.getNgrokApiUrl());
+                } else {
+                    startNgrok(port);
+                }
             }
             logTunnelsDetails();
             applicationEventPublisher.publishEvent(new NgrokInitializedEvent(this, ngrokApiClient.fetchTunnels()));
@@ -71,6 +76,10 @@ public class NgrokRunner {
 
     private boolean ngrokIsNotRunning() {
         return !ngrokApiClient.isResponding();
+    }
+
+    private boolean ngrokIsListening(int port) {
+        return ngrokApiClient.getTunnel(port).isPresent();
     }
 
     private boolean needToDownloadNgrok() {
