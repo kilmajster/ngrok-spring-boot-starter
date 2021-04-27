@@ -18,6 +18,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.task.TaskExecutor;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,22 +44,34 @@ public class NgrokRunner {
     public void run(WebServerInitializedEvent event) throws NgrokDownloadException, NgrokCommandExecuteException {
         ngrokExecutor.execute(() -> {
             int port = event.getWebServer().getPort();
+            List<NgrokTunnel> tunnels;
             if (ngrokIsNotRunning()) {
                 if (needToDownloadNgrok()) {
                     downloadAndExtractNgrokBinary();
                     addPermissionsIfNeeded();
                 }
                 startNgrok(port);
+                tunnels = ngrokApiClient.fetchTunnels(port);
             } else {
                 if (ngrokIsListening(port)) {
                     log.info("Ngrok was already running! Dashboard url -> [ {} ]", ngrokApiClient.getNgrokApiUrl());
+                    tunnels = ngrokApiClient.fetchTunnels(port);
                 } else {
-                    startNgrok(port);
+                    NgrokTunnel httpTunnel = ngrokApiClient.startTunnel(port, "http", "springboot-http-" + port);
+                    log.info("New Ngrok tunnel added -> [ {}: {} ]", httpTunnel.getName(), httpTunnel.getPublicUrl());
+                    NgrokTunnel httpsTunnel = ngrokApiClient.startTunnel(port, "https", "springboot-https-" + port);
+                    log.info("New Ngrok tunnel added -> [ {}: {} ]", httpsTunnel.getName(), httpsTunnel.getPublicUrl());
+                    tunnels = listOf(httpTunnel, httpsTunnel);
                 }
             }
-            logTunnelsDetails();
-            applicationEventPublisher.publishEvent(new NgrokInitializedEvent(this, ngrokApiClient.fetchTunnels()));
+            logTunnelsDetails(tunnels);
+            applicationEventPublisher.publishEvent(new NgrokInitializedEvent(this, tunnels));
         });
+    }
+
+    @SafeVarargs
+    private static <T> List<T> listOf(T... args) {
+        return new ArrayList<>(Arrays.asList(args));
     }
 
     private void downloadAndExtractNgrokBinary() {
@@ -79,7 +93,7 @@ public class NgrokRunner {
     }
 
     private boolean ngrokIsListening(int port) {
-        return ngrokApiClient.getTunnel(port).isPresent();
+        return !ngrokApiClient.fetchTunnels(port).isEmpty();
     }
 
     private boolean needToDownloadNgrok() {
@@ -115,9 +129,7 @@ public class NgrokRunner {
         return StringUtils.isNotBlank(ngrokConfiguration.getCommand());
     }
 
-    private void logTunnelsDetails() {
-        List<NgrokTunnel> tunnels = ngrokApiClient.fetchTunnels();
-
+    private static void logTunnelsDetails(List<NgrokTunnel> tunnels) {
         tunnels.forEach(t -> log.info("Remote url ({})\t-> [ {} ]", t.getProto(), t.getPublicUrl()));
     }
 }

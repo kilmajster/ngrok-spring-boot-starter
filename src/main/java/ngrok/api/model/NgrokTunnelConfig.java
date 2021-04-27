@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.net.URL;
 
 @Getter
 @Setter
@@ -13,5 +14,5 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NgrokTunnelConfig implements Serializable {
 
-    private String addr;
+    private URL addr;
 }

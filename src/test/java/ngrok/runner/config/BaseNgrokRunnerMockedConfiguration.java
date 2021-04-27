@@ -15,10 +15,10 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;
-import java.util.Optional;
+import java.net.URL;
+import java.util.Collections;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
-import static ngrok.TestConstants.TEST_PORT_1;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -52,16 +52,19 @@ public abstract class BaseNgrokRunnerMockedConfiguration {
             when(ngrokApiClient.isResponding())
                     .thenReturn(false)
                     .thenReturn(true);
-            when(ngrokApiClient.getTunnel(anyInt())).thenCallRealMethod();
+            when(ngrokApiClient.fetchTunnels(anyInt())).thenCallRealMethod();
         } else {
             when(ngrokApiClient.isResponding())
                     .thenReturn(true);
 
             NgrokTunnel tunnel = ngrokTunnelsList.getTunnels().get(0);
-            tunnel.getConfig().setAddr("localhost:" + runningPort);
-            when(ngrokApiClient.getTunnel(runningPort))
-                    .thenReturn(Optional.of(tunnel));
+            tunnel.getConfig().setAddr(new URL("http://localhost:" + runningPort));
+            when(ngrokApiClient.fetchTunnels(runningPort))
+                    .thenReturn(Collections.singletonList(tunnel));
         }
+
+        when(ngrokApiClient.startTunnel(anyInt(), anyString(), anyString()))
+                .thenReturn(ngrokTunnelsList.getTunnels().get(0));
 
         mockedNgrokApiClient = ngrokApiClient;
 
