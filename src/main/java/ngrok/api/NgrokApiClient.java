@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @NgrokComponent
@@ -32,13 +32,29 @@ public class NgrokApiClient {
 
     public List<NgrokTunnel> fetchTunnels() {
         try {
-            NgrokTunnelsList tunnels = restTemplate.getForObject(ngrokApiUrl + NGROK_URL_API_TUNNELS, NgrokTunnelsList.class);
+            NgrokTunnelsList tunnels = restTemplate.getForObject(getNgrokTunnelsUrl(), NgrokTunnelsList.class);
 
             assert tunnels != null;
             return tunnels.getTunnels();
         } catch (Exception e) {
+            log.error("Ngrok API error when fetch", e);
             return Collections.emptyList();
         }
+    }
+
+    public List<NgrokTunnel> fetchTunnels(int port) {
+        return fetchTunnels()
+                .stream()
+                .filter(it -> it.getConfig().getAddr().getPort() == port)
+                .collect(Collectors.toList());
+    }
+
+    public NgrokTunnel startTunnel(int port, String proto, String name) {
+        Map<String, String> request = new HashMap<>();
+        request.put("addr", String.valueOf(port));
+        request.put("proto", proto);
+        request.put("name", name);
+        return restTemplate.postForObject(getNgrokTunnelsUrl(), request, NgrokTunnel.class);
     }
 
     public boolean isResponding() {
@@ -55,6 +71,10 @@ public class NgrokApiClient {
 
     public String getNgrokStatusUrl() {
         return ngrokApiUrl + NGROK_URL_HTML_STATUS;
+    }
+
+    public String getNgrokTunnelsUrl() {
+        return ngrokApiUrl + NGROK_URL_API_TUNNELS;
     }
 
     /**

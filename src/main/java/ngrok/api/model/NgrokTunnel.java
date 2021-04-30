@@ -15,10 +15,14 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NgrokTunnel implements Serializable {
 
+    private String name;
+
     @JsonProperty("public_url")
     private String publicUrl;
 
     private String proto;
+
+    private NgrokTunnelConfig config;
 
     @JsonIgnore
     public boolean isHttps() {
