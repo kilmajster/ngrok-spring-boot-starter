@@ -39,6 +39,7 @@ public class NgrokRunner {
     private final NgrokPlatformDetector ngrokPlatformDetector;
     private final NgrokSystemCommandExecutor ngrokSystemCommandExecutor;
     private final TaskExecutor ngrokExecutor;
+    private final String applicationName;
 
     @EventListener
     public void run(WebServerInitializedEvent event) throws NgrokDownloadException, NgrokCommandExecuteException {
@@ -57,9 +58,9 @@ public class NgrokRunner {
                     log.info("Ngrok was already running! Dashboard url -> [ {} ]", ngrokApiClient.getNgrokApiUrl());
                     tunnels = ngrokApiClient.fetchTunnels(port);
                 } else {
-                    NgrokTunnel httpTunnel = ngrokApiClient.startTunnel(port, "http", "springboot-http-" + port);
+                    NgrokTunnel httpTunnel = ngrokApiClient.startTunnel(port, "http", applicationName + "-http-" + port);
                     log.info("New Ngrok tunnel added -> [ {}: {} ]", httpTunnel.getName(), httpTunnel.getPublicUrl());
-                    NgrokTunnel httpsTunnel = ngrokApiClient.startTunnel(port, "https", "springboot-https-" + port);
+                    NgrokTunnel httpsTunnel = ngrokApiClient.startTunnel(port, "https", applicationName + "-https-" + port);
                     log.info("New Ngrok tunnel added -> [ {}: {} ]", httpsTunnel.getName(), httpsTunnel.getPublicUrl());
                     tunnels = listOf(httpTunnel, httpsTunnel);
                 }
