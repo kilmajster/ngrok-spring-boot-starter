@@ -53,19 +53,19 @@ public class NgrokRunner {
                 }
                 startNgrok(port);
                 tunnels = ngrokApiClient.fetchTunnels(port);
+                logTunnelsDetails(tunnels);
             } else {
                 if (ngrokIsListening(port)) {
                     log.info("Ngrok was already running! Dashboard url -> [ {} ]", ngrokApiClient.getNgrokApiUrl());
                     tunnels = ngrokApiClient.fetchTunnels(port);
                 } else {
-                    NgrokTunnel httpTunnel = ngrokApiClient.startTunnel(port, "http", applicationName + "-http-" + port);
-                    log.info("New Ngrok tunnel added -> [ {}: {} ]", httpTunnel.getName(), httpTunnel.getPublicUrl());
-                    NgrokTunnel httpsTunnel = ngrokApiClient.startTunnel(port, "https", applicationName + "-https-" + port);
+                    NgrokTunnel httpsTunnel = ngrokApiClient.startTunnel(port, "http", applicationName + "-http-" + port);
                     log.info("New Ngrok tunnel added -> [ {}: {} ]", httpsTunnel.getName(), httpsTunnel.getPublicUrl());
+                    NgrokTunnel httpTunnel = ngrokApiClient.tunnelDetail(applicationName + "-http-" + port + " (http)");
+                    log.info("New Ngrok tunnel added -> [ {}: {} ]", httpTunnel.getName(), httpTunnel.getPublicUrl());
                     tunnels = listOf(httpTunnel, httpsTunnel);
                 }
             }
-            logTunnelsDetails(tunnels);
             applicationEventPublisher.publishEvent(new NgrokInitializedEvent(this, tunnels));
         });
     }

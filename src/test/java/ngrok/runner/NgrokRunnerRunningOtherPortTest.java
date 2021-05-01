@@ -35,6 +35,6 @@ public class NgrokRunnerRunningOtherPortTest extends BaseNgrokRunnerIntegrationT
         verify(mockedNgrokApiClient, times(1)).isResponding();
         verify(mockedNgrokApiClient, times(1)).fetchTunnels(TEST_PORT_1);
         verify(mockedNgrokApiClient, times(1)).startTunnel(TEST_PORT_1, "http", "springboot-http-" + TEST_PORT_1);
-        verify(mockedNgrokApiClient, times(1)).startTunnel(TEST_PORT_1, "https", "springboot-https-" + TEST_PORT_1);
+        verify(mockedNgrokApiClient, times(1)).tunnelDetail("springboot-http-" + TEST_PORT_1 + " (http)");
     }
 }

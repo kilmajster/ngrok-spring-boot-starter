@@ -19,6 +19,7 @@ public class NgrokApiClient {
 
     public static final String NGROK_URL_API_TUNNELS = "/api/tunnels";
     public static final String NGROK_URL_HTML_STATUS = "/status";
+    public static final String URI_NGROK_API_TUNNEL_DETAIL = "/api/tunnels/{tunnelName}";
 
     private final RestTemplate restTemplate;
 
@@ -57,6 +58,10 @@ public class NgrokApiClient {
         return restTemplate.postForObject(getNgrokTunnelsUrl(), request, NgrokTunnel.class);
     }
 
+    public NgrokTunnel tunnelDetail(final String tunnelName) {
+        return restTemplate.getForObject(apiUrlOf(URI_NGROK_API_TUNNEL_DETAIL), NgrokTunnel.class, tunnelName);
+    }
+
     public boolean isResponding() {
         try {
             ResponseEntity<Void> response = restTemplate.getForEntity(getNgrokStatusUrl(), Void.class);
@@ -75,6 +80,10 @@ public class NgrokApiClient {
 
     public String getNgrokTunnelsUrl() {
         return ngrokApiUrl + NGROK_URL_API_TUNNELS;
+    }
+
+    private String apiUrlOf(final String apiUri) {
+        return ngrokApiUrl + apiUri;
     }
 
     /**
