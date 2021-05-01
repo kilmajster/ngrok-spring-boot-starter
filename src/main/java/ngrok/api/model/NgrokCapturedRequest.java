@@ -4,12 +4,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Tolerate;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+@Getter
+@Setter
+@Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NgrokCapturedRequest implements Serializable {
 
@@ -24,7 +31,14 @@ public class NgrokCapturedRequest implements Serializable {
     private NgrokRequest request;
     private NgrokResponse response;
 
+    @Tolerate
+    public NgrokCapturedRequest() {
+    }
+
+    @Getter
+    @Setter
     public static class NgrokRequest {
+
         @JsonSerialize()
         private String method;
         private String proto;
@@ -33,51 +47,15 @@ public class NgrokCapturedRequest implements Serializable {
         private String uri;
         private String raw;
 
+        @Tolerate
         public NgrokRequest() {
-        }
-
-        public String getMethod() {
-            return method;
-        }
-
-        public void setMethod(String method) {
-            this.method = method;
-        }
-
-        public String getProto() {
-            return proto;
-        }
-
-        public void setProto(String proto) {
-            this.proto = proto;
-        }
-
-        public NgrokHeaders getHeaders() {
-            return headers;
-        }
-
-        public void setHeaders(NgrokHeaders headers) {
-            this.headers = headers;
-        }
-
-        public String getUri() {
-            return uri;
-        }
-
-        public void setUri(String uri) {
-            this.uri = uri;
-        }
-
-        public String getRaw() {
-            return raw;
-        }
-
-        public void setRaw(String raw) {
-            this.raw = raw;
         }
     }
 
+    @Getter
+    @Setter
     public static class NgrokResponse {
+
         private String status;
         @JsonProperty("status_code")
         private int statusCode;
@@ -86,129 +64,20 @@ public class NgrokCapturedRequest implements Serializable {
         private NgrokHeaders headers;
         private String raw;
 
+        @Tolerate
         public NgrokResponse() {
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public int getStatusCode() {
-            return statusCode;
-        }
-
-        public void setStatusCode(int statusCode) {
-            this.statusCode = statusCode;
-        }
-
-        public String getProto() {
-            return proto;
-        }
-
-        public void setProto(String proto) {
-            this.proto = proto;
-        }
-
-        public NgrokHeaders getHeaders() {
-            return headers;
-        }
-
-        public void setHeaders(NgrokHeaders headers) {
-            this.headers = headers;
-        }
-
-        public String getRaw() {
-            return raw;
-        }
-
-        public void setRaw(String raw) {
-            this.raw = raw;
         }
     }
 
+    @Getter
+    @Setter
     public static class NgrokHeaders {
+
         private Map<String, List<String>> headers;
 
+        @Tolerate
         public NgrokHeaders() {
         }
 
-        public Map<String, List<String>> getHeaders() {
-            return headers;
-        }
-
-        public void setHeaders(Map<String, List<String>> headers) {
-            this.headers = headers;
-        }
-    }
-
-    public NgrokCapturedRequest() {
-    }
-
-    public String getUri() {
-        return uri;
-    }
-
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTunnelName() {
-        return tunnelName;
-    }
-
-    public void setTunnelName(String tunnelName) {
-        this.tunnelName = tunnelName;
-    }
-
-    public String getRemoteAddr() {
-        return remoteAddr;
-    }
-
-    public void setRemoteAddr(String remoteAddr) {
-        this.remoteAddr = remoteAddr;
-    }
-
-    public Date getStart() {
-        return start;
-    }
-
-    public void setStart(Date start) {
-        this.start = start;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public NgrokRequest getRequest() {
-        return request;
-    }
-
-    public void setRequest(NgrokRequest request) {
-        this.request = request;
-    }
-
-    public NgrokResponse getResponse() {
-        return response;
-    }
-
-    public void setResponse(NgrokResponse response) {
-        this.response = response;
     }
 }

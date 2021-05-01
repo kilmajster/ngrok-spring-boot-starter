@@ -1,35 +1,29 @@
 package ngrok.api;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import io.vavr.control.Try;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ngrok.NgrokComponent;
-import ngrok.NgrokProperties;
 import ngrok.api.model.NgrokCapturedRequest;
 import ngrok.api.model.NgrokCapturedRequestsList;
 import ngrok.api.model.NgrokTunnel;
 import ngrok.api.model.NgrokTunnelsList;
+import ngrok.api.rquest.NgrokReplayCapturedRequest;
+import ngrok.api.rquest.NgrokStartTunnel;
 import ngrok.configuration.NgrokConfiguration;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestClientException;
 import ngrok.exception.NgrokApiException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @NgrokComponent
 public class NgrokApiClient {
-
-    public static final String NGROK_URL_API_TUNNELS = "/api/tunnels";
-    public static final String NGROK_URL_HTML_STATUS = "/status";
 
     private final RestTemplate restTemplate;
     public static final String URI_NGROK_API_TUNNELS = "/api/tunnels";
@@ -67,12 +61,16 @@ public class NgrokApiClient {
      * as those you would use to define the tunnel in the configuration file.
      */
     public NgrokTunnel startTunnel(final String addr, final String proto, final String name) {
-        return Try.of(() -> restTemplate
-                .postForObject(
-                        apiUrlOf(URI_NGROK_API_TUNNELS),
-                        NgrokStartTunnel.of(addr, proto, name),
-                        NgrokTunnel.class
-                )
+        return Try.of(() -> {
+                    final ResponseEntity<NgrokTunnel> startTunnelResponse = restTemplate.postForEntity(
+                            apiUrlOf(URI_NGROK_API_TUNNELS),
+                            NgrokStartTunnel.of(addr, proto, name),
+                            NgrokTunnel.class);
+                    if (startTunnelResponse.getStatusCode().isError()) {
+                        log.warn("Failed to start ngrok tunnel!");
+                    }
+                    return startTunnelResponse.getBody();
+                }
         ).getOrElseThrow(t -> new NgrokApiException("Failed to start ngrok tunnel!", t));
     }
 
@@ -97,7 +95,8 @@ public class NgrokApiClient {
         return Try.of(() -> restTemplate
                 .exchange(
                         apiUrlOf(URI_NGROK_API_TUNNEL_DETAIL),
-                        HttpMethod.DELETE, null,
+                        HttpMethod.DELETE,
+                        null,
                         Void.class,
                         tunnelName
                 ).getStatusCode().is2xxSuccessful()
@@ -110,25 +109,14 @@ public class NgrokApiClient {
      */
     public List<NgrokCapturedRequest> listCapturedRequests(final int limit, final String tunnelName) {
         return Try.of(() -> restTemplate
-                .getForObject(
-                        apiUrlOf(URI_NGROK_API_CAPTURED_REQUESTS)
-                                + asQueryParam("limit", limit)
-                                + asQueryParam("tunnel_name", tunnelName),
+                .getForObject(UriComponentsBuilder.fromUriString(
+                        apiUrlOf(URI_NGROK_API_CAPTURED_REQUESTS))
+                                .queryParamIfPresent("limit", limit > 0 ? Optional.of(limit) : Optional.empty())
+                                .queryParamIfPresent("tunnel_name", Optional.ofNullable(tunnelName))
+                                .toUriString(),
                         NgrokCapturedRequestsList.class
                 ).getRequests()
         ).getOrElse(Collections.emptyList());
-    }
-
-    private String asQueryParam(final String name, final String value) {
-        return Objects.nonNull(name) && Objects.nonNull(value)
-                ? "&" + name + "=" + value
-                : "";
-    }
-
-    private String asQueryParam(final String name, final int value) {
-        return Objects.nonNull(name) && value > 0
-                ? "&" + name + "=" + value
-                : "";
     }
 
     public List<NgrokCapturedRequest> listCapturedRequests(final int limit) {
@@ -150,7 +138,7 @@ public class NgrokApiClient {
         return Try.of(() -> restTemplate
                 .postForEntity(
                         apiUrlOf(URI_NGROK_API_CAPTURED_REQUESTS),
-                        ReplayCapturedRequest.of(id, tunnelName),
+                        NgrokReplayCapturedRequest.of(id, tunnelName),
                         Void.class
                 ).getStatusCode().is2xxSuccessful()
         ).getOrElse(Boolean.FALSE);
@@ -230,105 +218,5 @@ public class NgrokApiClient {
      */
     public boolean isRunning() {
         return isResponding();
-    }
-
-    public static class NgrokStartTunnel {
-
-        private String addr;
-        private String proto;
-        private String name;
-
-        public static NgrokStartTunnel of(String addr, String proto, String name) {
-            NgrokStartTunnel ngrokStartTunnel = new NgrokStartTunnel();
-            ngrokStartTunnel.setAddr(addr);
-            ngrokStartTunnel.setProto(proto);
-            ngrokStartTunnel.setName(name);
-            return ngrokStartTunnel;
-        }
-
-
-        public NgrokStartTunnel() {
-        }
-
-        public String getAddr() {
-            return addr;
-        }
-
-        public void setAddr(String addr) {
-            this.addr = addr;
-        }
-
-        public String getProto() {
-            return proto;
-        }
-
-        public void setProto(String proto) {
-            this.proto = proto;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-    }
-
-    public static class ReplayCapturedRequest {
-        private String id;
-        @JsonProperty("tunnel_name")
-        private String tunnelName;
-
-        public static ReplayCapturedRequest of(String id, String tunnelName) {
-            ReplayCapturedRequest replayCapturedRequest = new ReplayCapturedRequest();
-            replayCapturedRequest.setId(id);
-            replayCapturedRequest.setTunnelName(tunnelName);
-            return replayCapturedRequest;
-        }
-
-        public ReplayCapturedRequest() {
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getTunnelName() {
-            return tunnelName;
-        }
-
-        public void setTunnelName(String tunnelName) {
-            this.tunnelName = tunnelName;
-        }
-    }
-
-    public static class NgrokApiErrorResponse {
-        @JsonProperty("error_code")
-        private int errorCode;
-        @JsonProperty("status_code")
-        private int statusCode;
-        @JsonProperty("msg")
-        private String message;
-        @JsonUnwrapped
-        private NgrokApiErrorResponseDetails details;
-
-        public static class NgrokApiErrorResponseDetails {
-            private String err;
-        }
-        /**
-         * {
-         *     "error_code": 103,
-         *     "status_code": 502,
-         *     "msg": "failed to start tunnel",
-         *     "details": {
-         *         "err": "TCP tunnels are only available after you sign up.\nSign up at: https://dashboard.ngrok.com/signup\n\nIf you have already signed up, make sure your authtoken is installed.\nYour authtoken is available on your dashboard: https://dashboard.ngrok.com/get-started/your-authtoken\r\n\r\nERR_NGROK_302\r\n"
-         *     }
-         * }
-         */
     }
 }

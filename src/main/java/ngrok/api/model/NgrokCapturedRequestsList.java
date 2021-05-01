@@ -1,32 +1,24 @@
 package ngrok.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Tolerate;
 
 import java.io.Serializable;
 import java.util.List;
 
+@Getter
+@Setter
+@Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NgrokCapturedRequestsList implements Serializable {
 
     private String uri;
     private List<NgrokCapturedRequest> requests;
 
+    @Tolerate
     public NgrokCapturedRequestsList() {
-    }
-
-    public String getUri() {
-        return uri;
-    }
-
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
-    public List<NgrokCapturedRequest> getRequests() {
-        return requests;
-    }
-
-    public void setRequests(List<NgrokCapturedRequest> requests) {
-        this.requests = requests;
     }
 }

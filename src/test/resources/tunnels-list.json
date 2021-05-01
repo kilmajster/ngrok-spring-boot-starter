@@ -1,8 +1,8 @@
 {
   "tunnels": [
     {
-      "name": "command_line (http)",
-      "uri": "/api/tunnels/command_line%20%28http%29",
+      "name": "test-http-tunnel-name",
+      "uri": "/api/tunnels/test-http-tunnel-name",
       "public_url": "http://12345678-not-existing.ngrok.io",
       "proto": "http",
       "config": {
@@ -11,89 +11,11 @@
       },
       "metrics": {
         "conns": {
-          "count": 0,
-          "gauge": 0,
-          "rate1": 0,
-          "rate5": 0,
-          "rate15": 0,
-          "p50": 0,
-          "p90": 0,
-          "p95": 0,
-          "p99": 0
-        },
-        "http": {
-          "count": 0,
-          "rate1": 0,
-          "rate5": 0,
-          "rate15": 0,
-          "p50": 0,
-          "p90": 0,
-          "p95": 0,
-          "p99": 0
-        }
-      }
-    },
-    {
-      "name": "command_line",
-      "uri": "/api/tunnels/command_line",
-      "public_url": "https://12345678-not-existing.ngrok.io",
-      "proto": "https",
-      "config": {
-        "addr": "http://localhost:8080",
-        "inspect": true
-      },
-      "metrics": {
-        "conns": {
-          "count": 0,
-          "gauge": 0,
-          "rate1": 0,
-
-
-          "rate5": 0,
-          "rate15": 0,
-          "p50": 0,
-          "p90": 0,
-          "p95": 0,
-          "p99": 0
-        },
-        "http": {
-          "count": 0,
-          "rate1": 0,
-          "rate5": 0,
-          "rate15": 0,
-          "p50": 0,
-          "p90": 0,
-          "p95": 0,
-          "p99": 0
-        }
-      }
-    }
-  ],
-  "uri": "/api/tunnels"
-}
-
-
-
-
-
-{
-  "tunnels": [
-    {
-      "name": "command_line",
-      "uri": "/api/tunnels/command_line",
-      "public_url": "https://5ba049255e97.ngrok.io",
-      "proto": "https",
-      "config": {
-        "addr": "http://localhost:8080",
-        "inspect": true
-      },
-      "metrics": {
-        "conns": {
           "count": 2,
           "gauge": 0,
-          "rate1": 0.0006366812755998015,
-          "rate5": 0.0030206284092281713,
-          "rate15": 0.0017067996944914927,
+          "rate1": 0.0010497099617378827,
+          "rate5": 0.003338310672192081,
+          "rate15": 0.001764651863881216,
           "p50": 2086075.5,
           "p90": 2205836,
           "p95": 2205836,
@@ -101,9 +23,9 @@
         },
         "http": {
           "count": 2,
-          "rate1": 0.0006366812755998015,
-          "rate5": 0.0030206284092281713,
-          "rate15": 0.0017067996944914927,
+          "rate1": 0.0010497099617378827,
+          "rate5": 0.003338310672192081,
+          "rate15": 0.001764651863881216,
           "p50": 1005547.5,
           "p90": 1205297,
           "p95": 1205297,
@@ -112,35 +34,35 @@
       }
     },
     {
-      "name": "command_line (http)",
-      "uri": "/api/tunnels/command_line%20%28http%29",
-      "public_url": "http://5ba049255e97.ngrok.io",
-      "proto": "http",
+      "name": "test-https-tunnel-name",
+      "uri": "/api/tunnels/test-https-tunnel-name",
+      "public_url": "https://12345678-not-existing.ngrok.io",
+      "proto": "https",
       "config": {
         "addr": "http://localhost:8080",
         "inspect": true
       },
       "metrics": {
         "conns": {
-          "count": 3,
+          "count": 2,
           "gauge": 0,
-          "rate1": 0.000878662577272005,
-          "rate5": 0.004456052719617765,
-          "rate15": 0.0025460156471382228,
-          "p50": 1128917,
-          "p90": 3003843,
-          "p95": 3003843,
-          "p99": 3003843
+          "rate1": 0.0010497099617378827,
+          "rate5": 0.003338310672192081,
+          "rate15": 0.001764651863881216,
+          "p50": 2086075.5,
+          "p90": 2205836,
+          "p95": 2205836,
+          "p99": 2205836
         },
         "http": {
-          "count": 3,
-          "rate1": 0.000878662577272005,
-          "rate5": 0.004456052719617765,
-          "rate15": 0.0025460156471382228,
-          "p50": 505280,
-          "p90": 948110,
-          "p95": 948110,
-          "p99": 948110
+          "count": 2,
+          "rate1": 0.0010497099617378827,
+          "rate5": 0.003338310672192081,
+          "rate15": 0.001764651863881216,
+          "p50": 1005547.5,
+          "p90": 1205297,
+          "p95": 1205297,
+          "p99": 1205297
         }
       }
     }

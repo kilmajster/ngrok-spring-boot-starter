@@ -22,34 +22,6 @@
     <img src="https://ngrok.com/static/img/overview.png" alt="ngrok overview">
 </p>
 
-
-
-
-
-
-
-
-- [What this starter gives to you?](#what-this-starter-gives-to-you-)
-- [Dependency](#dependency)
-- [Configuration](#configuration)
-    * [🚀 Minimal configuration](#---minimal-configuration)
-        + [`ngrok.enabled` - one required configuration property](#-ngrokenabled----one-required-configuration-property)
-    * [⚙️ Advanced configuration](#---advanced-configuration)
-        + [`ngrok.config` - ngrok configuration file(s)](#-ngrokconfig----ngrok-configuration-file-s-)
-            * [configuration from Classpath](#configuration-from-classpath)
-        + [`ngrok.command` - ngrok custom command attributes](#-ngrokcommand----ngrok-custom-command-attributes)
-- [Ngrok API](#ngrok-api)
-    - [Optional properties & descriptions](#optional-properties---descriptions)
-        + [Issues & contributing](#issues---contributing)
-        + [References](#references)
-
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
-
-
-
-
-
 > What is Ngrok?
 >
 > *tldr;* Ngrok can create a http tunnel and give you a public URL with redirection to
@@ -79,7 +51,6 @@ Code of demo application available [here](https://github.com/kilmajster/demo).
   <version>0.3.4</version>
 </dependency>
 ```
-
 - or gradle:
 ```groovy
 compile('io.github.kilmajster:ngrok-spring-boot-starter:0.3.4')
@@ -149,22 +120,7 @@ ngrok.command=http -region=us -hostname=dev.example.com 8000
 # should be = /home/user/.ngrok2/ngrok http -region=us -hostname=dev.example.com 8000
 ```
 
-## Ngrok API
-To access ngrok tunneling details you can use `NgrokApiClient` bean. Example below:
-```java
-@Autowired
-private NgrokApiClient ngrok;
-
-public void someMethod() {
-    # returns https tunnel URL or null in case ngrok is not running
-    String httpsTunnelUrl = ngrok.getHttpsTunnelUrl();
-
-    # returns http tunnel URL or null in case ngrok is not running
-    String httpTunnelUrl = ngrok.getHttpTunnelUrl();
-}
-```
-
-##### Optional properties & descriptions
+#### Optional properties & descriptions
 ```properties
 # if you've got already running Ngrok instance somewhere else, you can specify its host & port, whoch defaults are:
 ngrok.host=http://127.0.0.1
@@ -194,10 +150,25 @@ ngrok.binary.osx=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.
 ngrok.binary.custom=http://not-exist.com/custom-ngrok-platform-bsd-arm-sth.zip
 ```
 
-#### Issues & contributing
+## Ngrok API
+To access ngrok tunneling details you can use `NgrokApiClient` bean. Example below:
+```java
+@Autowired
+private NgrokApiClient ngrok;
+
+public void someMethod() {
+    # returns https tunnel URL or null in case ngrok is not running
+    String httpsTunnelUrl = ngrok.getHttpsTunnelUrl();
+
+    # returns http tunnel URL or null in case ngrok is not running
+    String httpTunnelUrl = ngrok.getHttpTunnelUrl();
+}
+```
+
+### Issues & contributing
 If you've got any troubles or ideas, feel free to report an issue or create pull request with improvements 🙂.
 
-#### References
+### References
 - https://ngrok.com/
 - https://spring.io/projects/spring-boot
 - https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using-boot-starter
