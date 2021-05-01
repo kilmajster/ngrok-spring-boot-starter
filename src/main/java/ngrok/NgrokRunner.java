@@ -18,6 +18,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.task.TaskExecutor;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -37,22 +39,40 @@ public class NgrokRunner {
     private final NgrokPlatformDetector ngrokPlatformDetector;
     private final NgrokSystemCommandExecutor ngrokSystemCommandExecutor;
     private final TaskExecutor ngrokExecutor;
+    private final String applicationName;
 
     @EventListener
     public void run(WebServerInitializedEvent event) throws NgrokDownloadException, NgrokCommandExecuteException {
         ngrokExecutor.execute(() -> {
+            int port = event.getWebServer().getPort();
+            List<NgrokTunnel> tunnels;
             if (ngrokIsNotRunning()) {
                 if (needToDownloadNgrok()) {
                     downloadAndExtractNgrokBinary();
                     addPermissionsIfNeeded();
                 }
-                startNgrok(event.getWebServer().getPort());
+                startNgrok(port);
+                tunnels = ngrokApiClient.fetchTunnels(port);
+                logTunnelsDetails(tunnels);
             } else {
-                log.info("Ngrok was already running! Dashboard url -> [ {} ]", ngrokApiClient.getNgrokApiUrl());
+                if (ngrokIsListening(port)) {
+                    log.info("Ngrok was already running! Dashboard url -> [ {} ]", ngrokApiClient.getNgrokApiUrl());
+                    tunnels = ngrokApiClient.fetchTunnels(port);
+                } else {
+                    NgrokTunnel httpsTunnel = ngrokApiClient.startTunnel(port, "http", applicationName + "-http-" + port);
+                    log.info("New Ngrok tunnel added -> [ {}: {} ]", httpsTunnel.getName(), httpsTunnel.getPublicUrl());
+                    NgrokTunnel httpTunnel = ngrokApiClient.tunnelDetail(applicationName + "-http-" + port + " (http)");
+                    log.info("New Ngrok tunnel added -> [ {}: {} ]", httpTunnel.getName(), httpTunnel.getPublicUrl());
+                    tunnels = listOf(httpTunnel, httpsTunnel);
+                }
             }
-            logTunnelsDetails();
-            applicationEventPublisher.publishEvent(new NgrokInitializedEvent(this, ngrokApiClient.fetchTunnels()));
+            applicationEventPublisher.publishEvent(new NgrokInitializedEvent(this, tunnels));
         });
+    }
+
+    @SafeVarargs
+    private static <T> List<T> listOf(T... args) {
+        return new ArrayList<>(Arrays.asList(args));
     }
 
     private void downloadAndExtractNgrokBinary() {
@@ -71,6 +91,10 @@ public class NgrokRunner {
 
     private boolean ngrokIsNotRunning() {
         return !ngrokApiClient.isResponding();
+    }
+
+    private boolean ngrokIsListening(int port) {
+        return !ngrokApiClient.fetchTunnels(port).isEmpty();
     }
 
     private boolean needToDownloadNgrok() {
@@ -106,9 +130,7 @@ public class NgrokRunner {
         return StringUtils.isNotBlank(ngrokConfiguration.getCommand());
     }
 
-    private void logTunnelsDetails() {
-        List<NgrokTunnel> tunnels = ngrokApiClient.fetchTunnels();
-
+    private static void logTunnelsDetails(List<NgrokTunnel> tunnels) {
         tunnels.forEach(t -> log.info("Remote url ({})\t-> [ {} ]", t.getProto(), t.getPublicUrl()));
     }
 }

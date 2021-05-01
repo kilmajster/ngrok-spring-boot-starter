@@ -23,8 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
         classes = NgrokRunnerUnixTestConfiguration.class,
         properties = {
                 TEST_NGROK_PROP_ENABLED,
-                TEST_NGROK_PROP_CUSTOM_COMMAND,
-                TEST_SPRING_PROP_SERVER_PORT
         })
 public class NgrokRunnerEventTest extends BaseNgrokRunnerIntegrationTest {
 

@@ -14,6 +14,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.List;
 
@@ -79,6 +80,7 @@ public class NgrokApiClientIntegrationTest {
         assertThat(tunnels).hasSize(2);
         assertThat(tunnels).extracting(NgrokTunnel::getProto).contains("http", "https");
         assertThat(tunnels).extracting(NgrokTunnel::getPublicUrl).contains("https://12345678-not-existing.ngrok.io", "http://12345678-not-existing.ngrok.io");
+        assertThat(tunnels).extracting(it -> it.getConfig().getAddr()).contains(new URL("https://localhost:8080"), new URL("http://localhost:8080"));
     }
 
     @Test
