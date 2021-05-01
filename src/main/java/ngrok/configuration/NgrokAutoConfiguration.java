@@ -9,6 +9,7 @@ import ngrok.os.NgrokPlatformDetector;
 import ngrok.os.NgrokSystemCommandExecutor;
 import ngrok.util.NgrokDownloader;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -29,11 +30,13 @@ public class NgrokAutoConfiguration {
             NgrokPlatformDetector ngrokPlatformDetector,
             NgrokConfigurationProvider ngrokConfigurationProvider,
             NgrokSystemCommandExecutor ngrokSystemCommandExecutor,
-            @Qualifier("ngrokAsyncExecutor") TaskExecutor ngrokExecutor) {
+            @Qualifier("ngrokAsyncExecutor") TaskExecutor ngrokExecutor,
+            @Value("${spring.application.name:springboot}") String applicationName
+    ) {
         log.info("Ngrok is enabled.");
 
         return new NgrokRunner(applicationEventPublisher, ngrokConfiguration, ngrokApiClient, ngrokBinaryProvider,
                 ngrokConfigurationProvider, ngrokDownloader, ngrokPlatformDetector, ngrokSystemCommandExecutor,
-                ngrokExecutor);
+                ngrokExecutor, applicationName);
     }
 }
