@@ -64,7 +64,7 @@ public interface TestConstants {
     String TEST_NGROK_TUNNEL_HTTP_PROTO = "http";
     String TEST_NGROK_TUNNEL_CONFIG_ADDR = "http://localhost:8080";
     boolean TEST_NGROK_TUNNEL_CONFIG_INSPECT = true;
-    String TEST_NGROK_TUNNEL_ADDR = "8080";
+    int TEST_NGROK_TUNNEL_ADDR = 8080;
 
     String TEST_NGROK_TUNNEL_HTTPS_NAME = "test-https-tunnel-name";
     String TEST_NGROK_TUNNEL_HTTPS_URI = NgrokApiClient.URI_NGROK_API_TUNNELS + "/test-https-tunnel-name";

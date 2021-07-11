@@ -20,6 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @NgrokComponent
@@ -50,6 +51,13 @@ public class NgrokApiClient {
                         NgrokTunnelsList.class
                 ).getTunnels()
         ).getOrElse(Collections.emptyList());
+    }
+
+    public List<NgrokTunnel> listTunnels(int port) {
+        return listTunnels()
+                .stream()
+                .filter(it -> it.getConfig().getAddr().endsWith(String.valueOf(port)))
+                .collect(Collectors.toList());
     }
 
     private String apiUrlOf(final String apiUri) {

@@ -52,14 +52,14 @@ public abstract class BaseNgrokRunnerMockedConfiguration {
             when(ngrokApiClient.isResponding())
                     .thenReturn(false)
                     .thenReturn(true);
-            when(ngrokApiClient.fetchTunnels(anyInt())).thenCallRealMethod();
+            when(ngrokApiClient.listTunnels(anyInt())).thenCallRealMethod();
         } else {
             when(ngrokApiClient.isResponding())
                     .thenReturn(true);
 
             NgrokTunnel tunnel = ngrokTunnelsList.getTunnels().get(0);
-            tunnel.getConfig().setAddr(new URL("http://localhost:" + runningPort));
-            when(ngrokApiClient.fetchTunnels(runningPort))
+            tunnel.getConfig().setAddr("http://localhost:" + runningPort);
+            when(ngrokApiClient.listTunnels(runningPort))
                     .thenReturn(Collections.singletonList(tunnel));
         }
 
