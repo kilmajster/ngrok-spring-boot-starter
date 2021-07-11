@@ -44,22 +44,22 @@ public abstract class BaseNgrokRunnerMockedConfiguration {
 
         NgrokTunnelsList ngrokTunnelsList = new ObjectMapper()
                 .configure(FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .readValue(ResourceUtils.getFile(this.getClass().getResource(TestConstants.TEST_NGROK_TUNNELS_FILE_PATH)), NgrokTunnelsList.class);
+                .readValue(ResourceUtils.getFile(this.getClass().getResource(TestConstants.TEST_NGROK_TUNNELS_LIST_FILE_PATH)), NgrokTunnelsList.class);
 
-        when(ngrokApiClient.fetchTunnels()).thenReturn(ngrokTunnelsList.getTunnels());
+        when(ngrokApiClient.listTunnels()).thenReturn(ngrokTunnelsList.getTunnels());
 
         if (runningPort == 0) {
             when(ngrokApiClient.isResponding())
                     .thenReturn(false)
                     .thenReturn(true);
-            when(ngrokApiClient.fetchTunnels(anyInt())).thenCallRealMethod();
+            when(ngrokApiClient.listTunnels(anyInt())).thenCallRealMethod();
         } else {
             when(ngrokApiClient.isResponding())
                     .thenReturn(true);
 
             NgrokTunnel tunnel = ngrokTunnelsList.getTunnels().get(0);
-            tunnel.getConfig().setAddr(new URL("http://localhost:" + runningPort));
-            when(ngrokApiClient.fetchTunnels(runningPort))
+            tunnel.getConfig().setAddr("http://localhost:" + runningPort);
+            when(ngrokApiClient.listTunnels(runningPort))
                     .thenReturn(Collections.singletonList(tunnel));
         }
 

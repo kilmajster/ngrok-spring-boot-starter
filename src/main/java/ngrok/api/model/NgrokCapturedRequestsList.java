@@ -13,12 +13,12 @@ import java.util.List;
 @Setter
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class NgrokTunnelsList implements Serializable {
+public class NgrokCapturedRequestsList implements Serializable {
 
     private String uri;
-    private List<NgrokTunnel> tunnels;
+    private List<NgrokCapturedRequest> requests;
 
     @Tolerate
-    public NgrokTunnelsList() {
+    public NgrokCapturedRequestsList() {
     }
 }

@@ -5,7 +5,7 @@
 
     <groupId>io.github.kilmajster</groupId>
     <artifactId>ngrok-spring-boot-starter</artifactId>
-    <version>0.3.7</version>
+    <version>0.4.0</version>
     <packaging>jar</packaging>
 
     <name>ngrok-spring-boot-starter</name>
@@ -102,6 +102,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>0.10.3</version>
         </dependency>
 
         <dependency>

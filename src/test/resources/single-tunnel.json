@@ -1,0 +1,33 @@
+{
+  "name": "test-http-tunnel-name",
+  "uri": "/api/tunnels/test-http-tunnel-name",
+  "public_url": "http://12345678-not-existing.ngrok.io",
+  "proto": "http",
+  "config": {
+    "addr": "http://localhost:8080",
+    "inspect": true
+  },
+  "metrics": {
+    "conns": {
+      "count": 2,
+      "gauge": 0,
+      "rate1": 0.0010497099617378827,
+      "rate5": 0.003338310672192081,
+      "rate15": 0.001764651863881216,
+      "p50": 2086075.5,
+      "p90": 2205836,
+      "p95": 2205836,
+      "p99": 2205836
+    },
+    "http": {
+      "count": 2,
+      "rate1": 0.0010497099617378827,
+      "rate5": 0.003338310672192081,
+      "rate15": 0.001764651863881216,
+      "p50": 1005547.5,
+      "p90": 1205297,
+      "p95": 1205297,
+      "p99": 1205297
+    }
+  }
+}
