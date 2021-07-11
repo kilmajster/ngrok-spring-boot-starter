@@ -60,7 +60,7 @@ public class NgrokApiClient {
      * Dynamically starts a new tunnel on the ngrok client. The request body parameters are the same
      * as those you would use to define the tunnel in the configuration file.
      */
-    public NgrokTunnel startTunnel(final String addr, final String proto, final String name) {
+    public NgrokTunnel startTunnel(final int addr, final String proto, final String name) {
         return Try.of(() -> {
                     final ResponseEntity<NgrokTunnel> startTunnelResponse = restTemplate.postForEntity(
                             apiUrlOf(URI_NGROK_API_TUNNELS),

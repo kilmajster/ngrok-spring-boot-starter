@@ -131,9 +131,6 @@ public class NgrokRunner {
         return StringUtils.isNotBlank(ngrokConfiguration.getCommand());
     }
 
-    private void logTunnelsDetails() {
-        List<NgrokTunnel> tunnels = ngrokApiClient.listTunnels();
-
     private static void logTunnelsDetails(List<NgrokTunnel> tunnels) {
         tunnels.forEach(t -> log.info("Remote url ({})\t-> [ {} ]", t.getProto(), t.getPublicUrl()));
     }

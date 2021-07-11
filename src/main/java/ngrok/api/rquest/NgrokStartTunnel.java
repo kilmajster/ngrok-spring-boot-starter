@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor(staticName = "of")
 @NoArgsConstructor
 public class NgrokStartTunnel {
-    private String addr;
+    private int addr;
     private String proto;
     private String name;
 }
