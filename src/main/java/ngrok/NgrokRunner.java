@@ -53,7 +53,6 @@ public class NgrokRunner {
                 }
                 startNgrok(port);
                 tunnels = ngrokApiClient.listTunnels(port);
-                logTunnelsDetails(tunnels);
             } else {
                 if (ngrokIsListening(port)) {
                     log.info("Ngrok was already running! Dashboard url -> [ {} ]", ngrokApiClient.getNgrokApiUrl());
