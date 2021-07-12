@@ -1,0 +1,54 @@
+name: Publish package to the Maven Central Repository
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  release-github-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Maven Central Repository
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+
+      - name: Build a project & run unit tests
+        run: mvn -B -ntp package
+
+      - name: Get the tag name
+        run: echo "TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+
+      - name: Set version from git tag
+        run: mvn -B -ntp versions:set -DgenerateBackupPoms=false -DnewVersion="$TAG"
+
+      - name: Import GPG key
+        run: |
+          cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
+          gpg --list-secret-keys --keyid-format LONG
+
+      - name: Publish maven package
+        run: |
+          mvn \
+          --no-transfer-progress \
+          --batch-mode \
+          -D gpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
+          -P ossrh \
+          clean deploy
+        env:
+          MAVEN_USERNAME: kilmajster
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+
+      - name: Add jar to Github Release
+        uses: svenstaro/upload-release-action@v2
+        continue-on-error: true
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: target/ngrok-spring-boot-starter-${{ env.TAG }}.jar
+          asset_name: ngrok-spring-boot-starter-${{ env.TAG }}.jar
+          tag: ${{ github.ref }}
