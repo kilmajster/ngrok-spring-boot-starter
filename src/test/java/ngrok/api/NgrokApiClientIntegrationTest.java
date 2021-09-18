@@ -1,6 +1,7 @@
 package ngrok.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ngrok.api.model.NgrokCapturedRequest;
 import ngrok.api.model.NgrokTunnel;
 import ngrok.api.rquest.NgrokStartTunnel;
 import ngrok.configuration.NgrokConfiguration;
@@ -26,6 +27,8 @@ import static ngrok.TestConstants.*;
 import static ngrok.api.NgrokApiClient.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @ActiveProfiles(TEST_NGROK_PROFILE)
 @AutoConfigureWireMock(port = 4040)
@@ -122,7 +125,7 @@ public class NgrokApiClientIntegrationTest {
                         .willReturn(
                                 aResponse()
                                         .withStatus(HttpStatus.CREATED.value())
-                                        .withHeader("Content-Type", "application/json")
+                                        .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                                         .withBody(tunnelAsJson)));
 
         // when
@@ -162,7 +165,7 @@ public class NgrokApiClientIntegrationTest {
                         .willReturn(
                                 aResponse()
                                         .withStatus(HttpStatus.OK.value())
-                                        .withHeader("Content-Type", "application/json")
+                                        .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                                         .withBody(tunnelAsJson)));
 
         // when
@@ -182,7 +185,7 @@ public class NgrokApiClientIntegrationTest {
                         .willReturn(
                                 aResponse()
                                         .withStatus(HttpStatus.NOT_FOUND.value())
-                                        .withHeader("Content-Type", "application/json")));
+                                        .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)));
 
         // when & then
         assertThatThrownBy(() -> ngrokApiClient.tunnelDetail(TEST_INVALID_TUNNEL_NAME))
@@ -221,6 +224,4 @@ public class NgrokApiClientIntegrationTest {
         // then
         assertThat(tunnelStopped).isFalse();
     }
-
-
 }

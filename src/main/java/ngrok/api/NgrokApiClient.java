@@ -115,11 +115,11 @@ public class NgrokApiClient {
      * Returns a list of all HTTP requests captured for inspection. This will only return requests
      * that are still in memory (ngrok evicts captured requests when their memory usage exceeds inspect_db_size)
      */
-    public List<NgrokCapturedRequest> listCapturedRequests(final int limit, final String tunnelName) {
+    public List<NgrokCapturedRequest> listCapturedRequests(final Integer limit, final String tunnelName) {
         return Try.of(() -> restTemplate
                 .getForObject(UriComponentsBuilder.fromUriString(
                         apiUrlOf(URI_NGROK_API_CAPTURED_REQUESTS))
-                                .queryParamIfPresent("limit", limit > 0 ? Optional.of(limit) : Optional.empty())
+                                .queryParamIfPresent("limit", Optional.ofNullable(limit))
                                 .queryParamIfPresent("tunnel_name", Optional.ofNullable(tunnelName))
                                 .toUriString(),
                         NgrokCapturedRequestsList.class
@@ -127,16 +127,16 @@ public class NgrokApiClient {
         ).getOrElse(Collections.emptyList());
     }
 
-    public List<NgrokCapturedRequest> listCapturedRequests(final int limit) {
+    public List<NgrokCapturedRequest> listCapturedRequests(final Integer limit) {
         return listCapturedRequests(limit, null);
     }
 
     public List<NgrokCapturedRequest> listCapturedRequests(final String tunnelName) {
-        return listCapturedRequests(-1, tunnelName);
+        return listCapturedRequests(null, tunnelName);
     }
 
     public List<NgrokCapturedRequest> listCapturedRequests() {
-        return listCapturedRequests(-1, null);
+        return listCapturedRequests(null, null);
     }
 
     /**
