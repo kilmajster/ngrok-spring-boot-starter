@@ -73,10 +73,11 @@
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
 
-        <commons-io.version>2.8.0</commons-io.version>
+        <commons-io.version>2.11.0</commons-io.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
+        <vavr.version>0.10.4</vavr.version>
 
-        <spring-cloud-contract-wiremock.version>3.0.2</spring-cloud-contract-wiremock.version>
+        <spring-cloud-contract-wiremock.version>3.0.3</spring-cloud-contract-wiremock.version>
     </properties>
 
     <dependencies>
@@ -107,7 +108,7 @@
         <dependency>
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
-            <version>0.10.3</version>
+            <version>${vavr.version}</version>
         </dependency>
 
         <dependency>
