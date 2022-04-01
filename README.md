@@ -60,12 +60,10 @@ compile('io.github.kilmajster:ngrok-spring-boot-starter:0.6.0')
 ##  Configuration
 ### 🚀 Minimal configuration
 #### `ngrok.enabled`
-For simple http tunneling to springs default server port, **only one configuration property is required**. 
-There are many ways to provide spring config, for `application.property` based one, it will be:
+To enable this starter, add following property:
 ```properties
 ngrok.enabled=true
 ```
-
 #### `ngrok.authToken`
 Ngrok requires `authToken` to be defined, to obtain one visit https://dashboard.ngrok.com/get-started/your-authtoken and then add it like below:
 ```properties
