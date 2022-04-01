@@ -19,12 +19,10 @@ jobs:
       - name: Silent install main project
         run: mvn --batch-mode --no-transfer-progress install -Dmaven.test.skip=true
 
-      - name: Install xmllint
-        run: sudo apt-get install libxml2-utils
-
-      - name: Set current starter version in test-app
-        working-directory: ./.github/scripts/
-        run: sh set-current-starter-version.sh
+      - name: Add ngrok auth token application.properties
+        run: |
+          printf ${{secrets.NGROK_AUTH_TOKEN_PROPERTY}} >> .github/test-app/src/test/resources/application.properties
+        shell: bash
 
       - name: Run automation tests with latest ngrok-spring-boot-starter version on test-app
         working-directory: ./.github/test-app/

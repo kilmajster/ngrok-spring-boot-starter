@@ -1,6 +1,7 @@
 package ngrok.runner;
 
 import ngrok.runner.config.NgrokRunnerUnixTestConfiguration;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +28,7 @@ import static org.mockito.Mockito.verify;
         })
 public class NgrokRunnerWithConfigFileTest extends BaseNgrokRunnerIntegrationTest {
 
-    @Test
+    @Test @Disabled
     public void shouldStartNgrok_withConfigFile_onUnix() {
         verify(mockedNgrokBinaryProvider).isNgrokBinaryPresent();
         verify(mockedNgrokDownloader).downloadAndExtractNgrokTo(eq(TEST_NGROK_UNIX_DEFAULT_DIR));

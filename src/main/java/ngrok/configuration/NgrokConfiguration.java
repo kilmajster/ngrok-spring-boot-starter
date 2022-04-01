@@ -15,6 +15,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 public class NgrokConfiguration {
 
     public static final String NGROK_ENABLED = "ngrok.enabled";
+    public static final String NGROK_CONFIG_FILES_SEPARATOR = ";";
 
     /**
      * Enable ngrok
@@ -22,7 +23,13 @@ public class NgrokConfiguration {
     private Boolean enabled;
 
     /**
+     * Property for personal Ngrok authToken, it can be found here - https://dashboard.ngrok.com/get-started/your-authtoken
+     */
+    private String authToken;
+
+    /**
      * Custom configuration path e.g.: '/home/user/example-directory/custom-config.yml'
+     * For multiple config files use ; as a path separator
      */
     private String config;
 

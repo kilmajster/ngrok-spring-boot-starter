@@ -20,17 +20,12 @@ import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(
-        webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
-        properties = {
-                "ngrok.enabled=true"
-        }
-)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ExtendWith(OutputCaptureExtension.class)
 class AppTests {
 
     private final static Logger log = LoggerFactory.getLogger(AppTests.class);
-    private static final int WAIT_FOR_STARTUP_SECONDS = 30;
+    private static final int WAIT_FOR_STARTUP_SECONDS = 90;
     private static final String HTTPS_NGROK_TUNNEL_REGEX = "(https:\\/\\/)?(([^.]+)\\.)?ngrok\\.io";
 
     @Test
