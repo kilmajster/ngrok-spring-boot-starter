@@ -75,6 +75,7 @@
 
         <commons-io.version>2.11.0</commons-io.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
+        <jackson-dataformat-yaml.version>2.13.0</jackson-dataformat-yaml.version>
         <vavr.version>0.10.4</vavr.version>
 
         <spring-cloud-contract-wiremock.version>3.0.3</spring-cloud-contract-wiremock.version>
@@ -109,6 +110,12 @@
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
             <version>${vavr.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+            <version>${jackson-dataformat-yaml.version}</version>
         </dependency>
 
         <dependency>

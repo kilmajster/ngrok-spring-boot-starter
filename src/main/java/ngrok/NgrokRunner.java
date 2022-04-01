@@ -51,6 +51,9 @@ public class NgrokRunner {
                     downloadAndExtractNgrokBinary();
                     addPermissionsIfNeeded();
                 }
+
+                configureAuthTokenOrLogWarn();
+
                 startNgrok(port);
                 tunnels = ngrokApiClient.listTunnels(port);
             } else {
@@ -68,6 +71,26 @@ public class NgrokRunner {
             logTunnelsDetails(tunnels);
             applicationEventPublisher.publishEvent(new NgrokInitializedEvent(this, tunnels));
         });
+    }
+
+    private void configureAuthTokenOrLogWarn() {
+        final String ngrokDirectory = ngrokBinaryProvider.getNgrokDirectoryOrDefault();
+        if (!ngrokConfigurationProvider.isAuthTokenConfigured(ngrokDirectory)) {
+            if (!ngrokConfigurationProvider.isAuthTokenPresent(ngrokDirectory)) {
+                log.warn("Ngrok auth token is missing! For your personal auth token visit https://dashboard.ngrok.com/get-started/your-authtoken " +
+                        "and then add it as ngrok.authToken=<YOUR AUTH TOKEN> to application.properties or to your ngrok configuration file.");
+            } else {
+                configureAuthToken();
+            }
+        }
+    }
+
+    private void configureAuthToken() {
+        String command = ngrokBinaryProvider.getNgrokBinaryFilePath()
+                + " authtoken "
+                + ngrokConfiguration.getAuthToken();
+
+        ngrokSystemCommandExecutor.execute(command);
     }
 
     @SafeVarargs

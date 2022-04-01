@@ -24,6 +24,15 @@ public class NgrokConfigurationProvider {
         return isConfigPresent() ? loadNgrokConfigFile() : "";
     }
 
+    public boolean isAuthTokenPresent(String ngrokDirectory) {
+        return StringUtils.isNotBlank(ngrokConfiguration.getAuthToken())
+                || NgrokAuthTokenUtil.getAuthToken(ngrokConfiguration.getConfig(), ngrokDirectory).isPresent();
+    }
+
+    public boolean isAuthTokenConfigured(String ngrokDirectory) {
+        return NgrokAuthTokenUtil.getAuthToken(ngrokConfiguration.getConfig(), ngrokDirectory).isPresent();
+    }
+
     private String loadNgrokConfigFile() {
         return isClasspathConfig() ? handleClasspathConfig() : loadConfigurationFile(ngrokConfiguration.getConfig());
     }
@@ -65,8 +74,8 @@ public class NgrokConfigurationProvider {
     }
 
     private String loadConfigurationFile(final String configPath) {
-        return StringUtils.split(configPath, ";").length == 1 ? "-config " + configPath + " " // 1 config arg
-                : "-config " + String.join(" -config ", StringUtils.split(configPath, ";")) + " "; // multiple configs
+        return StringUtils.split(configPath, NgrokConfiguration.NGROK_CONFIG_FILES_SEPARATOR).length == 1 ? "-config " + configPath + " " // 1 config arg
+                : "-config " + String.join(" -config ", StringUtils.split(configPath, NgrokConfiguration.NGROK_CONFIG_FILES_SEPARATOR)) + " "; // multiple configs
     }
 
     private boolean isConfigPresent() {
