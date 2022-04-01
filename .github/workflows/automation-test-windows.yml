@@ -20,11 +20,7 @@ jobs:
         run: mvn --batch-mode --no-transfer-progress install -DskipTests
 
       - name: Add ngrok auth token application.properties
-        uses: christian-draeger/write-properties@1.1.0
-        with:
-          path: '.github/test-app/src/test/resources/application.properties'
-          property: 'ngrok.authToken'
-          value: ${{ secrets.NGROK_AUTH_TOKEN }}
+        run: echo "ngrok.authToken=${{ secrets.NGROK_AUTH_TOKEN }}" >> .github/test-app/src/test/resources/application.properties
 
       - name: Run automation tests with latest ngrok-spring-boot-starter version on test-app
         working-directory: ./.github/test-app/
