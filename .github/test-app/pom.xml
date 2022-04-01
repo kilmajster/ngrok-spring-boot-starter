@@ -15,7 +15,7 @@
 	<description>Dummy app for tests</description>
 	<properties>
 		<java.version>11</java.version>
-		<ngrok-spring-boot-starter.version>ci-version-placeholder</ngrok-spring-boot-starter.version>
+		<ngrok-spring-boot-starter.version>SNAPSHOT</ngrok-spring-boot-starter.version>
 	</properties>
 	<dependencies>
 		<dependency>

@@ -19,9 +19,9 @@ jobs:
       - name: Silent install main project
         run: mvn --batch-mode --no-transfer-progress install -DskipTests
 
-      - name: Set current starter version in test-app
-        working-directory: ./.github/scripts/
-        run: sh set-current-starter-version.sh
+#      - name: Set current starter version in test-app
+#        working-directory: ./.github/scripts/
+#        run: sh set-current-starter-version.sh
 
       - name: Run automation tests with latest ngrok-spring-boot-starter version on test-app
         working-directory: ./.github/test-app/
