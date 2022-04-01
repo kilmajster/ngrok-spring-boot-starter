@@ -6,13 +6,9 @@ on:
   pull_request:
     branches: [ main ]
 
-
-
 jobs:
   test-on-ubuntu:
     runs-on: ubuntu-latest
-    env:
-      NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
@@ -25,4 +21,6 @@ jobs:
 
       - name: Run automation tests with latest ngrok-spring-boot-starter version on test-app
         working-directory: ./.github/test-app/
+        env:
+          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
         run: mvn --batch-mode --no-transfer-progress test
