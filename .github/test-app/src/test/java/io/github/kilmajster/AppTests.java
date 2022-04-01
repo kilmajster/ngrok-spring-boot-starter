@@ -23,7 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
         properties = {
-                "ngrok.enabled=true"
+                "ngrok.enabled=true",
+                "ngrok.authToken=${NGROK_AUTH_TOKEN}"
         }
 )
 @ExtendWith(OutputCaptureExtension.class)
