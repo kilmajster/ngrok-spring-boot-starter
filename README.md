@@ -59,19 +59,19 @@ compile('io.github.kilmajster:ngrok-spring-boot-starter:0.3.7')
 
 ##  Configuration
 ### 🚀 Minimal configuration
-#### `ngrok.enabled` - one required configuration property
+#### `ngrok.enabled`
 For simple http tunneling to springs default server port, **only one configuration property is required**. 
 There are many ways to provide spring config, for `application.property` based one, it will be:
 ```properties
 ngrok.enabled=true
 ```
-or yaml:
-```yaml
-ngrok:
-  enabled: true
+
+#### `ngrok.authToken`
+Ngrok requires `authToken` to be defined, to obtain one visit https://dashboard.ngrok.com/get-started/your-authtoken and then add it like below:
+```properties
+ngrok.authToken=<YOUR PERSONAL AUTH TOKEN>
 ```
-or you can pass java execution attribute, like: `java -jar your-app.jar --ngrok.enabled=true`, 
-or with spring-boot plugin `mvn spring-boot:run -Dspring-boot.run.arguments="--ngrok.enabled=true"`, or any other way 😊
+If you got already configured auth token in your ngrok config file there is no need to define this property.
 
 ✅ **All done, configuration is ready!** 
 
@@ -119,21 +119,6 @@ ngrok.command=http 8080
 # or some more specific
 ngrok.command=http -region=us -hostname=dev.example.com 8000
 # should be = /home/user/.ngrok2/ngrok http -region=us -hostname=dev.example.com 8000
-```
-
-## Ngrok API
-To access ngrok tunneling details you can use `NgrokApiClient` bean. Example below:
-```java
-@Autowired
-private NgrokApiClient ngrok;
-
-public void someMethod() {
-    # returns https tunnel URL or null in case ngrok is not running
-    String httpsTunnelUrl = ngrok.getHttpsTunnelUrl();
-
-    # returns http tunnel URL or null in case ngrok is not running
-    String httpTunnelUrl = ngrok.getHttpTunnelUrl();
-}
 ```
 
 ##### Optional properties & descriptions
