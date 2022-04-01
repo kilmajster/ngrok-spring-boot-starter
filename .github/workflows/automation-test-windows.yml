@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  NGROK_AUTH_TOKEN: ${{env.NGROK_AUTH_TOKEN}}
+  NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
 
 jobs:
   test-on-windows:

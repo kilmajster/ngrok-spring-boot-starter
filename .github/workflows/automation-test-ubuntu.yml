@@ -12,7 +12,7 @@ jobs:
   test-on-ubuntu:
     runs-on: ubuntu-latest
     env:
-      NGROK_AUTH_TOKEN: ${{env.NGROK_AUTH_TOKEN}}
+      NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
