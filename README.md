@@ -26,8 +26,8 @@
 >
 > *tldr;* Ngrok can create a http tunnel and give you a public URL with redirection to
 > specified port on your local machine, which in our case will be a standard springs `http://localhost:8080`
-> or whatever you set as `server.port` springs property. For simply usage any account is not needed. Tunnels created with
-> free version will be available for 2 hours, so it is a great tool for development and testing purposes!
+> or whatever you set as `server.port` springs property. Tunnels created with free version will be available for 2 hours, 
+> so it is a great tool for development and testing purposes!
 > For more details you can check out their [site](https://ngrok.com/).
 
 ## What this starter gives to you?
