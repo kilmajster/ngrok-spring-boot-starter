@@ -34,6 +34,11 @@ public class NgrokBinaryProvider {
     }
 
     private String getDefaultNgrokDirectory() {
-        return FilenameUtils.concat(FileUtils.getUserDirectory().getPath(), ".ngrok2");
+        return FilenameUtils.concat(
+                FileUtils.getUserDirectory().getPath(),
+                ngrokConfiguration.isLegacy()
+                        ? NgrokConfiguration.NGROK_LEGACY_DIRECTORY_NAME
+                        : NgrokConfiguration.NGROK_DIRECTORY_NAME
+        );
     }
 }

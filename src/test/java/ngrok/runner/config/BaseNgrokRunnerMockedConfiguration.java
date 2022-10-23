@@ -6,7 +6,7 @@ import ngrok.api.model.NgrokTunnel;
 import ngrok.os.NgrokBinaryProvider;
 import ngrok.os.NgrokPlatformDetector;
 import ngrok.os.NgrokSystemCommandExecutor;
-import ngrok.util.NgrokDownloader;
+import ngrok.download.NgrokDownloader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ngrok.api.model.NgrokTunnelsList;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Collections;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
