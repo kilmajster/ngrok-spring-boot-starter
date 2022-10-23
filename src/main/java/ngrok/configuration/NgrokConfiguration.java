@@ -16,6 +16,7 @@ public class NgrokConfiguration {
 
     public static final String NGROK_ENABLED = "ngrok.enabled";
     public static final String NGROK_CONFIG_FILES_SEPARATOR = ";";
+    public static final String NGROK_CONFIG_FILE_NAME = "ngrok.yml";
 
     /**
      * Enable ngrok

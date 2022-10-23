@@ -22,12 +22,12 @@ public class NgrokAuthTokenUtil {
     private static final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
     public static Optional<String> getAuthToken(final String ngrokYamlConfigPath, final String ngrokDirectory) {
-        final String defaultNgrokConfigFilePath = ngrokDirectory + File.separator + "ngrok.yml";
+        final String defaultNgrokConfigFilePath = ngrokDirectory + File.separator + NgrokConfiguration.NGROK_CONFIG_FILE_NAME;
         boolean defaultConfigFileExist = Files.exists(Paths.get(defaultNgrokConfigFilePath));
         if (defaultConfigFileExist) {
             String authToken = readNgrokConfig(defaultNgrokConfigFilePath).getAuthToken();
             if (Objects.nonNull(authToken)) {
-                return Optional.ofNullable(authToken);
+                return Optional.of(authToken);
             }
         }
 
@@ -44,7 +44,7 @@ public class NgrokAuthTokenUtil {
 
     @Data
     @NoArgsConstructor
-    public static class NgrokYamlConfigModel {
+    private static class NgrokYamlConfigModel {
         @JsonAlias("authtoken")
         private String authToken;
     }
