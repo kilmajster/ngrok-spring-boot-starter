@@ -35,6 +35,11 @@ public class NgrokConfiguration {
     private boolean legacy;
 
     /**
+     * If ngrok binary is present in PATH, use it.
+     */
+    private boolean useFromPath = true;
+
+    /**
      * Property for personal Ngrok authToken, it can be found here - https://dashboard.ngrok.com/get-started/your-authtoken
      */
     private String authToken;

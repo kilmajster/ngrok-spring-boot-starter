@@ -5,7 +5,6 @@ public class NgrokMalformedConfigurationException extends RuntimeException {
         super(message, throwable);
     }
 
-
     public NgrokMalformedConfigurationException(String message) {
         super(message);
     }

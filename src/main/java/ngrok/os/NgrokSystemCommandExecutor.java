@@ -25,4 +25,13 @@ public class NgrokSystemCommandExecutor {
             throw new NgrokCommandExecuteException("Error while executing: " + command, e);
         }
     }
+
+    public boolean isPresentInPath(final String executable) {
+        try {
+            Runtime.getRuntime().exec(executable);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
 }

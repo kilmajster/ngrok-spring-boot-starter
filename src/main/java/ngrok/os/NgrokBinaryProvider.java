@@ -17,11 +17,14 @@ import java.nio.file.Paths;
 public class NgrokBinaryProvider {
 
     private final NgrokConfiguration ngrokConfiguration;
+    private final NgrokSystemCommandExecutor ngrokSystemCommandExecutor;
 
     public String getNgrokBinaryFilePath() {
         String executable = SystemUtils.IS_OS_WINDOWS ? "ngrok.exe" : "ngrok";
 
-        return getNgrokDirectoryOrDefault() + File.separator + executable;
+        return (ngrokSystemCommandExecutor.isPresentInPath(executable) && ngrokConfiguration.isUseFromPath())
+                ? executable
+                : getNgrokDirectoryOrDefault() + File.separator + executable;
     }
 
     public String getNgrokDirectoryOrDefault() {
