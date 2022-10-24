@@ -11,16 +11,17 @@ import ngrok.exception.NgrokDownloadException;
 import ngrok.os.NgrokBinaryProvider;
 import ngrok.os.NgrokPlatformDetector;
 import ngrok.os.NgrokSystemCommandExecutor;
-import ngrok.util.NgrokDownloader;
+import ngrok.download.NgrokDownloader;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.task.TaskExecutor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * For details see <a href="https://github.com/kilmajster/ngrok-spring-boot-starter">docs</a>.
@@ -62,9 +63,13 @@ public class NgrokRunner {
                     tunnels = ngrokApiClient.listTunnels(port);
                 } else {
                     NgrokTunnel httpsTunnel = ngrokApiClient.startTunnel(port, "http", applicationName + "-http-" + port);
-                    log.info("New Ngrok tunnel added -> [ {}: {} ]", httpsTunnel.getName(), httpsTunnel.getPublicUrl());
+                    if (Objects.nonNull(httpsTunnel)) {
+                        log.info("New Ngrok tunnel added -> [ {}: {} ]", httpsTunnel.getName(), httpsTunnel.getPublicUrl());
+                    }
                     NgrokTunnel httpTunnel = ngrokApiClient.tunnelDetail(applicationName + "-http-" + port + " (http)");
-                    log.info("New Ngrok tunnel added -> [ {}: {} ]", httpTunnel.getName(), httpTunnel.getPublicUrl());
+                    if (Objects.nonNull(httpTunnel)) {
+                        log.info("New Ngrok tunnel added -> [ {}: {} ]", httpTunnel.getName(), httpTunnel.getPublicUrl());
+                    }
                     tunnels = listOf(httpTunnel, httpsTunnel);
                 }
             }
@@ -95,7 +100,7 @@ public class NgrokRunner {
 
     @SafeVarargs
     private static <T> List<T> listOf(T... args) {
-        return new ArrayList<>(Arrays.asList(args));
+        return Stream.of(args).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     private void downloadAndExtractNgrokBinary() {

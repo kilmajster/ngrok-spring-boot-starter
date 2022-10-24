@@ -1,6 +1,9 @@
-package ngrok.util;
+package ngrok.download;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.springframework.util.StringUtils;
 
 import java.io.*;
@@ -33,6 +36,11 @@ public class NgrokFileExtractUtils {
             extractZip(archive, outDir);
             deleteArchive(archiveFile);
         }
+
+        if (StringUtils.endsWithIgnoreCase(archive.getName(), "gz")) {
+            extractGZip(archive, outDir);
+            deleteArchive(archiveFile);
+        }
     }
 
     private static void deleteArchive(String downloadedFilePath) {
@@ -40,6 +48,36 @@ public class NgrokFileExtractUtils {
             Files.delete(Paths.get(downloadedFilePath));
         } catch (IOException e) {
             log.warn("Error while deleting {}", downloadedFilePath, e);
+        }
+    }
+
+
+    /**
+     * Extract g zip.
+     *
+     * @param tgzFile the tgz file
+     * @param outDir  the out dir
+     */
+    private static void extractGZip(File tgzFile, File outDir) {
+        try {
+            TarArchiveInputStream tarIs = new TarArchiveInputStream(new GzipCompressorInputStream(
+                    new BufferedInputStream(new FileInputStream(tgzFile))));
+            TarArchiveEntry entry;
+            while ((entry = (TarArchiveEntry) tarIs.getNextEntry()) != null) {
+                String name = entry.getName();
+                if (entry.isDirectory()) {
+                    mkDirs(outDir, name);
+                } else {
+                    String dir = directoryPart(name);
+                    if (dir != null) {
+                        mkDirs(outDir, dir);
+                    }
+                    extractFile(tarIs, outDir, name);
+                }
+            }
+            tarIs.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

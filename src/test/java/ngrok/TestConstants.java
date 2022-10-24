@@ -23,12 +23,12 @@ public interface TestConstants {
     String TEST_NGROK_TUNNELS_LIST_FILE_PATH = "/tunnels-list.json";
     String TEST_NGROK_SINGLE_TUNNEL_FILE_PATH = "/single-tunnel.json";
 
-    String TEST_NGROK_WINDOWS_DEFAULT_DIR = "C:\\Users\\user\\.ngrok2";
-    String TEST_NGROK_WINDOWS_BINARY_PATH = "C:\\Users\\user\\.ngrok2\\ngrok.exe";
+    String TEST_NGROK_WINDOWS_DEFAULT_DIR = "C:\\Users\\user\\.ngrok3";
+    String TEST_NGROK_WINDOWS_BINARY_PATH = "C:\\Users\\user\\.ngrok3\\ngrok.exe";
     String TEST_NGROK_WINDOWS_START_COMMAND = TEST_NGROK_WINDOWS_BINARY_PATH + " http " + TEST_PORT_1;
 
-    String TEST_NGROK_UNIX_DEFAULT_DIR = "/home/user/.ngrok2";
-    String TEST_NGROK_UNIX_BINARY_PATH = "/home/user/.ngrok2/ngrok";
+    String TEST_NGROK_UNIX_DEFAULT_DIR = "/home/user/.ngrok3";
+    String TEST_NGROK_UNIX_BINARY_PATH = "/home/user/.ngrok3/ngrok";
     String TEST_NGROK_UNIX_CHMOD_COMMAND = "chmod +x " + TEST_NGROK_UNIX_BINARY_PATH;
     String TEST_NGROK_UNIX_START_COMMAND = TEST_NGROK_UNIX_BINARY_PATH + " http " + TEST_PORT_1;
     String TEST_NGROK_UNIX_START_COMMAND_WITH_CONFIG = TEST_NGROK_UNIX_BINARY_PATH + " http -config /ngrok-config.yml " + TEST_PORT_1;

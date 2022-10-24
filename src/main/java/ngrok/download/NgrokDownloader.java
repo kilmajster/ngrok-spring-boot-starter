@@ -1,4 +1,4 @@
-package ngrok.util;
+package ngrok.download;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +21,7 @@ import java.nio.file.Paths;
 @RequiredArgsConstructor
 public class NgrokDownloader {
 
+    private final NgrokArchiveUrlProvider ngrokArchiveUrlProvider;
     private final NgrokConfiguration ngrokConfiguration;
     private final NgrokPlatformDetector platformDetector;
 
@@ -30,8 +31,8 @@ public class NgrokDownloader {
     }
 
     private String downloadNgrokTo(String destinationPath) throws NgrokDownloadException {
-        String zipFileName = getFileNameFromUrl(getBinaryUrl());
-        String destinationFile = FilenameUtils.concat(destinationPath, zipFileName);
+        String archiveFileName = getFileNameFromUrl(getBinaryUrl());
+        String destinationFile = FilenameUtils.concat(destinationPath, archiveFileName);
 
         if (Files.exists(Paths.get(destinationFile))) {
             log.info("Skipping downloading, cached archive available at {}", destinationFile);
@@ -65,24 +66,21 @@ public class NgrokDownloader {
         return url.substring(getBinaryUrl().lastIndexOf("/") + 1);
     }
 
-    public String getBinaryUrl() {
-
-        final NgrokConfiguration.NgrokBinary ngrokBinary = ngrokConfiguration.getBinary();
-
-        if (StringUtils.isNotBlank(ngrokBinary.getCustom())) {
-            return ngrokBinary.getCustom();
+    private String getBinaryUrl() {
+        if (StringUtils.isNotBlank(ngrokConfiguration.getCustomArchiveUrl())) {
+            return ngrokConfiguration.getCustomArchiveUrl();
         }
 
         if (platformDetector.isWindows()) {
-            return platformDetector.is64bitOS() ? ngrokBinary.getWindows() : ngrokBinary.getWindows32();
+            return platformDetector.is64bitOS() ? ngrokArchiveUrlProvider.getWindows() : ngrokArchiveUrlProvider.getWindows32();
         }
 
         if (platformDetector.isMacOS()) {
-            return platformDetector.is64bitOS() ? ngrokBinary.getOsx() : ngrokBinary.getOsx32();
+            return platformDetector.is64bitOS() ? ngrokArchiveUrlProvider.getOsx() : ngrokArchiveUrlProvider.getOsx32();
         }
 
         if (platformDetector.isLinux()) {
-            return platformDetector.is64bitOS() ? ngrokBinary.getLinux() : ngrokBinary.getLinux32();
+            return platformDetector.is64bitOS() ? ngrokArchiveUrlProvider.getLinux() : ngrokArchiveUrlProvider.getLinux32();
         }
 
         throw new NgrokDownloadException("Unsupported OS");

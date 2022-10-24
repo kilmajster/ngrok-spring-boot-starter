@@ -28,7 +28,7 @@ import static org.mockito.Mockito.verify;
         })
 public class NgrokRunnerWithConfigFileTest extends BaseNgrokRunnerIntegrationTest {
 
-    @Test @Disabled
+    @Test
     public void shouldStartNgrok_withConfigFile_onUnix() {
         verify(mockedNgrokBinaryProvider).isNgrokBinaryPresent();
         verify(mockedNgrokDownloader).downloadAndExtractNgrokTo(eq(TEST_NGROK_UNIX_DEFAULT_DIR));

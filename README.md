@@ -32,7 +32,8 @@
 
 ## What this starter gives to you?
 This starter will automatically download Ngrok binary corresponding to your 
-operating system (Windows, Linux, OSX or even Docker) and then cache it into `home_directory/.ngrok2`. 
+operating system (Windows, Linux, OSX or even Docker) and then cache it into `home_directory/.ngrok3`. 
+If Ngrok binary is already present in the PATH, download will be skipped.
 Then every time you will run your Spring Boot application, Ngrok will 
 automatically build http tunnel pointing to your springs web server, and you will get pretty logs 
 with the remote links, just like it's done below 👇
@@ -48,7 +49,7 @@ Code of demo application available [here](https://github.com/kilmajster/demo).
 <dependency>
   <groupId>io.github.kilmajster</groupId>
   <artifactId>ngrok-spring-boot-starter</artifactId>
-  <version>0.6.0</version>
+  <version>0.7.0</version>
 </dependency>
 ```
 
@@ -76,12 +77,13 @@ If you got already configured auth token in your ngrok config file there is no n
 > What will happen now?
 >
 > If you are using default spring configuration of server port, which is `8080`, then ngrok will 
-> be downloaded, extracted and cached into user default directory(eg. `/home/user/.ngrok2`) and then executed
+> be downloaded, extracted and cached into user default directory(eg. `/home/user/.ngrok3`) and then executed
 > on application startup, so final command executed in background as child process, should look like:
 > ```bash
-> /home/user/.ngrok2/ngrok http 8080
+> /home/user/.ngrok3/ngrok http 8080
 > ```
 > if you are using different server port, it will be picked up automatically from `server.port` property.
+> If ngrok binary is already present in path, download will be skipped 
 
 ### ⚙️ Advanced configuration
 #### `ngrok.config` - ngrok configuration file(s)
@@ -95,9 +97,9 @@ ngrok.config=/home/user/custom-ngrok-config.yml;/home/user/another-ngrok-config.
 ```
 then generated ngrok command, should look like this:
 ```bash
-/home/user/.ngrok2/ngrok http -config /home/user/custom-ngrok-config.yml 8080
+/home/user/.ngrok3/ngrok http -config /home/user/custom-ngrok-config.yml 8080
 # or for multiple configs, could be something like this:
-/home/user/.ngrok2/ngrok http -config /home/user/custom-ngrok-config.yml -config /home/user/another-ngrok-config.yml 8080
+/home/user/.ngrok3/ngrok http -config /home/user/custom-ngrok-config.yml -config /home/user/another-ngrok-config.yml 8080
 ```
 ###### configuration from Classpath
 If you prefer to keep ngrok configuration file inside your app, just add it as resource file and prefix `ngrok.config` property
@@ -112,38 +114,34 @@ example:
 ```properties
 # to run default behavior
 ngrok.command=http 8080
-# should result with command = /home/user/.ngrok2/ngrok http 8000
+# should result with command = /home/user/.ngrok3/ngrok http 8000
 
 # or some more specific
 ngrok.command=http -region=us -hostname=dev.example.com 8000
-# should be = /home/user/.ngrok2/ngrok http -region=us -hostname=dev.example.com 8000
+# should be = /home/user/.ngrok3/ngrok http -region=us -hostname=dev.example.com 8000
 ```
 
 ##### Optional properties & descriptions
 ```properties
+# if you want to use ngrok v2
+ngrok.legacy=true
+
+# if you want to force download ngrok binary instead of using local one even if it's present in the PATH
+ngrok.useFromPath=false
+
 # if you've got already running Ngrok instance somewhere else, you can specify its host & port, whoch defaults are:
 ngrok.host=http://127.0.0.1
 ngrok.port=4040
 
 # if you want to use Ngrok directory location different than default, which are:
-#  - for Windows C:\Users\user\.ngrok2
-#  - for unix systems ~/.ngrok2
+#  - for Windows C:\Users\user\.ngrok3
+#  - for unix systems ~/.ngrok3
 # use ngrok.directory property, like below:
 ngrok.directory=C:\\Users\\user\\Desktop\\ngrok
 
 # if for some reason Ngrok starting takes longer than really quick, you can override time 
 # of waiting for ngrok startup:
 ngrok.waitForStartup.millis=3000
-
-# if for some reason Ngrok binary file address has changed you can override it 
-# by property corresponding to your OS
-ngrok.binary.windows32=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-386.zip
-ngrok.binary.linux32=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip
-ngrok.binary.osx32=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-386.zip
-
-ngrok.binary.windows=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip
-ngrok.binary.linux=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
-ngrok.binary.osx=https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.zip
 
 # or just specify custom location as fallback:
 ngrok.binary.custom=http://not-exist.com/custom-ngrok-platform-bsd-arm-sth.zip

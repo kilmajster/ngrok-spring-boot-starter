@@ -17,11 +17,14 @@ import java.nio.file.Paths;
 public class NgrokBinaryProvider {
 
     private final NgrokConfiguration ngrokConfiguration;
+    private final NgrokSystemCommandExecutor ngrokSystemCommandExecutor;
 
     public String getNgrokBinaryFilePath() {
         String executable = SystemUtils.IS_OS_WINDOWS ? "ngrok.exe" : "ngrok";
 
-        return getNgrokDirectoryOrDefault() + File.separator + executable;
+        return (ngrokSystemCommandExecutor.isPresentInPath(executable) && ngrokConfiguration.isUseFromPath())
+                ? executable
+                : getNgrokDirectoryOrDefault() + File.separator + executable;
     }
 
     public String getNgrokDirectoryOrDefault() {
@@ -34,6 +37,11 @@ public class NgrokBinaryProvider {
     }
 
     private String getDefaultNgrokDirectory() {
-        return FilenameUtils.concat(FileUtils.getUserDirectory().getPath(), ".ngrok2");
+        return FilenameUtils.concat(
+                FileUtils.getUserDirectory().getPath(),
+                ngrokConfiguration.isLegacy()
+                        ? NgrokConfiguration.NGROK_LEGACY_DIRECTORY_NAME
+                        : NgrokConfiguration.NGROK_DIRECTORY_NAME
+        );
     }
 }

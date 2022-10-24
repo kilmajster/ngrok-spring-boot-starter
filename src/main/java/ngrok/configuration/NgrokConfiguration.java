@@ -4,8 +4,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ngrok.NgrokComponent;
+import ngrok.exception.NgrokMalformedConfigurationException;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
+import org.springframework.context.annotation.Configuration;
+
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -16,11 +20,24 @@ public class NgrokConfiguration {
 
     public static final String NGROK_ENABLED = "ngrok.enabled";
     public static final String NGROK_CONFIG_FILES_SEPARATOR = ";";
+    public static final String NGROK_CONFIG_FILE_NAME = "ngrok.yml";
+    public static final String NGROK_DIRECTORY_NAME = ".ngrok3";
+    public static final String NGROK_LEGACY_DIRECTORY_NAME = ".ngrok2";
 
     /**
      * Enable ngrok
      */
     private Boolean enabled;
+
+    /**
+     * If true, ngrok v2 will be used.
+     */
+    private boolean legacy;
+
+    /**
+     * If ngrok binary is present in PATH, use it.
+     */
+    private boolean useFromPath = true;
 
     /**
      * Property for personal Ngrok authToken, it can be found here - https://dashboard.ngrok.com/get-started/your-authtoken
@@ -59,51 +76,8 @@ public class NgrokConfiguration {
     private Long startupDelay = 3000L;
 
     /**
-     * Set the binary download URL
+     * Url of custom Ngrok binary archive
      */
-    @NestedConfigurationProperty
-    private NgrokBinary binary = new NgrokBinary();
-
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    public static class NgrokBinary {
-
-        /**
-         * Windows 64 bit binary
-         */
-        private String windows = "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip";
-
-        /**
-         * Linux 64 bit binary
-         */
-        private String linux = "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip";
-
-        /**
-         * OSX 64 bit binary
-         */
-        private String osx = "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.zip";
-
-        /**
-         * Windows 32 bit binary
-         */
-        private String windows32 = "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-386.zip";
-
-        /**
-         * Linux 32 bit binary
-         */
-        private String linux32 = "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip";
-
-        /**
-         * OSX 32 bit binary
-         */
-        private String osx32 = "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-386.zip";
-
-        /**
-         * Custom url to download ngrok binary from (independent from system)
-         */
-        private String custom;
-
-    }
+    private String customArchiveUrl;
 
 }
