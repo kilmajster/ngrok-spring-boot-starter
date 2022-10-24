@@ -126,8 +126,8 @@ ngrok.command=http -region=us -hostname=dev.example.com 8000
 # if you want to use ngrok v2
 ngrok.legacy=true
 
-# if you want to force download ngrok binary instead of using local one even if it's present in path
-useFromPath=false
+# if you want to force download ngrok binary instead of using local one even if it's present in the PATH
+ngrok.useFromPath=false
 
 # if you've got already running Ngrok instance somewhere else, you can specify its host & port, whoch defaults are:
 ngrok.host=http://127.0.0.1
