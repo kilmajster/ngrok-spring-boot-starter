@@ -7,13 +7,13 @@ import ngrok.api.model.NgrokTunnel;
 import ngrok.configuration.NgrokAsyncConfiguration;
 import ngrok.configuration.NgrokConfiguration;
 import ngrok.configuration.NgrokConfigurationProvider;
+import ngrok.download.NgrokDownloader;
 import ngrok.event.NgrokInitializedEvent;
 import ngrok.exception.NgrokCommandExecuteException;
 import ngrok.exception.NgrokDownloadException;
 import ngrok.os.NgrokBinaryProvider;
 import ngrok.os.NgrokPlatformDetector;
 import ngrok.os.NgrokSystemCommandExecutor;
-import ngrok.download.NgrokDownloader;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,7 +45,7 @@ public class NgrokRunner {
     private final NgrokPlatformDetector ngrokPlatformDetector;
     private final NgrokSystemCommandExecutor ngrokSystemCommandExecutor;
     private final @Qualifier(NgrokAsyncConfiguration.NGROK_EXECUTOR_BEAN) TaskExecutor ngrokExecutor;
-    private final @Value("${spring.application.name:springboot}")String applicationName;
+    private final @Value("${spring.application.name:springboot}") String applicationName;
 
     @EventListener
     public void run(WebServerInitializedEvent event) throws NgrokDownloadException, NgrokCommandExecuteException {
