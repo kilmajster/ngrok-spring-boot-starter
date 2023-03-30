@@ -55,7 +55,7 @@ Code of demo application available [here](https://github.com/kilmajster/demo).
 
 - or gradle:
 ```groovy
-compile('io.github.kilmajster:ngrok-spring-boot-starter:0.6.0')
+compile('io.github.kilmajster:ngrok-spring-boot-starter:0.7.0')
 ````
 
 ##  Configuration
