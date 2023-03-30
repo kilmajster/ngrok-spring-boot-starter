@@ -22,38 +22,38 @@ jobs:
       - name: Silent install main project
         run: mvn --batch-mode --no-transfer-progress install -DskipTests
         # spring boot 2 web tests setup
-      - name: Add ngrok auth token application.properties of test-app-spring-boot-2-web
+      - name: Set up ngrok auth token to application.properties of test-app-spring-boot-2-web
         run: |
           printf ${{secrets.NGROK_AUTH_TOKEN_PROPERTY}} >> .github/test-app-spring-boot-2-web/src/test/resources/application.properties
         shell: bash
         # spring boot 2 web tests execution
-      - name: Run automation tests with latest ngrok-spring-boot-starter version on test-app-spring-boot-2-web
+      - name: Run automation tests with latest ngrok-spring-boot-starter on test-app-spring-boot-2-web
         working-directory: ./.github/test-app-spring-boot-2-web/
         run: mvn --batch-mode --no-transfer-progress test
         # spring boot 2 reactive tests setup
-      - name: Add ngrok auth token application.properties of test-app-spring-boot-2-reactive
+      - name: Set up ngrok auth token to application.properties of test-app-spring-boot-2-reactive
         run: |
           printf ${{secrets.NGROK_AUTH_TOKEN_PROPERTY}} >> .github/test-app-spring-boot-2-reactive/src/test/resources/application.properties
         shell: bash
         # spring boot 2 reactive tests execution
-      - name: Run automation tests with latest ngrok-spring-boot-starter version on test-app-spring-boot-2-reactive
+      - name: Run automation tests with latest ngrok-spring-boot-starter on test-app-spring-boot-2-reactive
         working-directory: ./.github/test-app-spring-boot-2-reactive/
         run: mvn --batch-mode --no-transfer-progress test
         # spring boot 3 web tests setup
-      - name: Add ngrok auth token application.properties of test-app-spring-boot-3-web
+      - name: Set up ngrok auth to token application.properties of test-app-spring-boot-3-web
         run: |
           printf ${{secrets.NGROK_AUTH_TOKEN_PROPERTY}} >> .github/test-app-spring-boot-3-web/src/test/resources/application.properties
         shell: bash
         # spring boot 3 web tests execution
-      - name: Run automation tests with latest ngrok-spring-boot-starter version on test-app-spring-boot-3-web
+      - name: Run automation tests with latest ngrok-spring-boot-starter on test-app-spring-boot-3-web
         working-directory: ./.github/test-app-spring-boot-3-web/
         run: mvn --batch-mode --no-transfer-progress test
         # spring boot 3 reactive tests setup
-      - name: Add ngrok auth token application.properties of test-app-spring-boot-3-reactive
+      - name: Set up ngrok auth token to application.properties of test-app-spring-boot-3-reactive
         run: |
           printf ${{secrets.NGROK_AUTH_TOKEN_PROPERTY}} >> .github/test-app-spring-boot-3-reactive/src/test/resources/application.properties
         shell: bash
         # spring boot 3 reactive tests execution
-      - name: Run automation tests with latest ngrok-spring-boot-starter version on test-app-spring-boot-3-reactive
+      - name: Run automation tests with latest ngrok-spring-boot-starter on test-app-spring-boot-3-reactive
         working-directory: ./.github/test-app-spring-boot-3-reactive/
         run: mvn --batch-mode --no-transfer-progress test
