@@ -1,4 +1,4 @@
-package io.github.kilmajster;
+package io.github.kilmajster.app;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
@@ -22,9 +22,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ExtendWith(OutputCaptureExtension.class)
-class AppTests {
+public class SpringBoot3WebAppTests {
 
-    private final static Logger log = LoggerFactory.getLogger(AppTests.class);
+    private final static Logger log = LoggerFactory.getLogger(SpringBoot3WebAppTests.class);
     private static final int WAIT_FOR_STARTUP_SECONDS = 90;
     private static final String HTTPS_NGROK_TUNNEL_REGEX = "(https:\\/\\/)?(([^.]+)\\.)?ngrok\\.io";
 
