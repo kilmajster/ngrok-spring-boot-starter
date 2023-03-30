@@ -4,12 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ngrok.NgrokComponent;
-import ngrok.exception.NgrokMalformedConfigurationException;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
-import org.springframework.context.annotation.Configuration;
-
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -27,7 +22,7 @@ public class NgrokConfiguration {
     /**
      * Enable ngrok
      */
-    private Boolean enabled;
+    private boolean enabled;
 
     /**
      * If true, ngrok v2 will be used.
@@ -63,7 +58,7 @@ public class NgrokConfiguration {
     /**
      * ngrok web-interface port
      */
-    private Integer port = 4040;
+    private int port = 4040;
 
     /**
      * Custom ngrok directory e.g.: '/some-custom/ngrok/location/.ngrok2'
@@ -73,7 +68,7 @@ public class NgrokConfiguration {
     /**
      * Delay in millis to wait until ngrok started
      */
-    private Long startupDelay = 3000L;
+    private long startupDelay = 3000L;
 
     /**
      * Url of custom Ngrok binary archive

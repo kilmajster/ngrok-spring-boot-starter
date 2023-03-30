@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ngrok.api.NgrokApiClient;
 import ngrok.api.model.NgrokTunnel;
+import ngrok.configuration.NgrokAsyncConfiguration;
 import ngrok.configuration.NgrokConfiguration;
 import ngrok.configuration.NgrokConfigurationProvider;
 import ngrok.exception.NgrokCommandExecuteException;
@@ -13,6 +14,8 @@ import ngrok.os.NgrokPlatformDetector;
 import ngrok.os.NgrokSystemCommandExecutor;
 import ngrok.download.NgrokDownloader;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
@@ -26,6 +29,7 @@ import java.util.stream.Stream;
 /**
  * For details see <a href="https://github.com/kilmajster/ngrok-spring-boot-starter">docs</a>.
  */
+@NgrokComponent
 @Slf4j
 @RequiredArgsConstructor
 public class NgrokRunner {
@@ -39,43 +43,46 @@ public class NgrokRunner {
     private final NgrokDownloader ngrokDownloader;
     private final NgrokPlatformDetector ngrokPlatformDetector;
     private final NgrokSystemCommandExecutor ngrokSystemCommandExecutor;
-    private final TaskExecutor ngrokExecutor;
-    private final String applicationName;
+    private final @Qualifier(NgrokAsyncConfiguration.NGROK_EXECUTOR_BEAN) TaskExecutor ngrokExecutor;
+    private final @Value("${spring.application.name:springboot}")String applicationName;
 
     @EventListener
     public void run(WebServerInitializedEvent event) throws NgrokDownloadException, NgrokCommandExecuteException {
         ngrokExecutor.execute(() -> {
             int port = event.getWebServer().getPort();
-            List<NgrokTunnel> tunnels;
-            if (ngrokIsNotRunning()) {
-                if (needToDownloadNgrok()) {
-                    downloadAndExtractNgrokBinary();
-                    addPermissionsIfNeeded();
-                }
-
-                configureAuthTokenOrLogWarn();
-
-                startNgrok(port);
-                tunnels = ngrokApiClient.listTunnels(port);
-            } else {
-                if (ngrokIsListening(port)) {
-                    log.info("Ngrok was already running! Dashboard url -> [ {} ]", ngrokApiClient.getNgrokApiUrl());
-                    tunnels = ngrokApiClient.listTunnels(port);
-                } else {
-                    NgrokTunnel httpsTunnel = ngrokApiClient.startTunnel(port, "http", applicationName + "-http-" + port);
-                    if (Objects.nonNull(httpsTunnel)) {
-                        log.info("New Ngrok tunnel added -> [ {}: {} ]", httpsTunnel.getName(), httpsTunnel.getPublicUrl());
-                    }
-                    NgrokTunnel httpTunnel = ngrokApiClient.tunnelDetail(applicationName + "-http-" + port + " (http)");
-                    if (Objects.nonNull(httpTunnel)) {
-                        log.info("New Ngrok tunnel added -> [ {}: {} ]", httpTunnel.getName(), httpTunnel.getPublicUrl());
-                    }
-                    tunnels = listOf(httpTunnel, httpsTunnel);
-                }
-            }
+            List<NgrokTunnel> tunnels = ngrokIsNotRunning() ? startNgrokAndListTunnels(port) : fetchAlreadyRunningTunnels(port);
             logTunnelsDetails(tunnels);
             applicationEventPublisher.publishEvent(new NgrokInitializedEvent(this, tunnels));
         });
+    }
+
+    private List<NgrokTunnel> startNgrokAndListTunnels(final int port) {
+        if (needToDownloadNgrok()) {
+            downloadAndExtractNgrokBinary();
+            addPermissionsIfNeeded();
+        }
+
+        configureAuthTokenOrLogWarn();
+
+        startNgrok(port);
+        return ngrokApiClient.listTunnels(port);
+    }
+
+    private List<NgrokTunnel> fetchAlreadyRunningTunnels(final int port) {
+        if (ngrokIsListening(port)) {
+            log.info("Ngrok was already running! Dashboard url -> [ {} ]", ngrokApiClient.getNgrokApiUrl());
+            return ngrokApiClient.listTunnels(port);
+        } else {
+            NgrokTunnel httpsTunnel = ngrokApiClient.startTunnel(port, "http", applicationName + "-http-" + port);
+            if (Objects.nonNull(httpsTunnel)) {
+                log.info("New Ngrok tunnel added -> [ {}: {} ]", httpsTunnel.getName(), httpsTunnel.getPublicUrl());
+            }
+            NgrokTunnel httpTunnel = ngrokApiClient.tunnelDetail(applicationName + "-http-" + port + " (http)");
+            if (Objects.nonNull(httpTunnel)) {
+                log.info("New Ngrok tunnel added -> [ {}: {} ]", httpTunnel.getName(), httpTunnel.getPublicUrl());
+            }
+            return listOf(httpTunnel, httpsTunnel);
+        }
     }
 
     private void configureAuthTokenOrLogWarn() {
