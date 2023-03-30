@@ -79,7 +79,8 @@
         <jackson-dataformat-yaml.version>2.14.2</jackson-dataformat-yaml.version>
         <vavr.version>0.10.4</vavr.version>
 
-        <spring-cloud-contract-wiremock.version>4.0.2</spring-cloud-contract-wiremock.version>
+        <!-- latest version that supports java 8, used only in tests - do not update -->
+        <spring-cloud-contract-wiremock.version>3.1.6</spring-cloud-contract-wiremock.version>
     </properties>
 
     <dependencies>
