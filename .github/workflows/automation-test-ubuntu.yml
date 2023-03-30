@@ -5,6 +5,9 @@ on:
     branches: [ main, development, tests_fixes ]
   pull_request:
     branches: [ main ]
+  schedule:
+    - cron: "5 0 * * *"
+  workflow_dispatch:
 
 jobs:
   test-on-ubuntu:
