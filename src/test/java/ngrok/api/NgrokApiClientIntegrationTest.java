@@ -1,7 +1,6 @@
 package ngrok.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ngrok.api.model.NgrokCapturedRequest;
 import ngrok.api.model.NgrokTunnel;
 import ngrok.api.rquest.NgrokStartTunnel;
 import ngrok.configuration.NgrokConfiguration;

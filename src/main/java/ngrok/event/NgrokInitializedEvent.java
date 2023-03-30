@@ -1,4 +1,4 @@
-package ngrok;
+package ngrok.event;
 
 import lombok.Getter;
 import ngrok.api.model.NgrokTunnel;

@@ -1,7 +1,6 @@
 package ngrok.runner;
 
 import ngrok.runner.config.NgrokRunnerUnixTestConfiguration;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;

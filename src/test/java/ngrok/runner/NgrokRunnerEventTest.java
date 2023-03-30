@@ -1,6 +1,6 @@
 package ngrok.runner;
 
-import ngrok.NgrokInitializedEvent;
+import ngrok.event.NgrokInitializedEvent;
 import ngrok.runner.config.NgrokRunnerUnixTestConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

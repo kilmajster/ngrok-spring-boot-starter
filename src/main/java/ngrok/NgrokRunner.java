@@ -7,6 +7,7 @@ import ngrok.api.model.NgrokTunnel;
 import ngrok.configuration.NgrokAsyncConfiguration;
 import ngrok.configuration.NgrokConfiguration;
 import ngrok.configuration.NgrokConfigurationProvider;
+import ngrok.event.NgrokInitializedEvent;
 import ngrok.exception.NgrokCommandExecuteException;
 import ngrok.exception.NgrokDownloadException;
 import ngrok.os.NgrokBinaryProvider;
