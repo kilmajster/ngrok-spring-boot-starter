@@ -3,6 +3,8 @@ name: CI on Windows with Spring Boot 3 and JDK 17
 on:
   push:
     branches: [ spring_boot_3 ]
+  pull_request:
+    branches: [ main ]
   schedule:
     - cron: "5 0 * * *"
   workflow_dispatch:
