@@ -15,6 +15,7 @@ public class NgrokAutoConfiguration {
 
     @Bean
     public NgrokArchiveUrlProvider ngrokArchiveUrlProvider(NgrokConfiguration ngrokConfiguration) {
+        log.info("Ngrok is enabled.");
         return ngrokConfiguration.isLegacy() ? new NgrokLegacyV2ArchiveUrls() : new NgrokV3ArchiveUrls();
     }
 }

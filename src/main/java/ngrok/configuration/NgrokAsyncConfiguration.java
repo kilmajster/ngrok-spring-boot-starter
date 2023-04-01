@@ -9,7 +9,6 @@ import org.springframework.core.task.TaskExecutor;
 public class NgrokAsyncConfiguration {
 
     public static final String NGROK_EXECUTOR_BEAN = "ngrokAsyncExecutor";
-
     private static final String NGROK_THREAD_PREFIX = "ngrok-thread-";
 
     @Bean(NGROK_EXECUTOR_BEAN)

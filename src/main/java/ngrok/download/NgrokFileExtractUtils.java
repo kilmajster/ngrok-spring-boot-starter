@@ -19,7 +19,7 @@ import java.util.zip.ZipInputStream;
  * FileExtractUtils
  */
 @Slf4j
-public class NgrokFileExtractUtils {
+public final class NgrokFileExtractUtils {
 
     /**
      * The constant BUFFER_SIZE.
