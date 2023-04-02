@@ -1,8 +1,6 @@
-name: CI on MacOS with Spring Boot 3 and JDK 17
+name: spring-boot 3 reactive JDK17 @ macOS
 
 on:
-  push:
-    branches: [ spring_boot_3 ]
   pull_request:
     branches: [ main ]
   schedule:
@@ -18,17 +16,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
-        # install starter in local .m2
       - name: Silent install main project
-
         run: mvn --batch-mode --no-transfer-progress install -DskipTests
-        # spring boot 3 web tests execution
-      - name: Run automation tests with latest ngrok-spring-boot-starter on test-app-spring-boot-3-web
-        env:
-          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-        working-directory: ./.github/test-app-spring-boot-3-web/
-        run: mvn --batch-mode --no-transfer-progress test
-        # spring boot 3 reactive tests execution
       - name: Run automation tests with latest ngrok-spring-boot-starter on test-app-spring-boot-3-reactive
         env:
           NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}

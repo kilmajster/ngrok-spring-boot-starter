@@ -1,0 +1,25 @@
+name: spring-boot 2 reactive JDK11 @ macOS
+
+on:
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: "5 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  test-on-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Silent install main project
+        run: mvn --batch-mode --no-transfer-progress install -DskipTests
+      - name: Run automation tests with latest ngrok-spring-boot-starter on test-app-spring-boot-2-reactive
+        env:
+          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+        working-directory: ./.github/test-app-spring-boot-2-reactive/
+        run: mvn --batch-mode --no-transfer-progress test
