@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@SpringBootApplication(scanBasePackages = "io.github.kilmajster")
+@SpringBootApplication
 public class App {
 	public static void main(String... args) { SpringApplication.run(App.class, args); }
 
