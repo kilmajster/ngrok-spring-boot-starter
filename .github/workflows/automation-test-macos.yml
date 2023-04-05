@@ -22,13 +22,10 @@ jobs:
       - name: Silent install main project
         run: mvn --batch-mode --no-transfer-progress install -Dmaven.test.skip=true
 
-      - name: Add ngrok auth token application.properties
-        run: |
-          printf ${{secrets.NGROK_AUTH_TOKEN_PROPERTY}} >> .github/test-app/src/test/resources/application.properties
-        shell: bash
-
       - name: Run automation tests with latest ngrok-spring-boot-starter version on test-app
         working-directory: ./.github/test-app/
+        env:
+          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
         run: mvn --batch-mode --no-transfer-progress test
 
 
