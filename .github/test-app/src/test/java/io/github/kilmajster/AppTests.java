@@ -52,7 +52,7 @@ class AppTests {
 
     private String extractNgrokHttpsTunnelUrlFromLogs(CapturedOutput output) {
         return Arrays.stream(StringUtils.split(output.toString(), " "))
-                .filter(s -> s.startsWith("https://") && s.contains("ngrok")).findFirst().get();
+                .filter(s -> s.startsWith("https://") && s.contains(".ngrok.io")).findFirst().get();
     }
 
     private void waitForNgrokStartConfirmationInLogs(CapturedOutput output) throws InterruptedException {
