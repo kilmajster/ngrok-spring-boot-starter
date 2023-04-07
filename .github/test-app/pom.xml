@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.4</version>
+		<version>2.7.10</version>
 		<relativePath/>
 	</parent>
 	<groupId>io.github.kilmajster</groupId>
 	<artifactId>test-app</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 	<name>test-app</name>
 	<description>Dummy app for tests</description>
 	<properties>
