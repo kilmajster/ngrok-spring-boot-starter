@@ -52,13 +52,20 @@ class AppTests {
 
     private String extractNgrokHttpsTunnelUrlFromLogs(CapturedOutput output) {
         return Arrays.stream(StringUtils.split(output.toString(), " "))
-                .filter(s -> s.startsWith("https://") && s.contains(".ngrok.io")).findFirst().get();
+                .filter(this::isNgrokAppLink).findFirst().get();
+    }
+
+    private boolean isNgrokAppLink(String s) {
+        return s != null
+                && s.startsWith("https://")
+                && StringUtils.containsAny(s, "ngrok.io", "ngrok-free.app", "ngrok.app");
     }
 
     private void waitForNgrokStartConfirmationInLogs(CapturedOutput output) throws InterruptedException {
         for (int i = WAIT_FOR_STARTUP_SECONDS; i > 0; i--) {
             Thread.sleep(1000);
             if (output.toString().contains("Ngrok started successfully!") || output.toString().contains("Ngrok was already running!")) {
+                Thread.sleep(2000);
                 return;
             }
         }
