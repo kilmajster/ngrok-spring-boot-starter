@@ -49,13 +49,13 @@ Code of demo application available [here](https://github.com/kilmajster/demo).
 <dependency>
   <groupId>io.github.kilmajster</groupId>
   <artifactId>ngrok-spring-boot-starter</artifactId>
-  <version>0.7.0</version>
+  <version>0.8.0</version>
 </dependency>
 ```
 
 - or gradle:
 ```groovy
-compile('io.github.kilmajster:ngrok-spring-boot-starter:0.7.0')
+compile('io.github.kilmajster:ngrok-spring-boot-starter:0.8.0')
 ````
 
 ##  Configuration
