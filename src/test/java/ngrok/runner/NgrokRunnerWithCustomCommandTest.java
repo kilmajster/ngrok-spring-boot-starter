@@ -35,6 +35,6 @@ public class NgrokRunnerWithCustomCommandTest extends BaseNgrokRunnerIntegration
         verify(mockedNgrokSystemCommandExecutor).execute(eq(TEST_NGROK_UNIX_CHMOD_COMMAND));
         verify(mockedNgrokSystemCommandExecutor).execute(eq(TEST_NGROK_UNIX_START_CUSTOM_COMMAND));
         verify(mockedNgrokBinaryProvider, times(2)).getNgrokBinaryFilePath();
-        verify(mockedNgrokApiClient, times(2)).isResponding();
+        verify(mockedNgrokAgentApiClient, times(2)).isResponding();
     }
 }

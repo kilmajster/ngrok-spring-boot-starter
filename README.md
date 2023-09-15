@@ -19,7 +19,7 @@
     </a>
 </h1>
 <p align="center">
-    <img src="https://ngrok.com/static/img/overview.png" alt="ngrok overview">
+    <img src="https://github.com/kilmajster/ngrok-spring-boot-starter/blob/main/.github/overview.png" alt="ngrok overview">
 </p>
 
 > What is Ngrok?
@@ -49,13 +49,13 @@ Code of demo application available [here](https://github.com/kilmajster/demo).
 <dependency>
   <groupId>io.github.kilmajster</groupId>
   <artifactId>ngrok-spring-boot-starter</artifactId>
-  <version>0.8.0</version>
+  <version>0.9.0</version>
 </dependency>
 ```
 
 - or gradle:
 ```groovy
-compile('io.github.kilmajster:ngrok-spring-boot-starter:0.8.0')
+compile('io.github.kilmajster:ngrok-spring-boot-starter:0.9.0')
 ````
 
 ##  Configuration

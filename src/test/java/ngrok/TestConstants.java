@@ -1,6 +1,6 @@
 package ngrok;
 
-import ngrok.api.NgrokApiClient;
+import ngrok.api.NgrokAgentApiClient;
 import ngrok.api.model.NgrokTunnel;
 import ngrok.configuration.NgrokConfiguration;
 
@@ -59,7 +59,7 @@ public interface TestConstants {
             }}).build();
 
     String TEST_NGROK_TUNNEL_HTTP_NAME = "test-http-tunnel-name";
-    String TEST_NGROK_TUNNEL_HTTP_URI = NgrokApiClient.URI_NGROK_API_TUNNELS + "/test-http-tunnel-name";
+    String TEST_NGROK_TUNNEL_HTTP_URI = NgrokAgentApiClient.URI_NGROK_API_TUNNELS + "/test-http-tunnel-name";
     String TEST_NGROK_TUNNEL_HTTP_PUBLIC_URL = "http://12345678-not-existing.ngrok.io";
     String TEST_NGROK_TUNNEL_HTTP_PROTO = "http";
     String TEST_NGROK_TUNNEL_CONFIG_ADDR = "http://localhost:8080";
@@ -67,7 +67,7 @@ public interface TestConstants {
     int TEST_NGROK_TUNNEL_ADDR = 8080;
 
     String TEST_NGROK_TUNNEL_HTTPS_NAME = "test-https-tunnel-name";
-    String TEST_NGROK_TUNNEL_HTTPS_URI = NgrokApiClient.URI_NGROK_API_TUNNELS + "/test-https-tunnel-name";
+    String TEST_NGROK_TUNNEL_HTTPS_URI = NgrokAgentApiClient.URI_NGROK_API_TUNNELS + "/test-https-tunnel-name";
     String TEST_NGROK_TUNNEL_HTTPS_PUBLIC_URL = "https://12345678-not-existing.ngrok.io";
     String TEST_NGROK_TUNNEL_HTTPS_PROTO = "https";
 

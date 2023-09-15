@@ -31,6 +31,6 @@ public class NgrokRunnerUnixTest extends BaseNgrokRunnerIntegrationTest {
         verify(mockedNgrokSystemCommandExecutor).execute(eq(TEST_NGROK_UNIX_CHMOD_COMMAND));
         verify(mockedNgrokSystemCommandExecutor).execute(eq(TEST_NGROK_UNIX_START_COMMAND));
         verify(mockedNgrokBinaryProvider, times(2)).getNgrokBinaryFilePath();
-        verify(mockedNgrokApiClient, times(2)).isResponding();
+        verify(mockedNgrokAgentApiClient, times(2)).isResponding();
     }
 }

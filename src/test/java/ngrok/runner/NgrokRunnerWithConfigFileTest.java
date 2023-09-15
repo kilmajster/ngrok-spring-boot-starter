@@ -1,7 +1,6 @@
 package ngrok.runner;
 
 import ngrok.runner.config.NgrokRunnerUnixTestConfiguration;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,6 +35,6 @@ public class NgrokRunnerWithConfigFileTest extends BaseNgrokRunnerIntegrationTes
         verify(mockedNgrokSystemCommandExecutor).execute(eq(TEST_NGROK_UNIX_CHMOD_COMMAND));
         verify(mockedNgrokSystemCommandExecutor).execute(eq(TEST_NGROK_UNIX_START_COMMAND_WITH_CONFIG));
         verify(mockedNgrokBinaryProvider, times(2)).getNgrokBinaryFilePath();
-        verify(mockedNgrokApiClient, times(2)).isResponding();
+        verify(mockedNgrokAgentApiClient, times(2)).isResponding();
     }
 }

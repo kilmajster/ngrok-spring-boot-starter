@@ -3,7 +3,7 @@ package ngrok.configuration;
 import lombok.extern.slf4j.Slf4j;
 import ngrok.NgrokComponent;
 import ngrok.NgrokRunner;
-import ngrok.api.NgrokApiClient;
+import ngrok.api.NgrokAgentApiClient;
 import ngrok.download.NgrokArchiveUrlProvider;
 import ngrok.download.NgrokLegacyV2ArchiveUrls;
 import ngrok.download.NgrokV3ArchiveUrls;
@@ -27,7 +27,7 @@ public class NgrokAutoConfiguration {
     public NgrokRunner ngrokRunner(
             ApplicationEventPublisher applicationEventPublisher,
             NgrokConfiguration ngrokConfiguration,
-            NgrokApiClient ngrokApiClient,
+            NgrokAgentApiClient ngrokAgentApiClient,
             NgrokDownloader ngrokDownloader,
             NgrokBinaryProvider ngrokBinaryProvider,
             NgrokPlatformDetector ngrokPlatformDetector,
@@ -38,7 +38,7 @@ public class NgrokAutoConfiguration {
     ) {
         log.info("Ngrok is enabled.");
 
-        return new NgrokRunner(applicationEventPublisher, ngrokConfiguration, ngrokApiClient, ngrokBinaryProvider,
+        return new NgrokRunner(applicationEventPublisher, ngrokConfiguration, ngrokAgentApiClient, ngrokBinaryProvider,
                 ngrokConfigurationProvider, ngrokDownloader, ngrokPlatformDetector, ngrokSystemCommandExecutor,
                 ngrokExecutor, applicationName);
     }

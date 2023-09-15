@@ -2,7 +2,7 @@ package ngrok;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ngrok.api.NgrokApiClient;
+import ngrok.api.NgrokAgentApiClient;
 import ngrok.api.model.NgrokTunnel;
 import ngrok.configuration.NgrokConfiguration;
 import ngrok.configuration.NgrokConfigurationProvider;
@@ -33,7 +33,7 @@ public class NgrokRunner {
     private final ApplicationEventPublisher applicationEventPublisher;
 
     private final NgrokConfiguration ngrokConfiguration;
-    private final NgrokApiClient ngrokApiClient;
+    private final NgrokAgentApiClient ngrokAgentApiClient;
     private final NgrokBinaryProvider ngrokBinaryProvider;
     private final NgrokConfigurationProvider ngrokConfigurationProvider;
     private final NgrokDownloader ngrokDownloader;
@@ -56,17 +56,17 @@ public class NgrokRunner {
                 configureAuthTokenOrLogWarn();
 
                 startNgrok(port);
-                tunnels = ngrokApiClient.listTunnels(port);
+                tunnels = ngrokAgentApiClient.listTunnels(port);
             } else {
                 if (ngrokIsListening(port)) {
-                    log.info("Ngrok was already running! Dashboard url -> [ {} ]", ngrokApiClient.getNgrokApiUrl());
-                    tunnels = ngrokApiClient.listTunnels(port);
+                    log.info("Ngrok was already running! Dashboard url -> [ {} ]", ngrokAgentApiClient.getNgrokApiUrl());
+                    tunnels = ngrokAgentApiClient.listTunnels(port);
                 } else {
-                    NgrokTunnel httpsTunnel = ngrokApiClient.startTunnel(port, "http", applicationName + "-http-" + port);
+                    NgrokTunnel httpsTunnel = ngrokAgentApiClient.startTunnel(port, "http", applicationName + "-http-" + port);
                     if (Objects.nonNull(httpsTunnel)) {
                         log.info("New Ngrok tunnel added -> [ {}: {} ]", httpsTunnel.getName(), httpsTunnel.getPublicUrl());
                     }
-                    NgrokTunnel httpTunnel = ngrokApiClient.tunnelDetail(applicationName + "-http-" + port + " (http)");
+                    NgrokTunnel httpTunnel = ngrokAgentApiClient.tunnelDetail(applicationName + "-http-" + port + " (http)");
                     if (Objects.nonNull(httpTunnel)) {
                         log.info("New Ngrok tunnel added -> [ {}: {} ]", httpTunnel.getName(), httpTunnel.getPublicUrl());
                     }
@@ -118,11 +118,11 @@ public class NgrokRunner {
     }
 
     private boolean ngrokIsNotRunning() {
-        return !ngrokApiClient.isResponding();
+        return !ngrokAgentApiClient.isResponding();
     }
 
     private boolean ngrokIsListening(int port) {
-        return !ngrokApiClient.listTunnels(port).isEmpty();
+        return !ngrokAgentApiClient.listTunnels(port).isEmpty();
     }
 
     private boolean needToDownloadNgrok() {
@@ -135,11 +135,11 @@ public class NgrokRunner {
 
         ngrokSystemCommandExecutor.execute(command);
 
-        if (ngrokApiClient.isResponding()) {
-            log.info("Ngrok started successfully! Dashboard url -> [ {} ]", ngrokApiClient.getNgrokApiUrl());
+        if (ngrokAgentApiClient.isResponding()) {
+            log.info("Ngrok started successfully! Dashboard url -> [ {} ]", ngrokAgentApiClient.getNgrokApiUrl());
         } else {
             log.warn("Ngrok seems to not responding! Ngrok status url = [ {} ] Ngrok execution command was = [ {} ]",
-                    ngrokApiClient.getNgrokStatusUrl(), command);
+                    ngrokAgentApiClient.getNgrokStatusUrl(), command);
         }
     }
 

@@ -31,6 +31,6 @@ public class NgrokRunnerRunningTest extends BaseNgrokRunnerIntegrationTest {
         verify(mockedNgrokPlatformDetector, never()).isUnix();
         verify(mockedNgrokSystemCommandExecutor, never()).execute(anyString());
         verify(mockedNgrokBinaryProvider, never()).getNgrokBinaryFilePath();
-        verify(mockedNgrokApiClient, times(1)).isResponding();
+        verify(mockedNgrokAgentApiClient, times(1)).isResponding();
     }
 }
