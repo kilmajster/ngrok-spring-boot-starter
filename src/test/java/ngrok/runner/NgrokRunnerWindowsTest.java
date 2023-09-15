@@ -31,6 +31,6 @@ public class NgrokRunnerWindowsTest extends BaseNgrokRunnerIntegrationTest {
         verify(mockedNgrokPlatformDetector).isUnix();
         verify(mockedNgrokBinaryProvider).getNgrokBinaryFilePath();
         verify(mockedNgrokSystemCommandExecutor).execute(eq(TEST_NGROK_WINDOWS_START_COMMAND));
-        verify(mockedNgrokApiClient, times(2)).isResponding();
+        verify(mockedNgrokAgentApiClient, times(2)).isResponding();
     }
 }

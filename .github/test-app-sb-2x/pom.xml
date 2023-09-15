@@ -12,7 +12,7 @@
 	<artifactId>test-app</artifactId>
 	<version>0.0.2</version>
 	<name>test-app</name>
-	<description>Dummy app for tests</description>
+	<description>Dummy app for tests with spring-boot v2</description>
 	<properties>
 		<java.version>11</java.version>
 		<ngrok-spring-boot-starter.version>SNAPSHOT</ngrok-spring-boot-starter.version>

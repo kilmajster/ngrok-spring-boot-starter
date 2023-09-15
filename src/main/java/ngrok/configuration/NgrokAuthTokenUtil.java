@@ -3,7 +3,6 @@ package ngrok.configuration;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import io.vavr.control.Try;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
@@ -31,10 +30,13 @@ public class NgrokAuthTokenUtil {
             }
         }
 
-        return Try.of(() -> Stream.of(StringUtils.split(ngrokYamlConfigPath, NgrokConfiguration.NGROK_CONFIG_FILES_SEPARATOR))
-                .map(path -> readNgrokConfig(path).getAuthToken())
-                .findAny()
-        ).getOrElse(Optional.empty());
+        try {
+            return Stream.of(StringUtils.split(ngrokYamlConfigPath, NgrokConfiguration.NGROK_CONFIG_FILES_SEPARATOR))
+                    .map(path -> readNgrokConfig(path).getAuthToken())
+                    .findAny();
+        } catch (Exception ex) {
+            return Optional.empty();
+        }
     }
 
     @SneakyThrows

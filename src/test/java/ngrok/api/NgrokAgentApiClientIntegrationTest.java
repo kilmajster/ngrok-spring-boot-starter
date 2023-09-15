@@ -1,7 +1,6 @@
 package ngrok.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ngrok.api.model.NgrokCapturedRequest;
 import ngrok.api.model.NgrokTunnel;
 import ngrok.api.rquest.NgrokStartTunnel;
 import ngrok.configuration.NgrokConfiguration;
@@ -24,7 +23,7 @@ import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static ngrok.TestConstants.*;
-import static ngrok.api.NgrokApiClient.*;
+import static ngrok.api.NgrokAgentApiClient.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
@@ -33,15 +32,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @ActiveProfiles(TEST_NGROK_PROFILE)
 @AutoConfigureWireMock(port = 4040)
 @SpringBootTest(
-        classes = {NgrokConfiguration.class, NgrokApiClient.class},
+        classes = {NgrokConfiguration.class, NgrokAgentApiClient.class},
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
         properties = TEST_NGROK_PROP_ENABLED)
-public class NgrokApiClientIntegrationTest {
+public class NgrokAgentApiClientIntegrationTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
-    private NgrokApiClient ngrokApiClient;
+    private NgrokAgentApiClient ngrokAgentApiClient;
 
     @Test
     public void isResponding_shouldReturnTrueWhenNgrokIsRunning() {
@@ -52,7 +51,7 @@ public class NgrokApiClientIntegrationTest {
                                 .withStatus(HttpStatus.OK.value())));
 
         // when
-        boolean responding = ngrokApiClient.isResponding();
+        boolean responding = ngrokAgentApiClient.isResponding();
 
         // then
         assertThat(responding).isTrue();
@@ -67,7 +66,7 @@ public class NgrokApiClientIntegrationTest {
                                 .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
 
         // when
-        boolean responding = ngrokApiClient.isResponding();
+        boolean responding = ngrokAgentApiClient.isResponding();
 
         // then
         assertThat(responding).isFalse();
@@ -84,7 +83,7 @@ public class NgrokApiClientIntegrationTest {
                                 okJson(tunnelsAsJson)));
 
         // when
-        List<NgrokTunnel> tunnels = ngrokApiClient.listTunnels();
+        List<NgrokTunnel> tunnels = ngrokAgentApiClient.listTunnels();
 
         // then
         assertThat(tunnels)
@@ -107,7 +106,7 @@ public class NgrokApiClientIntegrationTest {
                                 serverError()));
 
         // when
-        List<NgrokTunnel> tunnels = ngrokApiClient.listTunnels();
+        List<NgrokTunnel> tunnels = ngrokAgentApiClient.listTunnels();
 
         // then
         assertThat(tunnels).isEmpty();
@@ -129,7 +128,7 @@ public class NgrokApiClientIntegrationTest {
                                         .withBody(tunnelAsJson)));
 
         // when
-        final NgrokTunnel ngrokTunnel = ngrokApiClient.startTunnel(TEST_NGROK_TUNNEL_ADDR, TEST_NGROK_TUNNEL_HTTP_PROTO, TEST_NGROK_TUNNEL_HTTP_NAME);
+        final NgrokTunnel ngrokTunnel = ngrokAgentApiClient.startTunnel(TEST_NGROK_TUNNEL_ADDR, TEST_NGROK_TUNNEL_HTTP_PROTO, TEST_NGROK_TUNNEL_HTTP_NAME);
 
         // then
         assertThat(ngrokTunnel)
@@ -150,7 +149,7 @@ public class NgrokApiClientIntegrationTest {
                                         .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
 
         // when & then
-        assertThatThrownBy(() -> ngrokApiClient.startTunnel(TEST_NGROK_TUNNEL_ADDR, TEST_NGROK_TUNNEL_HTTP_PROTO, TEST_NGROK_TUNNEL_HTTP_NAME))
+        assertThatThrownBy(() -> ngrokAgentApiClient.startTunnel(TEST_NGROK_TUNNEL_ADDR, TEST_NGROK_TUNNEL_HTTP_PROTO, TEST_NGROK_TUNNEL_HTTP_NAME))
                 .isInstanceOf(NgrokApiException.class)
                 .hasMessage("Failed to start ngrok tunnel!");
     }
@@ -161,7 +160,7 @@ public class NgrokApiClientIntegrationTest {
         String tunnelAsJson = resourceAsString(TEST_NGROK_SINGLE_TUNNEL_FILE_PATH);
 
         stubFor(
-                get(urlPathEqualTo(URI_NGROK_API_TUNNEL_DETAIL.replace("{tunnelName}",TEST_NGROK_TUNNEL_HTTP_NAME)))
+                get(urlPathEqualTo(URI_NGROK_API_TUNNEL_DETAIL.replace("{tunnelName}", TEST_NGROK_TUNNEL_HTTP_NAME)))
                         .willReturn(
                                 aResponse()
                                         .withStatus(HttpStatus.OK.value())
@@ -169,7 +168,7 @@ public class NgrokApiClientIntegrationTest {
                                         .withBody(tunnelAsJson)));
 
         // when
-        final NgrokTunnel ngrokTunnel = ngrokApiClient.tunnelDetail(TEST_NGROK_TUNNEL_HTTP_NAME);
+        final NgrokTunnel ngrokTunnel = ngrokAgentApiClient.tunnelDetail(TEST_NGROK_TUNNEL_HTTP_NAME);
 
         // then
         assertThat(ngrokTunnel)
@@ -188,7 +187,7 @@ public class NgrokApiClientIntegrationTest {
                                         .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)));
 
         // when & then
-        assertThatThrownBy(() -> ngrokApiClient.tunnelDetail(TEST_INVALID_TUNNEL_NAME))
+        assertThatThrownBy(() -> ngrokAgentApiClient.tunnelDetail(TEST_INVALID_TUNNEL_NAME))
                 .isInstanceOf(NgrokApiException.class)
                 .hasMessage("Failed to fetch details of ngrok tunnel with tunnelName = " + TEST_INVALID_TUNNEL_NAME);
     }
@@ -203,7 +202,7 @@ public class NgrokApiClientIntegrationTest {
                                         .withStatus(HttpStatus.NO_CONTENT.value())));
 
         // when
-        final boolean tunnelStopped = ngrokApiClient.stopTunnel(TEST_NGROK_TUNNEL_HTTP_NAME);
+        final boolean tunnelStopped = ngrokAgentApiClient.stopTunnel(TEST_NGROK_TUNNEL_HTTP_NAME);
 
         // then
         assertThat(tunnelStopped).isTrue();
@@ -219,7 +218,7 @@ public class NgrokApiClientIntegrationTest {
                                         .withStatus(HttpStatus.NOT_FOUND.value())));
 
         // when
-        final boolean tunnelStopped = ngrokApiClient.stopTunnel(TEST_INVALID_TUNNEL_NAME);
+        final boolean tunnelStopped = ngrokAgentApiClient.stopTunnel(TEST_INVALID_TUNNEL_NAME);
 
         // then
         assertThat(tunnelStopped).isFalse();
