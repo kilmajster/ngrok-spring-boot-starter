@@ -76,7 +76,7 @@
         <commons-io.version>2.15.1</commons-io.version>
         <commons-lang3.version>3.13.0</commons-lang3.version>
         <commons-compress.version>1.24.0</commons-compress.version>
-        <jackson-dataformat-yaml.version>2.15.2</jackson-dataformat-yaml.version>
+        <jackson-dataformat-yaml.version>2.16.1</jackson-dataformat-yaml.version>
 
         <spring-cloud-contract-wiremock.version>3.1.8</spring-cloud-contract-wiremock.version>
     </properties>
