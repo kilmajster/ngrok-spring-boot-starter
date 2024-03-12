@@ -5,8 +5,12 @@
         <img align="center" src="https://github.com/kilmajster/ngrok-spring-boot-starter/workflows/main/badge.svg" alt="CI status badge">
     </a>
     <img align="center" src="https://img.shields.io/github/last-commit/kilmajster/ngrok-spring-boot-starter.svg" alt="Github last commit badge">
-    <img align="center" src="https://img.shields.io/maven-central/v/io.github.kilmajster/ngrok-spring-boot-starter?color=blue" alt="Maven Central" >
-    <img align="center" src="https://img.shields.io/github/license/kilmajster/ngrok-spring-boot-starter?color=blue" alt="MIT license badge">
+    <a href="https://mvnrepository.com/artifact/io.github.kilmajster/ngrok-spring-boot-starter">
+        <img align="center" src="https://img.shields.io/maven-central/v/io.github.kilmajster/ngrok-spring-boot-starter?color=blue" alt="Maven Central" >
+    </a>
+    <a href="https://github.com/kilmajster/ngrok-spring-boot-starter/blob/main/LICENSE">
+        <img align="center" src="https://img.shields.io/github/license/kilmajster/ngrok-spring-boot-starter?color=blue" alt="MIT license badge">
+    </a>
     <br>
     <a href="https://github.com/kilmajster/ngrok-spring-boot-starter/actions?query=workflow%3A%22CI+on+windows-latest%22">
         <img align="center" src="https://github.com/kilmajster/ngrok-spring-boot-starter/workflows/CI%20on%20windows-latest/badge.svg" alt="CI on Windows">
@@ -49,13 +53,13 @@ Code of demo application available [here](https://github.com/kilmajster/demo).
 <dependency>
   <groupId>io.github.kilmajster</groupId>
   <artifactId>ngrok-spring-boot-starter</artifactId>
-  <version>0.9.0</version>
+  <version>0.9.2</version>
 </dependency>
 ```
 
 - or gradle:
 ```groovy
-compile('io.github.kilmajster:ngrok-spring-boot-starter:0.9.0')
+compile('io.github.kilmajster:ngrok-spring-boot-starter:0.9.2')
 ````
 
 ##  Configuration
