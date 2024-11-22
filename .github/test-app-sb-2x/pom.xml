@@ -14,7 +14,7 @@
 	<name>test-app</name>
 	<description>Dummy app for tests with spring-boot v2</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<ngrok-spring-boot-starter.version>SNAPSHOT</ngrok-spring-boot-starter.version>
 	</properties>
 	<dependencies>
