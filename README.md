@@ -12,14 +12,14 @@
         <img align="center" src="https://img.shields.io/github/license/kilmajster/ngrok-spring-boot-starter?color=blue" alt="MIT license badge">
     </a>
     <br>
-    <a href="https://github.com/kilmajster/ngrok-spring-boot-starter/actions?query=workflow%3A%22CI+on+windows-latest%22">
-        <img align="center" src="https://github.com/kilmajster/ngrok-spring-boot-starter/workflows/CI%20on%20windows-latest/badge.svg" alt="CI on Windows">
+    <a href="https://github.com/kilmajster/ngrok-spring-boot-starter/actions/workflows/automation-test-windows.yml">
+        <img align="center" src="https://github.com/kilmajster/ngrok-spring-boot-starter/actions/workflows/automation-test-windows.yml/badge.svg" alt="CI on Windows">
     </a>
-    <a href="https://github.com/kilmajster/ngrok-spring-boot-starter/actions?query=workflow%3A%22CI+on+ubuntu-latest%22">
-        <img align="center" src="https://github.com/kilmajster/ngrok-spring-boot-starter/workflows/CI%20on%20ubuntu-latest/badge.svg" alt="CI on Ubuntu">
+    <a href="https://github.com/kilmajster/ngrok-spring-boot-starter/actions/workflows/automation-test-ubuntu.yml">
+        <img align="center" src="https://github.com/kilmajster/ngrok-spring-boot-starter/actions/workflows/automation-test-ubuntu.yml/badge.svg" alt="CI on Ubuntu">
     </a>
-    <a href="https://github.com/kilmajster/ngrok-spring-boot-starter/actions?query=workflow%3A%22CI+on+macos-latest%22">
-        <img align="center" src="https://github.com/kilmajster/ngrok-spring-boot-starter/workflows/CI%20on%20macos-latest/badge.svg" alt="CI on MacOS">
+    <a href="https://github.com/kilmajster/ngrok-spring-boot-starter/actions/workflows/automation-test-macos.yml">
+        <img align="center" src="https://github.com/kilmajster/ngrok-spring-boot-starter/actions/workflows/automation-test-macos.yml/badge.svg" alt="CI on MacOS">
     </a>
 </h1>
 <p align="center">
@@ -45,7 +45,9 @@ with the remote links, just like it's done below 👇
     <img src="https://github.com/kilmajster/ngrok-spring-boot-starter/blob/main/.github/demo.gif" alt="demo gif">
 </p>
 
-Code of demo application available [here](https://github.com/kilmajster/demo).
+Code of demo application is available 
+[here](https://github.com/kilmajster/ngrok-spring-boot-starter/tree/main/.github/test-app-sb-2x) for spring-boot v2 and 
+[here](https://github.com/kilmajster/ngrok-spring-boot-starter/tree/main/.github/test-app-sb-3x) for v3.
 
 ## Dependency
 - maven:
