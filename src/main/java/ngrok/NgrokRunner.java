@@ -13,7 +13,7 @@ import ngrok.os.NgrokPlatformDetector;
 import ngrok.os.NgrokSystemCommandExecutor;
 import ngrok.download.NgrokDownloader;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.boot.web.context.WebServerInitializedEvent;
+import org.springframework.boot.web.server.context.WebServerInitializedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.task.TaskExecutor;

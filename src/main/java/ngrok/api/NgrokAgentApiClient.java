@@ -92,7 +92,7 @@ public class NgrokAgentApiClient {
                     NgrokStartTunnel.of(addr, proto, name),
                     NgrokTunnel.class
             );
-            if (startTunnelResponse.getStatusCodeValue() != 201) {
+            if (startTunnelResponse.getStatusCode().value() != 201) {
                 log.warn("Failed to start ngrok tunnel!");
             }
             return startTunnelResponse.getBody();
@@ -133,7 +133,7 @@ public class NgrokAgentApiClient {
                     null,
                     Void.class,
                     tunnelName
-            ).getStatusCodeValue() == 204;
+            ).getStatusCode().value() == 204;
         } catch (Exception ex) {
             return false;
         }
@@ -188,7 +188,7 @@ public class NgrokAgentApiClient {
                     apiUrlOf(URI_NGROK_API_CAPTURED_REQUESTS),
                     NgrokReplayCapturedRequest.of(id, tunnelName),
                     Void.class
-            ).getStatusCodeValue() == 204;
+            ).getStatusCode().value() == 204;
         } catch (Exception ex) {
             return false;
         }
@@ -206,7 +206,7 @@ public class NgrokAgentApiClient {
                     HttpMethod.DELETE,
                     null,
                     Void.class
-            ).getStatusCodeValue() == 204;
+            ).getStatusCode().value() == 204;
         } catch (Exception ex) {
             return false;
         }
@@ -240,7 +240,7 @@ public class NgrokAgentApiClient {
             return restTemplate.getForEntity(
                     getNgrokStatusUrl(),
                     Void.class
-            ).getStatusCodeValue() == 200;
+            ).getStatusCode().value() == 200;
         } catch (Exception ex) {
             return false;
         }

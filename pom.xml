@@ -59,7 +59,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.5</version>
+        <version>4.0.2</version>
         <relativePath/>
     </parent>
 
@@ -70,11 +70,11 @@
         <java.version>17</java.version>
 
         <commons-io.version>2.18.0</commons-io.version>
-        <commons-lang3.version>3.17.0</commons-lang3.version>
-        <commons-compress.version>1.27.1</commons-compress.version>
+        <commons-lang3.version>3.18.0</commons-lang3.version>
+        <commons-compress.version>1.28.0</commons-compress.version>
         <jackson-dataformat-yaml.version>2.19.2</jackson-dataformat-yaml.version>
 
-        <spring-cloud-contract-wiremock.version>4.1.4</spring-cloud-contract-wiremock.version>
+        <spring-cloud.version>2025.1.1</spring-cloud.version>
 
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
         <maven-gpg-plugin.version>3.2.7</maven-gpg-plugin.version>
@@ -91,8 +91,14 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
             <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-jackson</artifactId>
+        </exclusion>
+      </exclusions>
         </dependency>
 
         <dependency>
@@ -100,6 +106,10 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-jackson2</artifactId>
+    </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -110,7 +120,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
-            <version>${jackson-dataformat-yaml.version}</version>
         </dependency>
 
         <dependency>
@@ -122,7 +131,6 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
         </dependency>
 
         <dependency>
@@ -140,17 +148,27 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-contract-wiremock</artifactId>
-            <version>${spring-cloud-contract-wiremock.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>

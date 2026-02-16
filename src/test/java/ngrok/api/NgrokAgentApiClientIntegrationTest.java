@@ -1,15 +1,19 @@
 package ngrok.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import ngrok.api.model.NgrokTunnel;
 import ngrok.api.rquest.NgrokStartTunnel;
 import ngrok.configuration.NgrokConfiguration;
 import ngrok.exception.NgrokApiException;
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.ResourceUtils;
@@ -30,17 +34,40 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @ActiveProfiles(TEST_NGROK_PROFILE)
-@AutoConfigureWireMock(port = 4040)
 @SpringBootTest(
         classes = {NgrokConfiguration.class, NgrokAgentApiClient.class},
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
         properties = TEST_NGROK_PROP_ENABLED)
 public class NgrokAgentApiClientIntegrationTest {
 
+    private static final int WIREMOCK_PORT = 4040;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private NgrokAgentApiClient ngrokAgentApiClient;
+
+    private static WireMockServer wireMockServer;
+
+    @BeforeAll
+    static void startWireMock() {
+        wireMockServer = new WireMockServer(WireMockConfiguration.options().port(WIREMOCK_PORT));
+        wireMockServer.start();
+        configureFor("localhost", WIREMOCK_PORT);
+    }
+
+    @AfterAll
+    static void stopWireMock() {
+        if (wireMockServer != null) {
+            wireMockServer.stop();
+        }
+    }
+
+    @BeforeEach
+    void configureWireMock() {
+        wireMockServer.resetAll();
+        configureFor("localhost", WIREMOCK_PORT);
+    }
 
     @Test
     public void isResponding_shouldReturnTrueWhenNgrokIsRunning() {
