@@ -22,8 +22,19 @@ jobs:
       - name: Set version from git tag
         run: mvn -B -ntp versions:set -DgenerateBackupPoms=false -DnewVersion="$TAG"
 
-      - name: Build package
-        run: mvn -B -ntp package
+      - name: Import GPG key
+        run: |
+          cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
+          gpg --list-secret-keys --keyid-format LONG
+
+      - name: Publish maven package
+        run: |
+          mvn \
+          --no-transfer-progress \
+          --batch-mode \
+          -D gpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
+          -P publish-preparation \
+          package
 
       - name: Publish to Maven Central
         uses: jskov/action-maven-publish@8145b6173999b6367355a220c2cd961f54e6b259
@@ -32,7 +43,7 @@ jobs:
           portal_token: ${{ secrets.PORTAL_TOKEN }}
           signing_key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
           signing_key_secret: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
-          search_directory: '.'
+          search_directory: target
           target_action: 'promote_or_keep'
           log_level: 'info'
           companion_suffixes: '.jar, -javadoc.jar, -sources.jar'
