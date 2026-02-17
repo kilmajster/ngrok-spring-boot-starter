@@ -32,7 +32,7 @@ jobs:
           portal_token: ${{ secrets.PORTAL_TOKEN }}
           signing_key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
           signing_key_secret: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
-          search_directory: target
+          search_directory: .
           target_action: 'promote_or_keep'
           log_level: 'info'
 
