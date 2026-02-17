@@ -24,7 +24,7 @@ jobs:
 
       - name: Import GPG key
         run: |
-          cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
+          cat <(echo -e "${{ secrets.SIGNING_KEY }}") | gpg --batch --import
           gpg --list-secret-keys --keyid-format LONG
 
       - name: Publish maven package
@@ -32,17 +32,18 @@ jobs:
           mvn \
           --no-transfer-progress \
           --batch-mode \
-          -D gpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
           -P publish-preparation \
           package
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.SIGNING_KEY_SECRET }}
 
       - name: Publish to Maven Central
         uses: jskov/action-maven-publish@8145b6173999b6367355a220c2cd961f54e6b259
         with:
           portal_username: ${{ secrets.PORTAL_USERNAME }}
           portal_token: ${{ secrets.PORTAL_TOKEN }}
-          signing_key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
-          signing_key_secret: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+          signing_key: ${{ secrets.SIGNING_KEY }}
+          signing_key_secret: ${{ secrets.SIGNING_KEY_SECRET }}
           search_directory: target
           target_action: 'promote_or_keep'
           log_level: 'info'
