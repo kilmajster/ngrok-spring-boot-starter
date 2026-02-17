@@ -32,9 +32,10 @@ jobs:
           portal_token: ${{ secrets.PORTAL_TOKEN }}
           signing_key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
           signing_key_secret: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
-          search_directory: .
+          search_directory: '.'
           target_action: 'promote_or_keep'
           log_level: 'info'
+          companion_suffixes: '.jar, -javadoc.jar, -sources.jar'
 
       - name: Add jar to Github Release
         uses: svenstaro/upload-release-action@v2
