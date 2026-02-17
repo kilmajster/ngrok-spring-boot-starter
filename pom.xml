@@ -45,17 +45,6 @@
         <url>http://github.com/kilmajster/ngrok-spring-boot-starter</url>
     </scm>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -179,7 +168,7 @@
 
     <profiles>
         <profile>
-            <id>ossrh</id>
+            <id>publish</id>
             <build>
                 <plugins>
                     <plugin>
