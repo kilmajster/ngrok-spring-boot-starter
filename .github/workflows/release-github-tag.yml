@@ -22,20 +22,20 @@ jobs:
       - name: Set version from git tag
         run: mvn -B -ntp versions:set -DgenerateBackupPoms=false -DnewVersion="$TAG"
 
-      - name: Import GPG key
-        run: |
-          cat <(echo -e "${{ secrets.SIGNING_KEY }}") | gpg --batch --import
-          gpg --list-secret-keys --keyid-format LONG
+      - name: Build package
+        run: mvn -B -ntp -P publish-preparation package
 
-      - name: Publish maven package
+      - name: Prepare checksums
         run: |
-          mvn \
-          --no-transfer-progress \
-          --batch-mode \
-          -P publish-preparation \
-          package
-        env:
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.SIGNING_KEY_SECRET }}
+          cp pom.xml target/ngrok-spring-boot-starter-${{ env.TAG }}.pom
+          md5sum target/ngrok-spring-boot-starter-${{ env.TAG }}.pom | cut -d ' ' -f 1 > target/ngrok-spring-boot-starter-${{ env.TAG }}.pom.md5
+          md5sum target/ngrok-spring-boot-starter-${{ env.TAG }}.jar | cut -d ' ' -f 1 > target/ngrok-spring-boot-starter-${{ env.TAG }}.jar.md5
+          md5sum target/ngrok-spring-boot-starter-${{ env.TAG }}-javadoc.jar | cut -d ' ' -f 1 > target/ngrok-spring-boot-starter-${{ env.TAG }}-javadoc.jar.md5
+          md5sum target/ngrok-spring-boot-starter-${{ env.TAG }}-sources.jar | cut -d ' ' -f 1 > target/ngrok-spring-boot-starter-${{ env.TAG }}-sources.jar.md5
+          sha1sum target/ngrok-spring-boot-starter-${{ env.TAG }}.pom | cut -d ' ' -f 1 > target/ngrok-spring-boot-starter-${{ env.TAG }}.pom.sha1
+          sha1sum target/ngrok-spring-boot-starter-${{ env.TAG }}.jar | cut -d ' ' -f 1 > target/ngrok-spring-boot-starter-${{ env.TAG }}.jar.sha1
+          sha1sum target/ngrok-spring-boot-starter-${{ env.TAG }}-javadoc.jar | cut -d ' ' -f 1 > target/ngrok-spring-boot-starter-${{ env.TAG }}-javadoc.jar.sha1
+          sha1sum target/ngrok-spring-boot-starter-${{ env.TAG }}-sources.jar | cut -d ' ' -f 1 > target/ngrok-spring-boot-starter-${{ env.TAG }}-sources.jar.sha1
 
       - name: Publish to Maven Central
         uses: jskov/action-maven-publish@8145b6173999b6367355a220c2cd961f54e6b259
