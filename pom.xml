@@ -63,7 +63,7 @@
         <commons-compress.version>1.28.0</commons-compress.version>
         <jackson-dataformat-yaml.version>2.19.2</jackson-dataformat-yaml.version>
 
-        <spring-cloud.version>2025.1.1</spring-cloud.version>
+        <spring-cloud.version>2025.1.2</spring-cloud.version>
 
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
         <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
